@@ -1,0 +1,23 @@
+#root {
+    -fx-background-color: -grey-900;
+}
+
+.jfx-dialog-layout {
+    -fx-background-color: -grey-800;
+}
+
+.label, .dialog-close, .jfx-toggle-button {
+    -fx-text-fill: white;
+}
+
+.jfx-rippler {
+    -jfx-rippler-fill: white;
+}
+
+.settings-button {
+    -fx-background-color: black;
+}
+
+.settings-button .glyph-icon, .back-button .glyph-icon {
+    -fx-fill: white;
+}

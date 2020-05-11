@@ -1,0 +1,27 @@
+#root {
+    -fx-background-color: -grey-50;
+}
+
+.settings-button {
+    -fx-background-color: white;
+}
+
+.jfx-decorator, .jfx-decorator-buttons-container {
+    -fx-background-color: -grey-200;
+}
+
+.jfx-decorator-content-container {
+    -fx-border-color: -grey-200;
+}
+
+.jfx-decorator-text {
+    -fx-fill: black;
+}
+
+.jfx-rippler {
+    -jfx-rippler-fill: -grey-500;
+}
+
+.jfx-decorator-button .jfx-svg-glyph {
+    -fx-background-color: black;
+}

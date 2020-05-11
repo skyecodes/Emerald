@@ -1,0 +1,27 @@
+.root {
+    -fx-font-family: Roboto;
+}
+
+.jfx-button, .custom-button {
+    -fx-cursor: hand;
+}
+
+.custom-button StackPane {
+    -fx-padding: 6px;
+}
+
+.new-instance-button .glyph-icon, .settings-button .glyph-icon {
+    -glyph-size: 64px;
+}
+
+.back-button .glyph-icon {
+    -glyph-size: 32px;
+}
+
+.new-instance-button {
+    -fx-background-color: green;
+}
+
+.new-instance-button .glyph-icon {
+    -fx-fill: white;
+}
