@@ -1,8 +1,11 @@
 package com.github.franckyi.emerald.data;
 
+import java.util.Objects;
+
 public class Configuration implements Cloneable {
     private int version;
-    private boolean darkTheme;
+    private Theme theme;
+    private String customTheme;
 
     public int getVersion() {
         return version;
@@ -12,12 +15,20 @@ public class Configuration implements Cloneable {
         this.version = version;
     }
 
-    public boolean isDarkTheme() {
-        return darkTheme;
+    public Theme getTheme() {
+        return theme;
     }
 
-    public void setDarkTheme(boolean darkTheme) {
-        this.darkTheme = darkTheme;
+    public void setTheme(Theme theme) {
+        this.theme = theme;
+    }
+
+    public String getCustomTheme() {
+        return customTheme;
+    }
+
+    public void setCustomTheme(String customTheme) {
+        this.customTheme = customTheme;
     }
 
     @Override
@@ -28,13 +39,15 @@ public class Configuration implements Cloneable {
         Configuration that = (Configuration) o;
 
         if (version != that.version) return false;
-        return darkTheme == that.darkTheme;
+        if (theme != that.theme) return false;
+        return Objects.equals(customTheme, that.customTheme);
     }
 
     @Override
     public int hashCode() {
         int result = version;
-        result = 31 * result + (darkTheme ? 1 : 0);
+        result = 31 * result + (theme != null ? theme.hashCode() : 0);
+        result = 31 * result + (customTheme != null ? customTheme.hashCode() : 0);
         return result;
     }
 
@@ -42,7 +55,12 @@ public class Configuration implements Cloneable {
     public Object clone() {
         Configuration c = new Configuration();
         c.setVersion(version);
-        c.setDarkTheme(darkTheme);
+        c.setTheme(theme);
+        c.setCustomTheme(customTheme);
         return c;
+    }
+
+    public enum Theme {
+        LIGHT, DARK, CUSTOM
     }
 }

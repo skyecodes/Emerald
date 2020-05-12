@@ -1,82 +1,156 @@
 package com.github.franckyi.emerald.controller;
 
-import com.github.franckyi.emerald.ViewController;
+import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.model.Context;
-import com.github.franckyi.emerald.model.SettingsModel;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
+import javafx.beans.property.DoubleProperty;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-public class MainController implements Controller<Context> {
+import java.util.LinkedList;
+import java.util.function.Function;
 
-    @FXML
-    private StackPane root;
+public class MainController extends Controller<StackPane, Context> {
+    private InstanceListController instanceListController;
+    private SettingsController settingsController;
+    private NewInstanceController newInstanceController;
+    private NewVanillaInstanceController newVanillaInstanceController;
 
-    private ViewController<InstanceListController> instanceListViewController;
-    private ViewController<SettingsController> settingsViewController;
+    private LinkedList<MenuController<?, ?>> flow;
+    private LinkedList<TransitionDirection> transitionFlow;
 
     @Override
-    public void initialize(Context model) {
-        instanceListViewController = ViewController.loadFXML("InstanceList.fxml", model::getInstances);
-        root.getChildren().add(instanceListViewController.getView());
+    protected void initialize() {
+        flow = new LinkedList<>();
+        transitionFlow = new LinkedList<>();
+    }
+
+    @Override
+    protected void modelUpdated() {
+        instanceListController = Controller.loadFXML("InstanceList.fxml", this.getModel()::getInstances);
+        flow.add(instanceListController);
+        this.getRoot().getChildren().add(instanceListController.getRoot());
     }
 
     public void showSettings() {
-        if (settingsViewController == null) {
-            settingsViewController = ViewController.loadFXML("Settings.fxml", new SettingsModel(this));
-            settingsViewController.getView().setTranslateX(root.getWidth());
-            root.getChildren().add(settingsViewController.getView());
-        }
-        settingsViewController.getView().translateXProperty().unbind();
-        this.nextAnimate(instanceListViewController.getView(), settingsViewController.getView());
-        settingsViewController.getController().initDefaultConfiguration();
+        if (settingsController == null)
+            settingsController = Controller.loadFXML("Settings.fxml");
+        this.showNext(settingsController, TransitionDirection.RIGHT);
     }
 
-    public void hideSettings() {
-        this.backAnimate(settingsViewController.getView(), instanceListViewController.getView(),
-                (e) -> settingsViewController.getView().translateXProperty().bind(root.widthProperty()));
+    public void showNewInstance() {
+        if (newInstanceController == null)
+            newInstanceController = Controller.loadFXML("NewInstance.fxml");
+        this.showNext(newInstanceController, TransitionDirection.TOP);
     }
 
-    public StackPane getRoot() {
-        return (StackPane) root.getParent();
+    public void showNewVanillaInstance() {
+        if (newVanillaInstanceController == null)
+            newVanillaInstanceController = Controller.loadFXML("NewVanillaInstance.fxml");
+        this.showNext(newVanillaInstanceController, TransitionDirection.LEFT);
     }
 
-    private void nextAnimate(Node from, Node to) {
-        this.nextAnimate(from, to, null);
+    public void showHome() {
+        flow.subList(1, flow.size() - 1).forEach(c -> {
+            flow.remove(c);
+            c.getRoot().setTranslateX(0);
+            c.getRoot().setTranslateY(0);
+        });
+        transitionFlow.subList(1, flow.size()).clear();
+        showPrevious();
     }
 
-    private void backAnimate(Node from, Node to) {
-        this.backAnimate(from, to, null);
+    public void showPrevious() {
+        MenuController<?, ?> from = flow.getLast();
+        MenuController<?, ?> to = flow.get(flow.size() - 2);
+        this.getRoot().getChildren().add(to.getRoot());
+        TransitionDirection direction = transitionFlow.getLast().getOpposite();
+        Timeline timeline = this.animate(from, to, direction);
+        timeline.setOnFinished(e -> {
+            this.getRoot().getChildren().remove(from.getRoot());
+            from.afterHiding();
+            to.afterShowing();
+            flow.removeLast();
+            transitionFlow.removeLast();
+            EmeraldApp.getInstance().fixFocus();
+        });
     }
 
-    private void nextAnimate(Node from, Node to, EventHandler<ActionEvent> onFinished) {
-        this.animate(from, to, -root.getWidth(), onFinished);
+    private void showNext(MenuController<?, ?> to, TransitionDirection direction) {
+        MenuController<?, ?> from = flow.getLast();
+        this.getRoot().getChildren().add(to.getRoot());
+        Timeline timeline = this.animate(from, to, direction);
+        timeline.setOnFinished(e -> {
+            this.getRoot().getChildren().remove(from.getRoot());
+            from.afterHiding();
+            to.afterShowing();
+            flow.add(to);
+            transitionFlow.add(direction);
+            EmeraldApp.getInstance().fixFocus();
+        });
     }
 
-    private void backAnimate(Node from, Node to, EventHandler<ActionEvent> onFinished) {
-        this.animate(from, to, root.getWidth(), onFinished);
-    }
-
-    private void animate(Node from, Node to, double d, EventHandler<ActionEvent> onFinished) {
-        from.translateXProperty().unbind();
-        to.translateXProperty().unbind();
+    private Timeline animate(MenuController<?, ?> from, MenuController<?, ?> to, TransitionDirection direction) {
+        direction.initToPos(to.getRoot(), this.getRoot());
+        from.beforeHiding();
+        to.beforeShowing();
         Timeline timeline = new Timeline();
-        KeyValue kv = new KeyValue(from.translateXProperty(), d, Interpolator.EASE_IN);
-        KeyValue kv2 = new KeyValue(to.translateXProperty(), 0, Interpolator.EASE_IN);
-        KeyFrame kf = new KeyFrame(Duration.seconds(0.25), kv);
-        KeyFrame kf2 = new KeyFrame(Duration.seconds(0.25), kv2);
+        KeyValue kv = new KeyValue(direction.translateProperty(from.getRoot()), direction.fromKeyValue(this.getRoot()), Interpolator.EASE_IN);
+        KeyValue kv2 = new KeyValue(direction.translateProperty(to.getRoot()), 0, Interpolator.EASE_IN);
+        KeyFrame kf = new KeyFrame(Duration.seconds(.225), kv);
+        KeyFrame kf2 = new KeyFrame(Duration.seconds(.225), kv2);
         timeline.getKeyFrames().addAll(kf, kf2);
-        if (onFinished != null) {
-            timeline.setOnFinished(onFinished);
-        }
         timeline.play();
+        return timeline;
     }
 
+    private enum TransitionDirection {
+        LEFT(Node::translateXProperty, Region::getWidth, root -> -root.getWidth()),
+        RIGHT(Node::translateXProperty, region -> -region.getWidth(), Region::getWidth),
+        TOP(Node::translateYProperty, Region::getHeight, root -> -root.getHeight()),
+        BOTTOM(Node::translateYProperty, region -> -region.getHeight(), Region::getHeight);
+
+        private final Function<Node, DoubleProperty> translateProperty;
+        private final Function<Region, Double> fromKeyValue;
+        private final Function<Region, Double> initTranslate;
+
+        TransitionDirection(Function<Node, DoubleProperty> translateProperty, Function<Region, Double> fromKeyValue,
+                            Function<Region, Double> initTranslate) {
+            this.translateProperty = translateProperty;
+            this.fromKeyValue = fromKeyValue;
+            this.initTranslate = initTranslate;
+        }
+
+        public double fromKeyValue(Region region) {
+            return fromKeyValue.apply(region);
+        }
+
+        public DoubleProperty translateProperty(Node node) {
+            return translateProperty.apply(node);
+        }
+
+        public void initToPos(Parent to, Region root) {
+            translateProperty.apply(to).setValue(initTranslate.apply(root));
+        }
+
+        public TransitionDirection getOpposite() {
+            switch (this) {
+                case LEFT:
+                    return RIGHT;
+                case RIGHT:
+                    return LEFT;
+                case TOP:
+                    return BOTTOM;
+                case BOTTOM:
+                    return TOP;
+            }
+            return null;
+        }
+    }
 }

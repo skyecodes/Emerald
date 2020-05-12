@@ -6,6 +6,7 @@ public class Instance {
     private String name;
     private String folderName;
     private Instant creationDate;
+    private String minecraftVersion;
 
     public String getName() {
         return name;
@@ -29,5 +30,13 @@ public class Instance {
 
     public void setCreationDate(Instant creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public String getMinecraftVersion() {
+        return minecraftVersion;
+    }
+
+    public void setMinecraftVersion(String minecraftVersion) {
+        this.minecraftVersion = minecraftVersion;
     }
 }

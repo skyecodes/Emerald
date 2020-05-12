@@ -1,6 +1,8 @@
 package com.github.franckyi.emerald;
 
+import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.controller.MainController;
+import com.github.franckyi.emerald.data.Configuration;
 import com.github.franckyi.emerald.model.Context;
 import com.github.franckyi.emerald.service.init.ContextLoader;
 import com.github.franckyi.emerald.util.AsyncUtils;
@@ -30,7 +32,9 @@ public final class EmeraldApp extends Application {
     private Stage stage;
     private Scene scene;
     private JFXDecorator decorator;
-    private ViewController<MainController> mainViewController;
+    private MainController mainController;
+
+    private String currentThemeStylesheet;
 
     public EmeraldApp() {
         this.darkThemeStylesheet = this.getClass().getResource("/view/css/dark.css").toExternalForm();
@@ -58,8 +62,8 @@ public final class EmeraldApp extends Application {
         return decorator;
     }
 
-    public ViewController<MainController> getMainViewController() {
-        return mainViewController;
+    public MainController getMainController() {
+        return mainController;
     }
 
     @Override
@@ -109,8 +113,8 @@ public final class EmeraldApp extends Application {
     }
 
     private void loadView() {
-        mainViewController = ViewController.loadFXML("Main.fxml", new ContextLoader());
-        decorator = new JFXDecorator(stage, mainViewController.getView());
+        mainController = Controller.loadFXML("Main.fxml", new ContextLoader());
+        decorator = new JFXDecorator(stage, mainController.getRoot(), false, true, true);
         decorator.setCustomMaximize(true);
         scene = new Scene(decorator, 720, 480);
         scene.getStylesheets().addAll(
@@ -134,17 +138,27 @@ public final class EmeraldApp extends Application {
     }
 
     public void fixFocus() {
-        Platform.runLater(mainViewController.getView()::requestFocus);
+        Platform.runLater(mainController.getRoot()::requestFocus);
     }
 
     public void updateTheme() {
-        if (EmeraldUtils.getConfiguration().isDarkTheme()) {
-            scene.getStylesheets().remove(lightThemeStylesheet);
-            scene.getStylesheets().add(darkThemeStylesheet);
+        Configuration c = EmeraldUtils.getConfiguration();
+        scene.getStylesheets().remove(currentThemeStylesheet);
+        if (c.getTheme() == Configuration.Theme.DARK) {
+            currentThemeStylesheet = darkThemeStylesheet;
+        } else if (c.getTheme() == Configuration.Theme.LIGHT) {
+            currentThemeStylesheet = lightThemeStylesheet;
         } else {
-            scene.getStylesheets().remove(darkThemeStylesheet);
-            scene.getStylesheets().add(lightThemeStylesheet);
+            File file = new File(PreferenceManager.getApplicationPath(),
+                    String.format("themes%s%s", File.pathSeparator, c.getCustomTheme()));
+            if (file.exists()) {
+                currentThemeStylesheet = file.getAbsolutePath();
+            } else {
+                Logger.error("Custom style {} not found - defaulting to dark theme", c.getCustomTheme());
+                currentThemeStylesheet = darkThemeStylesheet;
+            }
         }
+        scene.getStylesheets().add(currentThemeStylesheet);
     }
 
     private class FullScreenFixer implements ChangeListener<Boolean> {

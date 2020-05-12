@@ -16,7 +16,8 @@ public final class ConfigManager {
     public static Configuration createDefaultConfig() {
         Configuration c = new Configuration();
         c.setVersion(1);
-        c.setDarkTheme(true);
+        c.setTheme(Configuration.Theme.DARK);
+        c.setCustomTheme("");
         return c;
     }
 

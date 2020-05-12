@@ -25,3 +25,11 @@
 .new-instance-button .glyph-icon {
     -fx-fill: white;
 }
+
+.instance-type-button {
+    -fx-content-display: top;
+    -fx-graphic-text-gap: 10px;
+    -fx-pref-width: 192px;
+    -fx-pref-height: 192px;
+    -jfx-button-type: RAISED;
+}
