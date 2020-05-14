@@ -5,16 +5,14 @@ import com.github.franckyi.emerald.util.MagicTask;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.layout.Region;
 import org.tinylog.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 
-public abstract class Controller<V extends Region, M> implements Initializable {
+public abstract class Controller<V extends Region, M> {
 
     private final ObjectProperty<M> model;
     private V root;
@@ -82,10 +80,6 @@ public abstract class Controller<V extends Region, M> implements Initializable {
 
     public ObjectProperty<M> modelProperty() {
         return model;
-    }
-
-    @Override
-    public final void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
     protected void initialize() {

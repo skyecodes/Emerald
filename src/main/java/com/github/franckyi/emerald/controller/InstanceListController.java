@@ -28,7 +28,7 @@ public class InstanceListController extends MenuController<JFXMasonryPane, List<
     private class NewInstanceButton extends JFXButton {
         public NewInstanceButton() {
             this.setPrefSize(128, 128);
-            this.getStyleClass().add("new-instance-button");
+            this.getStyleClass().addAll("button-success", "instance-list-button");
             this.setButtonType(ButtonType.RAISED);
             this.setGraphic(new MaterialIconView(MaterialIcon.ADD_CIRCLE));
             this.setOnAction(e -> InstanceListController.this.getMainController().showNewInstance());
@@ -39,7 +39,7 @@ public class InstanceListController extends MenuController<JFXMasonryPane, List<
     private class SettingsButton extends JFXButton {
         public SettingsButton() {
             this.setPrefSize(128, 128);
-            this.getStyleClass().add("settings-button");
+            this.getStyleClass().addAll("button-surface", "instance-list-button");
             this.setButtonType(ButtonType.RAISED);
             this.setGraphic(new MaterialIconView(MaterialIcon.SETTINGS));
             this.setOnAction(e -> InstanceListController.this.getMainController().showSettings());

@@ -34,7 +34,12 @@ public class SettingsController extends MenuController<BorderPane, Void> {
                 EmeraldApp.getInstance().updateTheme();
             });
         }
-        this.setBeforeShowing(() -> defaultConfiguration = (Configuration) EmeraldUtils.getConfiguration().clone());
+    }
+
+    @Override
+    public void beforeShowing() {
+        super.beforeShowing();
+        defaultConfiguration = EmeraldUtils.getConfiguration().clone();
     }
 
     @FXML

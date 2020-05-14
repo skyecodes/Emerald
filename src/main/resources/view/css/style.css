@@ -1,35 +1,206 @@
+/*
+ * GENERAL
+ */
+
 .root {
     -fx-font-family: Roboto;
+    -white: white;
+    -black: black;
+    -error: #B00020;
+    -success: #4CAF50;
 }
 
-.jfx-button, .custom-button {
+#root {
+    -fx-background-color: -background-color;
+}
+
+/* Text */
+.label, .dialog-close, .jfx-toggle-button, .jfx-text-field, .jfx-check-box, .button-surface {
+    -fx-text-fill: -text-color;
+}
+
+/* Decorator */
+.jfx-decorator, .jfx-decorator-buttons-container {
+    -fx-background-color: -decorator-background-color;
+}
+
+.jfx-decorator-content-container {
+    -fx-border-color: -decorator-background-color;
+}
+
+.jfx-decorator-text {
+    -fx-fill: -header-text-color;
+}
+
+.jfx-decorator-button .jfx-svg-glyph {
+    -fx-background-color: -header-text-color;
+}
+
+/* Button */
+.jfx-button {
+    -jfx-button-type: RAISED;
+}
+
+.jfx-button, .navigation-button {
     -fx-cursor: hand;
 }
 
-.custom-button StackPane {
+.navigation-button StackPane {
     -fx-padding: 6px;
 }
 
-.new-instance-button .glyph-icon, .settings-button .glyph-icon {
+.navigation-button .glyph-icon {
+    -glyph-size: 24px;
+    -fx-fill: -header-text-color;
+}
+
+.button-surface {
+    -fx-background-color: -surface-color;
+}
+
+.button-surface .glyph-icon {
+    -fx-fill: -text-color;
+}
+
+.button-success {
+    -fx-background-color: -success;
+    -fx-text-fill: -white;
+}
+
+.button-success .glyph-icon {
+    -fx-fill: -white;
+}
+
+/* TextField */
+.jfx-text-field {
+    -jfx-focus-color: -textfield-focus-color;
+}
+
+/* CheckBox */
+.jfx-check-box {
+    -jfx-checked-color: -checkbox-checked-color;
+}
+
+.jfx-check-box .mark {
+    -fx-background-color: -checkbox-check-icon-color;
+}
+
+/* Surface */
+.surface {
+    -fx-background-color: -surface-color;
+    -fx-background-radius: 3px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.26), 15, 0.16, 0, 4);
+}
+
+/* Rippler */
+.jfx-rippler {
+    -jfx-rippler-fill: -grey-500;
+}
+
+/* Dialog */
+.jfx-dialog-layout {
+    -fx-background-color: -surface-color2;
+}
+
+/* SVG */
+.curseforge-svg {
+    -fx-background-color: -text-color;
+}
+
+/* ScrollBar */
+.scroll-bar > .track-background {
+    -fx-background-color: -scrollbar-background-color;
+    -fx-background-insets: 0;
+}
+
+.scroll-bar > .thumb {
+    -fx-background-color: -scrollbar-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
+
+.scroll-bar > .increment-button, .scroll-bar > .decrement-button {
+    -fx-padding: 5 2 5 2;
+}
+
+.scroll-bar > .increment-button, .scroll-bar > .decrement-button, .scroll-bar:hover > .increment-button, .scroll-bar:hover > .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar > .increment-button > .increment-arrow, .scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-background-color: -scrollbar-color;
+}
+
+.scroll-bar > .increment-button > .increment-arrow {
+    -fx-shape: "M298 426h428l-214 214z";
+}
+
+.scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-shape: "M298 598l214-214 214 214h-428z";
+}
+
+/* TreeTableView */
+.jfx-tree-table-view, .jfx-tree-table-view .tree-table-row-cell {
+    -fx-background-color: -surface-color;
+}
+
+.jfx-tree-table-view .column-header-background, .jfx-tree-table-view .column-header {
+    -fx-border-color: -surface-color;
+}
+
+.jfx-tree-table-view .tree-table-cell {
+    -fx-text-fill: -text-color;
+}
+
+.jfx-tree-table-view .tree-table-cell .glyph-icon {
+    -fx-fill: -text-color;
+}
+
+.jfx-tree-table-view .tree-table-row-cell:selected {
+    -fx-background-color: -selected-background-color;
+}
+
+.jfx-tree-table-view .tree-table-row-cell:selected .tree-table-cell {
+    -fx-text-fill: -selected-text-color;
+}
+
+.jfx-tree-table-view .tree-table-row-cell:selected .tree-table-cell .glyph-icon {
+    -fx-fill: -selected-text-color;
+}
+
+/* Menu Header */
+.menu-header {
+    -fx-padding: 10px;
+    -fx-background-color: -header-background-color;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.26), 15, 0.16, 0, 4);
+}
+
+.menu-header .label {
+    -fx-font-family: "Roboto Medium";
+    -fx-font-size: 20.0;
+    -fx-text-fill: -header-text-color;
+}
+
+/*
+ * INSTANCE LIST
+ */
+
+.instance-list-button .glyph-icon {
     -glyph-size: 64px;
 }
 
-.back-button .glyph-icon {
-    -glyph-size: 32px;
-}
-
-.new-instance-button {
-    -fx-background-color: green;
-}
-
-.new-instance-button .glyph-icon {
-    -fx-fill: white;
-}
+/*
+ * NEW INSTANCE
+ */
 
 .instance-type-button {
     -fx-content-display: top;
     -fx-graphic-text-gap: 10px;
     -fx-pref-width: 192px;
     -fx-pref-height: 192px;
-    -jfx-button-type: RAISED;
 }
+
+/*
+ * NEW VANILLA INSTANCE
+ */

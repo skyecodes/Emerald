@@ -52,7 +52,7 @@ public class Configuration implements Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Configuration clone() {
         Configuration c = new Configuration();
         c.setVersion(version);
         c.setTheme(theme);

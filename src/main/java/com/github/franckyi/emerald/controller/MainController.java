@@ -2,10 +2,11 @@ package com.github.franckyi.emerald.controller;
 
 import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.model.Context;
+import com.github.franckyi.emerald.util.Minecraft;
+import com.github.franckyi.emerald.view.animation.EmeraldTimeline;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -34,78 +35,74 @@ public class MainController extends Controller<StackPane, Context> {
     @Override
     protected void modelUpdated() {
         instanceListController = Controller.loadFXML("InstanceList.fxml", this.getModel()::getInstances);
+        settingsController = Controller.loadFXML("Settings.fxml");
+        newInstanceController = Controller.loadFXML("NewInstance.fxml");
+        newVanillaInstanceController = Controller.loadFXML("NewVanillaInstance.fxml", Minecraft::getVersionManifest);
         flow.add(instanceListController);
         this.getRoot().getChildren().add(instanceListController.getRoot());
     }
 
-    public void showSettings() {
-        if (settingsController == null)
-            settingsController = Controller.loadFXML("Settings.fxml");
-        this.showNext(settingsController, TransitionDirection.RIGHT);
+    public EmeraldTimeline showSettings() {
+        return this.showNext(settingsController, TransitionDirection.TOP);
     }
 
-    public void showNewInstance() {
-        if (newInstanceController == null)
-            newInstanceController = Controller.loadFXML("NewInstance.fxml");
-        this.showNext(newInstanceController, TransitionDirection.TOP);
+    public EmeraldTimeline showNewInstance() {
+        return this.showNext(newInstanceController, TransitionDirection.RIGHT);
     }
 
-    public void showNewVanillaInstance() {
-        if (newVanillaInstanceController == null)
-            newVanillaInstanceController = Controller.loadFXML("NewVanillaInstance.fxml");
-        this.showNext(newVanillaInstanceController, TransitionDirection.LEFT);
+    public EmeraldTimeline showNewVanillaInstance() {
+        return this.showNext(newVanillaInstanceController, TransitionDirection.RIGHT);
     }
 
-    public void showHome() {
+    public EmeraldTimeline showHome() {
         flow.subList(1, flow.size() - 1).forEach(c -> {
             flow.remove(c);
             c.getRoot().setTranslateX(0);
             c.getRoot().setTranslateY(0);
         });
         transitionFlow.subList(1, flow.size()).clear();
-        showPrevious();
+        return this.showPrevious();
     }
 
-    public void showPrevious() {
+    public EmeraldTimeline showPrevious() {
         MenuController<?, ?> from = flow.getLast();
         MenuController<?, ?> to = flow.get(flow.size() - 2);
         this.getRoot().getChildren().add(to.getRoot());
         TransitionDirection direction = transitionFlow.getLast().getOpposite();
-        Timeline timeline = this.animate(from, to, direction);
-        timeline.setOnFinished(e -> {
-            this.getRoot().getChildren().remove(from.getRoot());
-            from.afterHiding();
-            to.afterShowing();
+        EmeraldTimeline timeline = this.animate(from, to, direction);
+        timeline.addListener(() -> {
             flow.removeLast();
             transitionFlow.removeLast();
-            EmeraldApp.getInstance().fixFocus();
         });
+        return timeline;
     }
 
-    private void showNext(MenuController<?, ?> to, TransitionDirection direction) {
+    private EmeraldTimeline showNext(MenuController<?, ?> to, TransitionDirection direction) {
         MenuController<?, ?> from = flow.getLast();
         this.getRoot().getChildren().add(to.getRoot());
-        Timeline timeline = this.animate(from, to, direction);
-        timeline.setOnFinished(e -> {
-            this.getRoot().getChildren().remove(from.getRoot());
-            from.afterHiding();
-            to.afterShowing();
+        EmeraldTimeline timeline = this.animate(from, to, direction);
+        timeline.addListener(() -> {
             flow.add(to);
             transitionFlow.add(direction);
-            EmeraldApp.getInstance().fixFocus();
         });
+        return timeline;
     }
 
-    private Timeline animate(MenuController<?, ?> from, MenuController<?, ?> to, TransitionDirection direction) {
+    private EmeraldTimeline animate(MenuController<?, ?> from, MenuController<?, ?> to, TransitionDirection direction) {
         direction.initToPos(to.getRoot(), this.getRoot());
         from.beforeHiding();
         to.beforeShowing();
-        Timeline timeline = new Timeline();
         KeyValue kv = new KeyValue(direction.translateProperty(from.getRoot()), direction.fromKeyValue(this.getRoot()), Interpolator.EASE_IN);
         KeyValue kv2 = new KeyValue(direction.translateProperty(to.getRoot()), 0, Interpolator.EASE_IN);
         KeyFrame kf = new KeyFrame(Duration.seconds(.225), kv);
         KeyFrame kf2 = new KeyFrame(Duration.seconds(.225), kv2);
-        timeline.getKeyFrames().addAll(kf, kf2);
+        EmeraldTimeline timeline = new EmeraldTimeline(kf, kf2);
+        timeline.addListener(() -> {
+            this.getRoot().getChildren().remove(from.getRoot());
+            from.afterHiding();
+            to.afterShowing();
+            EmeraldApp.getInstance().fixFocus();
+        });
         timeline.play();
         return timeline;
     }

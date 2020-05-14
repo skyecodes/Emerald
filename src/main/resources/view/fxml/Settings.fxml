@@ -8,34 +8,24 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
             fx:controller="com.github.franckyi.emerald.controller.SettingsController">
     <top>
-        <JFXToolbar BorderPane.alignment="CENTER">
+        <JFXToolbar BorderPane.alignment="CENTER" styleClass="menu-header">
             <left>
-                <JFXRippler maskType="CIRCLE" onMouseClicked="#backAction" BorderPane.alignment="CENTER">
+                <JFXRippler maskType="CIRCLE" onMouseClicked="#backAction" BorderPane.alignment="CENTER"
+                            styleClass="navigation-button">
                     <StackPane>
                         <MaterialIconView glyphName="ARROW_BACK"/>
                     </StackPane>
-                    <styleClass>
-                        <String fx:value="back-button"/>
-                        <String fx:value="custom-button"/>
-                    </styleClass>
                 </JFXRippler>
             </left>
             <center>
-                <Label styleClass="display1" text="Settings" BorderPane.alignment="CENTER"/>
+                <Label text="Settings" BorderPane.alignment="CENTER"/>
             </center>
             <right>
-                <JFXRippler maskType="CIRCLE" onMouseClicked="#infoAction" BorderPane.alignment="CENTER">
-                    <styleClass>
-                        <String fx:value="back-button"/>
-                        <String fx:value="custom-button"/>
-                    </styleClass>
-                    <control>
-                        <StackPane>
-                            <children>
-                                <MaterialIconView glyphName="INFO"/>
-                            </children>
-                        </StackPane>
-                    </control>
+                <JFXRippler maskType="CIRCLE" onMouseClicked="#infoAction" BorderPane.alignment="CENTER"
+                            styleClass="navigation-button">
+                    <StackPane>
+                        <MaterialIconView glyphName="INFO"/>
+                    </StackPane>
                 </JFXRippler>
             </right>
         </JFXToolbar>
@@ -44,7 +34,12 @@
         <VBox alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
                 <JFXToggleButton fx:id="darkThemeToggle" text="Dark Theme" toggleColor="#fafafa"
-                                 toggleLineColor="#4caf50" unToggleLineColor="#f44336" styleClass="subhead"/>
+                                 toggleLineColor="#4caf50" unToggleLineColor="#f44336">
+                    <styleClass>
+                        <String fx:value="subhead"/>
+                        <String fx:value="surface"/>
+                    </styleClass>
+                </JFXToggleButton>
             </children>
         </VBox>
     </center>

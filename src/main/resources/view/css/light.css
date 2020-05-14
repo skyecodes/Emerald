@@ -1,27 +1,20 @@
-#root {
-    -fx-background-color: -grey-50;
-}
+.root {
+    -primary: #6200EE;
+    -primary-variant: #3700B3;
 
-.settings-button, .instance-type-button {
-    -fx-background-color: white;
-}
-
-.jfx-decorator, .jfx-decorator-buttons-container {
-    -fx-background-color: -grey-200;
-}
-
-.jfx-decorator-content-container {
-    -fx-border-color: -grey-200;
-}
-
-.jfx-decorator-text {
-    -fx-fill: black;
-}
-
-.jfx-rippler {
-    -jfx-rippler-fill: -grey-500;
-}
-
-.jfx-decorator-button .jfx-svg-glyph {
-    -fx-background-color: black;
+    -text-color: -black;
+    -background-color: -white;
+    -surface-color: -white;
+    -surface-color2: -white;
+    -decorator-background-color: -primary-variant;
+    -header-text-color: -white;
+    -header-background-color: -primary;
+    -textfield-focus-color: -primary;
+    -checkbox-checked-color: -primary;
+    -checkbox-check-icon-color: -white;
+    -scrollbar-background-color: #F1F1F1;
+    -scrollbar-color: #BCBCBC;
+    -selected-background-color: -primary;
+    -selected-text-color: -white;
+    -table-border-color: -black;
 }

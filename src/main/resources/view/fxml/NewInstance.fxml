@@ -8,25 +8,21 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import java.lang.String?>
+<?import java.lang.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
             fx:controller="com.github.franckyi.emerald.controller.NewInstanceController">
     <top>
-        <JFXToolbar BorderPane.alignment="CENTER">
+        <JFXToolbar BorderPane.alignment="CENTER" styleClass="menu-header">
             <left>
                 <JFXRippler fx:id="backButton" maskType="CIRCLE" onMouseClicked="#backAction"
-                            BorderPane.alignment="CENTER">
+                            BorderPane.alignment="CENTER" styleClass="navigation-button">
                     <StackPane>
                         <MaterialIconView glyphName="ARROW_BACK"/>
                     </StackPane>
-                    <styleClass>
-                        <String fx:value="back-button"/>
-                        <String fx:value="custom-button"/>
-                    </styleClass>
                 </JFXRippler>
             </left>
             <center>
-                <Label styleClass="display1" text="Create new instance" BorderPane.alignment="CENTER"/>
+                <Label text="Create new instance" BorderPane.alignment="CENTER"/>
             </center>
             <right>
                 <Pane fx:id="fillerPane"/>
@@ -36,7 +32,7 @@
     <center>
         <HBox alignment="CENTER" spacing="20.0">
             <children>
-                <JFXButtonFix styleClass="instance-type-button" text="Vanilla" onAction="#vanillaAction">
+                <JFXButtonFix text="Vanilla" onAction="#vanillaAction">
                     <graphic>
                         <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -44,8 +40,12 @@
                             </image>
                         </ImageView>
                     </graphic>
+                    <styleClass>
+                        <String fx:value="instance-type-button"/>
+                        <String fx:value="button-surface"/>
+                    </styleClass>
                 </JFXButtonFix>
-                <JFXButtonFix styleClass="instance-type-button" text="Feed The Beast" disable="true"
+                <JFXButtonFix text="Feed The Beast" disable="true"
                               onAction="#ftbAction">
                     <graphic>
                         <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
@@ -54,10 +54,19 @@
                             </image>
                         </ImageView>
                     </graphic>
+                    <styleClass>
+                        <String fx:value="instance-type-button"/>
+                        <String fx:value="button-surface"/>
+                    </styleClass>
                 </JFXButtonFix>
-                <JFXButtonFix fx:id="curseForgeButton" styleClass="instance-type-button" text="CurseForge Modpack"
+                <JFXButtonFix fx:id="curseForgeButton" text="CurseForge Modpack"
                               disable="true"
-                              onAction="#curseForgeAction"/>
+                              onAction="#curseForgeAction">
+                    <styleClass>
+                        <String fx:value="instance-type-button"/>
+                        <String fx:value="button-surface"/>
+                    </styleClass>
+                </JFXButtonFix>
             </children>
         </HBox>
     </center>

@@ -24,7 +24,7 @@ public class MagicTask<V> extends Task<V> {
 
     public void then(Consumer<V> consumer) {
         if (value == null) {
-            super.setOnSucceeded(e -> consumer.accept(this.getTaskValue()));
+            this.setOnSucceeded(e -> consumer.accept(this.getTaskValue()));
         } else {
             consumer.accept(value);
         }

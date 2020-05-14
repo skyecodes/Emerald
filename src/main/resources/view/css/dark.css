@@ -1,31 +1,27 @@
-#root {
-    -fx-background-color: -grey-900;
-}
+/*
+ * GENERAL
+ */
 
-.jfx-dialog-layout {
-    -fx-background-color: -grey-800;
-}
+.root {
+    -dark1: #111111;
+    -dark2: #1E1E1E;
+    -dark3: #2D2D2D;
+    -dark4: #353535;
+    -primary: #BB86FC;
 
-.label, .dialog-close, .jfx-toggle-button, .jfx-text-field, .instance-type-button {
-    -fx-text-fill: white;
-}
-
-.jfx-rippler {
-    -jfx-rippler-fill: -grey-500;
-}
-
-.settings-button, .instance-type-button {
-    -fx-background-color: black;
-}
-
-.settings-button .glyph-icon, .back-button .glyph-icon {
-    -fx-fill: white;
-}
-
-.jfx-text-field {
-    -jfx-focus-color: white;
-}
-
-.curseforge-svg {
-    -fx-background-color: white;
+    -text-color: -white;
+    -background-color: -dark1;
+    -surface-color: -dark2;
+    -surface-color2: -dark3;
+    -decorator-background-color: -black;
+    -header-text-color: -white;
+    -header-background-color: -dark2;
+    -textfield-focus-color: -primary;
+    -checkbox-checked-color: -primary;
+    -checkbox-check-icon-color: -black;
+    -scrollbar-background-color: -dark3;
+    -scrollbar-color: -grey-700;
+    -selected-background-color: -primary;
+    -selected-text-color: -black;
+    -table-border-color: -dark2;
 }
