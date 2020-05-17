@@ -36,6 +36,10 @@
     -fx-background-color: -header-text-color;
 }
 
+.jfx-decorator-content-container {
+    -fx-border-insets: 0 2 2 2;
+}
+
 /* Button */
 .jfx-button {
     -jfx-button-type: RAISED;
@@ -93,9 +97,22 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.26), 15, 0.16, 0, 4);
 }
 
+/* ScrollPane */
+.jfx-scroll-pane {
+    -fx-background-color: -background-color;
+}
+
 /* Rippler */
 .jfx-rippler {
-    -jfx-rippler-fill: -grey-500;
+    -jfx-rippler-fill: -rippler-fill;
+}
+
+.navigation-button {
+    -jfx-rippler-fill: -navigation-rippler-fill;
+}
+
+.button-success .jfx-rippler {
+    -jfx-rippler-fill: green;
 }
 
 /* Dialog */

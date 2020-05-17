@@ -1,12 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import com.jfoenix.controls.JFXMasonryPane?>
+<?import com.jfoenix.controls.JFXRippler?>
+<?import com.jfoenix.controls.JFXToolbar?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
 <?import javafx.geometry.Insets?>
-<JFXMasonryPane xmlns:fx="http://javafx.com/fxml/1" HSpacing="20.0" VSpacing="20.0"
-                xmlns="http://javafx.com/javafx/8.0.201-ea"
-                fx:controller="com.github.franckyi.emerald.controller.InstanceListController">
-    <padding>
-        <Insets topRightBottomLeft="20"/>
-    </padding>
-</JFXMasonryPane>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
+            fx:controller="com.github.franckyi.emerald.controller.InstanceListController">
+    <top>
+        <JFXToolbar BorderPane.alignment="CENTER" styleClass="menu-header">
+            <left>
+                <Pane fx:id="fillerPane"/>
+            </left>
+            <center>
+                <Label text="Instances" BorderPane.alignment="CENTER"/>
+            </center>
+            <right>
+                <JFXRippler fx:id="menuButton" maskType="CIRCLE" onMouseClicked="#menuAction"
+                            BorderPane.alignment="CENTER" styleClass="navigation-button">
+                    <StackPane>
+                        <MaterialIconView glyphName="MORE_VERT"/>
+                    </StackPane>
+                </JFXRippler>
+            </right>
+        </JFXToolbar>
+    </top>
+    <center>
+        <!--<ScrollPane fx:id="scrollPane">
+           <content>-->
+        <JFXMasonryPane fx:id="instanceListPane" HSpacing="20.0" VSpacing="20.0">
+            <padding>
+                <Insets topRightBottomLeft="20"/>
+            </padding>
+        </JFXMasonryPane>
+        <!--</content>
+     </ScrollPane>-->
+    </center>
+</BorderPane>

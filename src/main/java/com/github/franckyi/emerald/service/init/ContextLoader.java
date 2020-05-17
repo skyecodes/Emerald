@@ -1,6 +1,5 @@
 package com.github.franckyi.emerald.service.init;
 
-import com.github.franckyi.emerald.model.Context;
 import com.github.franckyi.emerald.model.Instance;
 import com.github.franckyi.emerald.util.EmeraldUtils;
 import com.github.franckyi.emerald.util.PreferenceManager;
@@ -11,29 +10,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-public class ContextLoader implements Callable<Context> {
-    private final File folder;
-
-    public ContextLoader() {
-        folder = PreferenceManager.getApplicationPath();
-    }
-
-    @Override
-    public Context call() throws Exception {
-        Context context = new Context();
-        context.setInstances(this.getInstances());
-        context.setLauncherInitialized(this.isLauncherInitialized());
-        return context;
-    }
-
-    private boolean isLauncherInitialized() {
-        return false;
-    }
-
-    private List<Instance> getInstances() throws IOException {
-        File instanceFolder = new File(folder, "instances/");
+public class ContextLoader {
+    public static List<Instance> loadInstances() throws IOException {
+        File instanceFolder = new File(PreferenceManager.getApplicationPath(), "instances/");
         List<Instance> instances = new ArrayList<>();
         if (instanceFolder.isDirectory()) {
             File[] instanceDirs = instanceFolder.listFiles(File::isDirectory);
@@ -51,9 +31,11 @@ public class ContextLoader implements Callable<Context> {
                     }
                 }
             }
-        } else {
-            instanceFolder.mkdir();
         }
         return instances;
+    }
+
+    public static boolean isLauncherInitialized() {
+        return false;
     }
 }

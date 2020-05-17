@@ -3,13 +3,12 @@ package com.github.franckyi.emerald;
 import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.controller.MainController;
 import com.github.franckyi.emerald.data.Configuration;
-import com.github.franckyi.emerald.model.Context;
-import com.github.franckyi.emerald.service.init.ContextLoader;
 import com.github.franckyi.emerald.util.AsyncUtils;
 import com.github.franckyi.emerald.util.EmeraldUtils;
 import com.github.franckyi.emerald.util.PreferenceManager;
 import com.jfoenix.assets.JFoenixResources;
 import com.jfoenix.controls.JFXDecorator;
+import com.jfoenix.controls.JFXTooltip;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -21,6 +20,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.tinylog.Logger;
 
 import java.io.File;
@@ -70,6 +70,7 @@ public final class EmeraldApp extends Application {
     public void init() throws Exception {
         Logger.debug("Initializing application");
         instance = this;
+        JFXTooltip.setHoverDelay(Duration.millis(300));
     }
 
     @Override
@@ -79,7 +80,6 @@ public final class EmeraldApp extends Application {
         if (applicationPath == null) return;
         Logger.debug("Application path: {}", applicationPath.getAbsolutePath());
         EmeraldUtils.init();
-        this.loadContext();
         Logger.debug("Starting application");
         this.loadView();
     }
@@ -108,15 +108,11 @@ public final class EmeraldApp extends Application {
         return path;
     }
 
-    private void loadContext() {
-        Context context = new Context();
-    }
-
     private void loadView() {
-        mainController = Controller.loadFXML("Main.fxml", new ContextLoader());
+        mainController = Controller.loadFXML("Main.fxml");
         decorator = new JFXDecorator(stage, mainController.getRoot(), false, true, true);
         decorator.setCustomMaximize(true);
-        scene = new Scene(decorator, 720, 480);
+        scene = new Scene(decorator, 746, 597);
         scene.getStylesheets().addAll(
                 JFoenixResources.load("css/jfoenix-fonts.css").toExternalForm(),
                 JFoenixResources.load("css/jfoenix-design.css").toExternalForm(),

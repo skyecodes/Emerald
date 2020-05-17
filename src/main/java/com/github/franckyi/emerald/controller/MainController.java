@@ -1,8 +1,11 @@
 package com.github.franckyi.emerald.controller;
 
 import com.github.franckyi.emerald.EmeraldApp;
-import com.github.franckyi.emerald.model.Context;
+import com.github.franckyi.emerald.service.init.ContextLoader;
+import com.github.franckyi.emerald.service.task.instance.InstanceCreatorTask;
+import com.github.franckyi.emerald.service.task.launcher.LauncherSetupTask;
 import com.github.franckyi.emerald.util.Minecraft;
+import com.github.franckyi.emerald.util.SystemUtils;
 import com.github.franckyi.emerald.view.animation.EmeraldTimeline;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -17,7 +20,7 @@ import javafx.util.Duration;
 import java.util.LinkedList;
 import java.util.function.Function;
 
-public class MainController extends Controller<StackPane, Context> {
+public class MainController extends Controller<StackPane, Void> {
     private InstanceListController instanceListController;
     private SettingsController settingsController;
     private NewInstanceController newInstanceController;
@@ -30,11 +33,7 @@ public class MainController extends Controller<StackPane, Context> {
     protected void initialize() {
         flow = new LinkedList<>();
         transitionFlow = new LinkedList<>();
-    }
-
-    @Override
-    protected void modelUpdated() {
-        instanceListController = Controller.loadFXML("InstanceList.fxml", this.getModel()::getInstances);
+        instanceListController = Controller.loadFXML("InstanceList.fxml", ContextLoader::loadInstances);
         settingsController = Controller.loadFXML("Settings.fxml");
         newInstanceController = Controller.loadFXML("NewInstance.fxml");
         newVanillaInstanceController = Controller.loadFXML("NewVanillaInstance.fxml", Minecraft::getVersionManifest);
@@ -60,7 +59,8 @@ public class MainController extends Controller<StackPane, Context> {
             c.getRoot().setTranslateX(0);
             c.getRoot().setTranslateY(0);
         });
-        transitionFlow.subList(1, flow.size()).clear();
+        transitionFlow.clear();
+        transitionFlow.add(TransitionDirection.TOP);
         return this.showPrevious();
     }
 
@@ -148,6 +148,12 @@ public class MainController extends Controller<StackPane, Context> {
                     return TOP;
             }
             return null;
+        }
+    }
+
+    public void createNewInstance(InstanceCreatorTask task) {
+        if (ContextLoader.isLauncherInitialized()) {
+            LauncherSetupTask task0 = LauncherSetupTask.create(SystemUtils.getOS());
         }
     }
 }

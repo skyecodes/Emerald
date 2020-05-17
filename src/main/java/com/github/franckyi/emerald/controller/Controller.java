@@ -58,7 +58,8 @@ public abstract class Controller<V extends Region, M> {
         try {
             return loader.load(resource);
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Couldn't load FXML view %s", resource.toExternalForm()), e);
+            Logger.error(e, String.format("Couldn't load FXML view %s", file));
+            return null;
         }
     }
 
@@ -74,12 +75,12 @@ public abstract class Controller<V extends Region, M> {
         return model.get();
     }
 
-    public void setModel(M model) {
-        this.model.set(model);
-    }
-
     public ObjectProperty<M> modelProperty() {
         return model;
+    }
+
+    public void setModel(M model) {
+        this.model.set(model);
     }
 
     protected void initialize() {

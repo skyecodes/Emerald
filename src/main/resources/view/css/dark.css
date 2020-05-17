@@ -13,6 +13,8 @@
     -background-color: -dark1;
     -surface-color: -dark2;
     -surface-color2: -dark3;
+    -rippler-fill: -grey-600;
+    -navigation-rippler-fill: -grey-400;
     -decorator-background-color: -black;
     -header-text-color: -white;
     -header-background-color: -dark2;

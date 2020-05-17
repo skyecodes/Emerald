@@ -1,5 +1,6 @@
 package com.github.franckyi.emerald.controller;
 
+import com.github.franckyi.emerald.service.task.instance.VanillaInstanceCreatorTask;
 import com.github.franckyi.emerald.service.web.resource.mojang.VersionManifest;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -119,8 +120,9 @@ public class NewVanillaInstanceController extends MenuController<Region, Version
 
     @FXML
     private void createInstanceAction() {
-        // TODO
         this.getMainController().showHome();
+        this.getMainController().createNewInstance(new VanillaInstanceCreatorTask(instanceNameField.getText(),
+                versionTableView.getSelectionModel().getSelectedItem().getValue().get()));
     }
 
     public static class VersionItem extends RecursiveTreeObject<VersionItem> {

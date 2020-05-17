@@ -6,6 +6,8 @@
     -background-color: -white;
     -surface-color: -white;
     -surface-color2: -white;
+    -rippler-fill: -grey-400;
+    -navigation-rippler-fill: -white;
     -decorator-background-color: -primary-variant;
     -header-text-color: -white;
     -header-background-color: -primary;
