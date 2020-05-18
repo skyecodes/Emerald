@@ -4,17 +4,13 @@ import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.data.Configuration;
 import com.github.franckyi.emerald.util.ConfigManager;
 import com.github.franckyi.emerald.util.EmeraldUtils;
-import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXToggleButton;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
 public class SettingsController extends MenuController<BorderPane, Void> {
-    @FXML
-    private JFXDialog dialog;
     @FXML
     private JFXToggleButton darkThemeToggle;
 
@@ -24,7 +20,6 @@ public class SettingsController extends MenuController<BorderPane, Void> {
     @Override
     protected void initialize() {
         currentConfiguration = EmeraldUtils.getConfiguration();
-        this.getRoot().getChildren().remove(dialog);
         if (currentConfiguration.getTheme() == Configuration.Theme.CUSTOM) {
             darkThemeToggle.setDisable(true);
         } else {
@@ -48,16 +43,5 @@ public class SettingsController extends MenuController<BorderPane, Void> {
             ConfigManager.save(currentConfiguration);
         }
         this.getMainController().showPrevious();
-    }
-
-    @FXML
-    private void infoAction() {
-        dialog.show((StackPane) this.getMainController().getRoot().getParent());
-    }
-
-    @FXML
-    private void closeDialogAction() {
-        dialog.close();
-        EmeraldApp.getInstance().fixFocus();
     }
 }

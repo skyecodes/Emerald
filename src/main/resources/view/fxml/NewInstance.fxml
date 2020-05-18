@@ -25,12 +25,12 @@
                 <Label text="Create new instance" BorderPane.alignment="CENTER"/>
             </center>
             <right>
-                <Pane fx:id="fillerPane"/>
+                <Pane/>
             </right>
         </JFXToolbar>
     </top>
     <center>
-        <HBox alignment="CENTER" spacing="20.0">
+        <HBox alignment="CENTER" spacing="20.0" styleClass="container">
             <children>
                 <JFXButtonFix text="Vanilla" onAction="#vanillaAction">
                     <graphic>

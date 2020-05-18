@@ -6,13 +6,14 @@
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
             fx:controller="com.github.franckyi.emerald.controller.InstanceListController">
     <top>
         <JFXToolbar BorderPane.alignment="CENTER" styleClass="menu-header">
             <left>
-                <Pane fx:id="fillerPane"/>
+                <Pane/>
             </left>
             <center>
                 <Label text="Instances" BorderPane.alignment="CENTER"/>
@@ -28,14 +29,12 @@
         </JFXToolbar>
     </top>
     <center>
-        <!--<ScrollPane fx:id="scrollPane">
-           <content>-->
-        <JFXMasonryPane fx:id="instanceListPane" HSpacing="20.0" VSpacing="20.0">
-            <padding>
-                <Insets topRightBottomLeft="20"/>
-            </padding>
-        </JFXMasonryPane>
-        <!--</content>
-     </ScrollPane>-->
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" styleClass="container">
+            <JFXMasonryPane fx:id="instanceListPane" HSpacing="20.0" VSpacing="20.0">
+                <padding>
+                    <Insets topRightBottomLeft="20"/>
+                </padding>
+            </JFXMasonryPane>
+        </ScrollPane>
     </center>
 </BorderPane>

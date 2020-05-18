@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.controls.JFXRippler?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import com.jfoenix.controls.JFXToolbar?>
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
@@ -21,17 +23,12 @@
                 <Label text="Settings" BorderPane.alignment="CENTER"/>
             </center>
             <right>
-                <JFXRippler maskType="CIRCLE" onMouseClicked="#infoAction" BorderPane.alignment="CENTER"
-                            styleClass="navigation-button">
-                    <StackPane>
-                        <MaterialIconView glyphName="INFO"/>
-                    </StackPane>
-                </JFXRippler>
+                <Pane/>
             </right>
         </JFXToolbar>
     </top>
     <center>
-        <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER" styleClass="container">
             <children>
                 <JFXToggleButton fx:id="darkThemeToggle" text="Dark Theme" toggleColor="#fafafa"
                                  toggleLineColor="#4caf50" unToggleLineColor="#f44336">
@@ -43,19 +40,4 @@
             </children>
         </VBox>
     </center>
-    <bottom>
-        <JFXDialog fx:id="dialog" transitionType="CENTER">
-            <JFXDialogLayout>
-                <heading>
-                    <Label>Emerald v0.0.1</Label>
-                </heading>
-                <body>
-                    <Label>Created by Franckyi</Label>
-                </body>
-                <actions>
-                    <JFXButton onAction="#closeDialogAction" styleClass="dialog-close">CLOSE</JFXButton>
-                </actions>
-            </JFXDialogLayout>
-        </JFXDialog>
-    </bottom>
 </BorderPane>

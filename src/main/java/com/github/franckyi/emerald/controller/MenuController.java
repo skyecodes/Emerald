@@ -1,6 +1,7 @@
 package com.github.franckyi.emerald.controller;
 
 import com.github.franckyi.emerald.EmeraldApp;
+import javafx.scene.CacheHint;
 import javafx.scene.layout.Region;
 
 public abstract class MenuController<V extends Region, M> extends Controller<V, M> {
@@ -15,6 +16,7 @@ public abstract class MenuController<V extends Region, M> extends Controller<V, 
     }
 
     public void beforeShowing() {
+        this.getRoot().setCacheHint(CacheHint.SPEED);
         if (beforeShowing != null) beforeShowing.run();
     }
 
@@ -23,6 +25,7 @@ public abstract class MenuController<V extends Region, M> extends Controller<V, 
     }
 
     public void afterShowing() {
+        this.getRoot().setCacheHint(CacheHint.DEFAULT);
         if (afterShowing != null) afterShowing.run();
     }
 
@@ -31,6 +34,7 @@ public abstract class MenuController<V extends Region, M> extends Controller<V, 
     }
 
     public void beforeHiding() {
+        this.getRoot().setCacheHint(CacheHint.SPEED);
         if (beforeHiding != null) beforeHiding.run();
     }
 
@@ -39,8 +43,7 @@ public abstract class MenuController<V extends Region, M> extends Controller<V, 
     }
 
     public void afterHiding() {
-        this.getRoot().setTranslateX(0);
-        this.getRoot().setTranslateY(0);
+        this.getRoot().setCacheHint(CacheHint.DEFAULT);
         if (afterHiding != null) afterHiding.run();
     }
 

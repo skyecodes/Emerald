@@ -15,7 +15,7 @@
 }
 
 /* Text */
-.label, .dialog-close, .jfx-toggle-button, .jfx-text-field, .jfx-check-box, .button-surface {
+.label, .jfx-toggle-button, .jfx-text-field, .jfx-check-box, .button-surface {
     -fx-text-fill: -text-color;
 }
 
@@ -97,9 +97,14 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.26), 15, 0.16, 0, 4);
 }
 
-/* ScrollPane */
-.jfx-scroll-pane {
+/* Container */
+.container, .scroll-pane.container .viewport {
     -fx-background-color: -background-color;
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent;
 }
 
 /* Rippler */
@@ -118,6 +123,31 @@
 /* Dialog */
 .jfx-dialog-layout {
     -fx-background-color: -surface-color2;
+}
+
+.jfx-dialog-overlay-pane {
+    -fx-background-color: rgba(0, 0, 0, 0.4);
+}
+
+.dialog-close {
+    -fx-text-fill: -button-text-color;
+}
+
+/* Popup */
+.jfx-popup StackPane, .jfx-popup .jfx-list-view, .jfx-popup .jfx-list-cell {
+    -fx-background-color: -surface-color2;
+}
+
+.jfx-popup .jfx-list-cell {
+    -fx-cursor: hand;
+}
+
+.jfx-popup .label {
+    -fx-font-size: 14;
+}
+
+.jfx-popup .glyph-icon {
+    -fx-fill: -text-color;
 }
 
 /* SVG */
@@ -197,6 +227,10 @@
     -fx-font-family: "Roboto Medium";
     -fx-font-size: 20.0;
     -fx-text-fill: -header-text-color;
+}
+
+.menu-header > Pane {
+    -fx-pref-width: 36px;
 }
 
 /*

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXListView?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.scene.control.Label?>
+<JFXListView xmlns="http://javafx.com/javafx"
+             xmlns:fx="http://javafx.com/fxml"
+             fx:controller="com.github.franckyi.emerald.controller.popup.PopupController">
+    <Label fx:id="settingsButton">
+        Settings
+        <graphic>
+            <MaterialIconView glyphName="SETTINGS"/>
+        </graphic>
+    </Label>
+    <Label fx:id="aboutButton">
+        About...
+        <graphic>
+            <MaterialIconView glyphName="INFO"/>
+        </graphic>
+    </Label>
+</JFXListView>

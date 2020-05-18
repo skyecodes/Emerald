@@ -112,7 +112,7 @@ public final class EmeraldApp extends Application {
         mainController = Controller.loadFXML("Main.fxml");
         decorator = new JFXDecorator(stage, mainController.getRoot(), false, true, true);
         decorator.setCustomMaximize(true);
-        scene = new Scene(decorator, 746, 597);
+        scene = new Scene(decorator, 761, 656);
         scene.getStylesheets().addAll(
                 JFoenixResources.load("css/jfoenix-fonts.css").toExternalForm(),
                 JFoenixResources.load("css/jfoenix-design.css").toExternalForm(),

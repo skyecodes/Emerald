@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDialog?>
+<?import com.jfoenix.controls.JFXDialogLayout?>
+<?import javafx.scene.control.Label?>
+<JFXDialog transitionType="CENTER" xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.github.franckyi.emerald.controller.dialog.AboutDialogController">
+    <JFXDialogLayout>
+        <heading>
+            <Label>Emerald v0.0.1</Label>
+        </heading>
+        <body>
+            <Label>Created by Franckyi</Label>
+        </body>
+        <actions>
+            <JFXButton onAction="#closeDialogAction" styleClass="dialog-close">CLOSE</JFXButton>
+        </actions>
+    </JFXDialogLayout>
+</JFXDialog>
