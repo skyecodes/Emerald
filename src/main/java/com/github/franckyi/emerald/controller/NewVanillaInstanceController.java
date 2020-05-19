@@ -2,6 +2,7 @@ package com.github.franckyi.emerald.controller;
 
 import com.github.franckyi.emerald.service.task.instance.VanillaInstanceCreatorTask;
 import com.github.franckyi.emerald.service.web.resource.mojang.VersionManifest;
+import com.github.franckyi.emerald.view.animation.SmoothScrolling;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.jfoenix.skins.JFXTreeTableViewSkin;
@@ -48,6 +49,7 @@ public class NewVanillaInstanceController extends MenuController<Region, Version
 
     @Override
     protected void initialize() {
+        SmoothScrolling.apply(versionTableView);
         versionTableView.skinProperty().addListener((obs, oldSkin, newSkin) -> {
             if (newSkin instanceof JFXTreeTableViewSkin) {
                 TableHeaderRow header = ((JFXTreeTableViewSkin<?>) newSkin).getTableHeaderRow();

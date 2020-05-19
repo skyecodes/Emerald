@@ -3,6 +3,7 @@ package com.github.franckyi.emerald.controller;
 import com.github.franckyi.emerald.controller.dialog.AboutDialogController;
 import com.github.franckyi.emerald.controller.popup.PopupController;
 import com.github.franckyi.emerald.model.Instance;
+import com.github.franckyi.emerald.view.animation.SmoothScrolling;
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.materialicons.MaterialIcon;
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
@@ -27,9 +28,15 @@ public class InstanceListController extends MenuController<BorderPane, List<Inst
 
     @Override
     protected void initialize() {
-        JFXScrollPane.smoothScrolling(scrollPane);
+        SmoothScrolling.apply(scrollPane);
         popupController = loadFXML("popup/InstanceListPopup.fxml", this);
         aboutDialogController = loadFXML("dialog/AboutDialog.fxml");
+    }
+
+    @Override
+    public void beforeShowing() {
+        super.beforeShowing();
+        scrollPane.setVvalue(0);
     }
 
     @Override
@@ -38,7 +45,7 @@ public class InstanceListController extends MenuController<BorderPane, List<Inst
         instanceListPane.getChildren().clear();
         this.getModel().stream().map(InstanceButton::new).forEach(instanceListPane.getChildren()::add);
         instanceListPane.getChildren().add(new NewInstanceButton());
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
             instanceListPane.getChildren().add(new BlankButton());
         }
         // fix required to show scrollbar
