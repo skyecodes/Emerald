@@ -14,7 +14,7 @@
     <top>
         <JFXToolbar BorderPane.alignment="CENTER" styleClass="menu-header">
             <left>
-                <JFXRippler fx:id="backButton" maskType="CIRCLE" onMouseClicked="#backAction"
+                <JFXRippler fx:id="backButton" onMouseClicked="#backAction"
                             BorderPane.alignment="CENTER" styleClass="navigation-button">
                     <StackPane>
                         <MaterialIconView glyphName="ARROW_BACK"/>

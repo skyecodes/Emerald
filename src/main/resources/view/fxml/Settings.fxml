@@ -12,7 +12,7 @@
     <top>
         <JFXToolbar BorderPane.alignment="CENTER" styleClass="menu-header">
             <left>
-                <JFXRippler maskType="CIRCLE" onMouseClicked="#backAction" BorderPane.alignment="CENTER"
+                <JFXRippler onMouseClicked="#backAction" BorderPane.alignment="CENTER"
                             styleClass="navigation-button">
                     <StackPane>
                         <MaterialIconView glyphName="ARROW_BACK"/>
@@ -23,7 +23,12 @@
                 <Label text="Settings" BorderPane.alignment="CENTER"/>
             </center>
             <right>
-                <Pane/>
+                <JFXRippler onMouseClicked="#resetAction" BorderPane.alignment="CENTER"
+                            styleClass="navigation-button">
+                    <StackPane>
+                        <MaterialIconView glyphName="REPLAY"/>
+                    </StackPane>
+                </JFXRippler>
             </right>
         </JFXToolbar>
     </top>

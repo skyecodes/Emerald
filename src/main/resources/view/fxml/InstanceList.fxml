@@ -11,7 +11,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
             fx:controller="com.github.franckyi.emerald.controller.InstanceListController">
     <top>
-        <JFXToolbar BorderPane.alignment="CENTER" styleClass="menu-header">
+        <JFXToolbar fx:id="header" BorderPane.alignment="CENTER" styleClass="menu-header">
             <left>
                 <Pane/>
             </left>
@@ -19,7 +19,7 @@
                 <Label text="Instances" BorderPane.alignment="CENTER"/>
             </center>
             <right>
-                <JFXRippler fx:id="menuButton" maskType="CIRCLE" onMouseClicked="#menuAction"
+                <JFXRippler fx:id="menuButton" onMouseClicked="#menuAction"
                             BorderPane.alignment="CENTER" styleClass="navigation-button">
                     <StackPane>
                         <MaterialIconView glyphName="MORE_VERT"/>

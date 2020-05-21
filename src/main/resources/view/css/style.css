@@ -15,7 +15,7 @@
 }
 
 /* Text */
-.label, .jfx-toggle-button, .jfx-text-field, .jfx-check-box, .button-surface {
+.label, .jfx-toggle-button, .jfx-text-field, .jfx-check-box, .button-surface, .hyperlink {
     -fx-text-fill: -text-color;
 }
 
@@ -75,6 +75,20 @@
     -fx-fill: -white;
 }
 
+/* Hyperlink */
+.hyperlink:focused {
+    -fx-border-width: 0;
+}
+
+.hyperlink {
+    -fx-font-size: 16px;
+}
+
+.hyperlink .glyph-icon {
+    -fx-fill: -white;
+    -glyph-size: 16px;
+}
+
 /* TextField */
 .jfx-text-field {
     -jfx-focus-color: -textfield-focus-color;
@@ -114,6 +128,7 @@
 
 .navigation-button {
     -jfx-rippler-fill: -navigation-rippler-fill;
+    -jfx-mask-type: CIRCLE;
 }
 
 .button-success .jfx-rippler {

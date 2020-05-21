@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDialog?>
+<?import com.jfoenix.controls.JFXDialogLayout?>
+<?import javafx.scene.control.Label?>
+<JFXDialog transitionType="CENTER" xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.github.franckyi.emerald.controller.dialog.ResetConfigDialogController">
+    <JFXDialogLayout>
+        <heading>
+            <Label>Reset configuration</Label>
+        </heading>
+        <body>
+            <Label>Do you want to reset the configuration to the default values?</Label>
+        </body>
+        <actions>
+            <JFXButton onAction="#closeDialogAction" styleClass="dialog-close">CANCEL</JFXButton>
+            <JFXButton onAction="#resetAction" styleClass="dialog-close">YES</JFXButton>
+        </actions>
+    </JFXDialogLayout>
+</JFXDialog>

@@ -5,7 +5,6 @@ import com.github.franckyi.emerald.controller.InstanceListController;
 import com.jfoenix.controls.JFXListView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 
 public class PopupController extends Controller<JFXListView<?>, InstanceListController> {
     @FXML
@@ -25,7 +24,7 @@ public class PopupController extends Controller<JFXListView<?>, InstanceListCont
             if (newVal != null) newVal.setOnMouseClicked(e -> {
                 this.getModel().getPopup().hide();
                 this.getModel().getAboutDialogController().getRoot().show(
-                        (StackPane) this.getModel().getMainController().getRoot().getParent());
+                        this.getModel().getMainController().getRoot());
             });
         });
     }

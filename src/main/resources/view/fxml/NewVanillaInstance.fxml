@@ -10,7 +10,7 @@
     <top>
         <JFXToolbar BorderPane.alignment="CENTER" styleClass="menu-header">
             <left>
-                <JFXRippler maskType="CIRCLE" onMouseClicked="#backAction" BorderPane.alignment="CENTER"
+                <JFXRippler onMouseClicked="#backAction" BorderPane.alignment="CENTER"
                             styleClass="navigation-button">
                     <StackPane>
                         <MaterialIconView glyphName="ARROW_BACK"/>
@@ -21,7 +21,7 @@
                 <Label text="Create new Vanilla instance" BorderPane.alignment="CENTER"/>
             </center>
             <right>
-                <JFXRippler maskType="CIRCLE" onMouseClicked="#homeAction" BorderPane.alignment="CENTER"
+                <JFXRippler onMouseClicked="#homeAction" BorderPane.alignment="CENTER"
                             styleClass="navigation-button">
                     <StackPane>
                         <MaterialIconView glyphName="HOME"/>

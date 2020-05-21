@@ -3,6 +3,7 @@ package com.github.franckyi.emerald.controller;
 import com.github.franckyi.emerald.service.init.ContextLoader;
 import com.github.franckyi.emerald.service.task.instance.InstanceCreatorTask;
 import com.github.franckyi.emerald.service.task.launcher.LauncherSetupTask;
+import com.github.franckyi.emerald.util.EmeraldUtils;
 import com.github.franckyi.emerald.util.Minecraft;
 import com.github.franckyi.emerald.util.SystemUtils;
 import com.github.franckyi.emerald.view.animation.EmeraldTimeline;
@@ -16,6 +17,7 @@ public class MainController extends Controller<StackPane, Void> {
     private SettingsController settingsController;
     private NewInstanceController newInstanceController;
     private NewVanillaInstanceController newVanillaInstanceController;
+    private ProgressController progressController;
 
     private LinkedList<MenuController<?, ?>> flow;
 
@@ -23,9 +25,10 @@ public class MainController extends Controller<StackPane, Void> {
     protected void initialize() {
         flow = new LinkedList<>();
         instanceListController = Controller.loadFXML("InstanceList.fxml", ContextLoader::loadInstances);
-        settingsController = Controller.loadFXML("Settings.fxml");
+        settingsController = Controller.loadFXML("Settings.fxml", EmeraldUtils.getConfiguration());
         newInstanceController = Controller.loadFXML("NewInstance.fxml");
         newVanillaInstanceController = Controller.loadFXML("NewVanillaInstance.fxml", Minecraft::getVersionManifest);
+        //progressController = Controller.loadFXML("Progress.fxml");
         flow.add(instanceListController);
         this.getRoot().getChildren().add(instanceListController.getRoot());
     }
@@ -40,6 +43,10 @@ public class MainController extends Controller<StackPane, Void> {
 
     public EmeraldTimeline showNewVanillaInstance() {
         return this.showNext(newVanillaInstanceController);
+    }
+
+    public EmeraldTimeline showProgress() {
+        return this.showNext(progressController);
     }
 
     public EmeraldTimeline showHome() {
@@ -70,7 +77,7 @@ public class MainController extends Controller<StackPane, Void> {
 
     public void createNewInstance(InstanceCreatorTask task) {
         if (ContextLoader.isLauncherInitialized()) {
-            LauncherSetupTask task0 = LauncherSetupTask.create(SystemUtils.getOS());
+            progressController.schedule(LauncherSetupTask.create(SystemUtils.getOS()));
         }
     }
 }

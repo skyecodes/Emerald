@@ -60,6 +60,12 @@ public class Configuration implements Cloneable {
         return c;
     }
 
+    public void set(Configuration config) {
+        this.setVersion(config.getVersion());
+        this.setTheme(config.getTheme());
+        this.setCustomTheme(config.getCustomTheme());
+    }
+
     public enum Theme {
         LIGHT, DARK, CUSTOM
     }

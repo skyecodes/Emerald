@@ -36,6 +36,7 @@ public class ContextLoader {
     }
 
     public static boolean isLauncherInitialized() {
-        return false;
+        File launcherFolder = new File(PreferenceManager.getApplicationPath(), "launcher/");
+        return launcherFolder.isDirectory();
     }
 }

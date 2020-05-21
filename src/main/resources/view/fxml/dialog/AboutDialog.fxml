@@ -3,7 +3,10 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDialog?>
 <?import com.jfoenix.controls.JFXDialogLayout?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
 <JFXDialog transitionType="CENTER" xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.github.franckyi.emerald.controller.dialog.AboutDialogController">
@@ -12,7 +15,14 @@
             <Label>Emerald v0.0.1</Label>
         </heading>
         <body>
-            <Label>Created by Franckyi</Label>
+            <VBox spacing="10">
+                <Label>Created by Franckyi</Label>
+                <Hyperlink onAction="#openWebsite">Open Website
+                    <graphic>
+                        <MaterialIconView glyphName="PUBLIC"/>
+                    </graphic>
+                </Hyperlink>
+            </VBox>
         </body>
         <actions>
             <JFXButton onAction="#closeDialogAction" styleClass="dialog-close">CLOSE</JFXButton>

@@ -1,6 +1,7 @@
 package com.github.franckyi.emerald.controller;
 
 import com.github.franckyi.emerald.EmeraldApp;
+import com.github.franckyi.emerald.controller.dialog.ResetConfigDialogController;
 import com.github.franckyi.emerald.data.Configuration;
 import com.github.franckyi.emerald.util.ConfigManager;
 import com.github.franckyi.emerald.util.EmeraldUtils;
@@ -10,16 +11,23 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 
-public class SettingsController extends MenuController<BorderPane, Void> {
+public class SettingsController extends MenuController<BorderPane, Configuration> {
     @FXML
     private JFXToggleButton darkThemeToggle;
 
+    private ResetConfigDialogController resetConfigDialogController;
+
     private Configuration currentConfiguration;
-    private Configuration defaultConfiguration;
+    private Configuration oldConfiguration;
 
     @Override
     protected void initialize() {
+        resetConfigDialogController = loadFXML("dialog/ResetConfigDialog.fxml", this);
         currentConfiguration = EmeraldUtils.getConfiguration();
+        this.updateFields();
+    }
+
+    private void updateFields() {
         if (currentConfiguration.getTheme() == Configuration.Theme.CUSTOM) {
             darkThemeToggle.setDisable(true);
         } else {
@@ -31,17 +39,27 @@ public class SettingsController extends MenuController<BorderPane, Void> {
         }
     }
 
+    public void resetConfig() {
+        currentConfiguration.set(ConfigManager.createDefaultConfig());
+        this.updateFields();
+    }
+
     @Override
     public void beforeShowing() {
         super.beforeShowing();
-        defaultConfiguration = EmeraldUtils.getConfiguration().clone();
+        oldConfiguration = EmeraldUtils.getConfiguration().clone();
     }
 
     @FXML
     private void backAction() throws IOException {
-        if (!currentConfiguration.equals(defaultConfiguration)) {
+        if (!currentConfiguration.equals(oldConfiguration)) {
             ConfigManager.save(currentConfiguration);
         }
         this.getMainController().showPrevious();
+    }
+
+    @FXML
+    private void resetAction() {
+        resetConfigDialogController.getRoot().show(this.getMainController().getRoot());
     }
 }

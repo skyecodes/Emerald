@@ -3,7 +3,7 @@ package com.github.franckyi.emerald.controller;
 import com.github.franckyi.emerald.controller.dialog.AboutDialogController;
 import com.github.franckyi.emerald.controller.popup.PopupController;
 import com.github.franckyi.emerald.model.Instance;
-import com.github.franckyi.emerald.view.animation.SmoothScrolling;
+import com.github.franckyi.emerald.view.ViewUtils;
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.materialicons.MaterialIcon;
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
@@ -15,6 +15,8 @@ import javafx.scene.layout.BorderPane;
 import java.util.List;
 
 public class InstanceListController extends MenuController<BorderPane, List<Instance>> {
+    @FXML
+    private JFXToolbar header;
     @FXML
     private JFXRippler menuButton;
     @FXML
@@ -28,9 +30,11 @@ public class InstanceListController extends MenuController<BorderPane, List<Inst
 
     @Override
     protected void initialize() {
-        SmoothScrolling.apply(scrollPane);
+        JFXScrollPane.smoothScrolling(scrollPane);
         popupController = loadFXML("popup/InstanceListPopup.fxml", this);
         aboutDialogController = loadFXML("dialog/AboutDialog.fxml");
+        // TODO find a way to show the shadow
+        scrollPane.vvalueProperty().addListener((obs, oldVal, newVal) -> header.setEffect(newVal.doubleValue() < .01 ? null : ViewUtils.SHADOW_EFFECT));
     }
 
     @Override
