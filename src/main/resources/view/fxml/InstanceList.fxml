@@ -1,40 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXMasonryPane?>
-<?import com.jfoenix.controls.JFXRippler?>
-<?import com.jfoenix.controls.JFXToolbar?>
+<?import com.jfoenix.controls.*?>
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
-            fx:controller="com.github.franckyi.emerald.controller.InstanceListController">
-    <top>
-        <JFXToolbar fx:id="header" BorderPane.alignment="CENTER" styleClass="menu-header">
-            <left>
-                <Pane/>
-            </left>
-            <center>
-                <Label text="Instances" BorderPane.alignment="CENTER"/>
-            </center>
-            <right>
-                <JFXRippler fx:id="menuButton" onMouseClicked="#menuAction"
-                            BorderPane.alignment="CENTER" styleClass="navigation-button">
-                    <StackPane>
-                        <MaterialIconView glyphName="MORE_VERT"/>
-                    </StackPane>
-                </JFXRippler>
-            </right>
-        </JFXToolbar>
-    </top>
-    <center>
-        <ScrollPane fx:id="scrollPane" fitToWidth="true" styleClass="container">
-            <JFXMasonryPane fx:id="instanceListPane" HSpacing="20.0" VSpacing="20.0">
+<JFXDrawer xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
+           fx:controller="com.github.franckyi.emerald.controller.InstanceListController" defaultDrawerSize="250">
+    <sidePane>
+        <StackPane fx:id="sidePane" styleClass="drawer-pane">
+            <JFXListView fixedCellSize="40">
+                <Label fx:id="newInstanceLabel">Create new instance
+                    <graphic>
+                        <MaterialIconView glyphName="ADD_BOX"/>
+                    </graphic>
+                </Label>
+                <Label fx:id="settingsLabel">Settings
+                    <graphic>
+                        <MaterialIconView glyphName="SETTINGS"/>
+                    </graphic>
+                </Label>
                 <padding>
-                    <Insets topRightBottomLeft="20"/>
+                    <Insets topRightBottomLeft="10"/>
                 </padding>
-            </JFXMasonryPane>
-        </ScrollPane>
-    </center>
-</BorderPane>
+            </JFXListView>
+        </StackPane>
+    </sidePane>
+    <BorderPane fx:id="content">
+        <top>
+            <JFXToolbar fx:id="header" BorderPane.alignment="CENTER" styleClass="menu-header">
+                <left>
+                    <JFXRippler onMouseClicked="#drawerAction" styleClass="navigation-button">
+                        <StackPane>
+                            <JFXHamburger/>
+                        </StackPane>
+                    </JFXRippler>
+                </left>
+                <center>
+                    <Label text="Instances" BorderPane.alignment="CENTER"/>
+                </center>
+                <right>
+                    <JFXRippler fx:id="menuButton" onMouseClicked="#menuAction" styleClass="navigation-button">
+                        <StackPane>
+                            <MaterialIconView glyphName="MORE_VERT"/>
+                        </StackPane>
+                    </JFXRippler>
+                </right>
+            </JFXToolbar>
+        </top>
+        <center>
+            <ScrollPane fx:id="scrollPane" fitToWidth="true" styleClass="container">
+                <JFXMasonryPane fx:id="instanceListPane" HSpacing="20.0" VSpacing="20.0">
+                    <padding>
+                        <Insets topRightBottomLeft="20"/>
+                    </padding>
+                </JFXMasonryPane>
+            </ScrollPane>
+        </center>
+    </BorderPane>
+</JFXDrawer>

@@ -49,13 +49,18 @@
     -fx-cursor: hand;
 }
 
-.navigation-button StackPane {
+.navigation-button > StackPane {
     -fx-padding: 6px;
 }
 
 .navigation-button .glyph-icon {
     -glyph-size: 24px;
     -fx-fill: -header-text-color;
+}
+
+.navigation-button .jfx-hamburger StackPane {
+    -fx-background-color: -header-text-color;
+    -fx-background-radius: 5;
 }
 
 .button-surface {
@@ -140,7 +145,7 @@
     -fx-background-color: -surface-color2;
 }
 
-.jfx-dialog-overlay-pane {
+.jfx-dialog-overlay-pane, .jfx-drawer-overlay-pane {
     -fx-background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -254,6 +259,22 @@
 
 .instance-list-button .glyph-icon {
     -glyph-size: 64px;
+}
+
+/* Drawer Pane */
+.drawer-pane .jfx-list-view, .drawer-pane .jfx-list-cell {
+    -fx-background-color: -surface-color;
+}
+
+.drawer-pane .label {
+    -fx-graphic-text-gap: 24;
+    -fx-font-size: 16;
+    -fx-font-family: "Roboto Medium";
+}
+
+.drawer-pane .glyph-icon {
+    -glyph-size: 24px;
+    -fx-fill: -text-color;
 }
 
 /*

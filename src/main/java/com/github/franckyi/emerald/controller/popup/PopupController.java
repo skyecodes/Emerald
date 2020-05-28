@@ -8,18 +8,10 @@ import javafx.scene.control.Label;
 
 public class PopupController extends Controller<JFXListView<?>, InstanceListController> {
     @FXML
-    private Label settingsButton;
-    @FXML
     private Label aboutButton;
 
     @Override
     protected void initialize() {
-        settingsButton.parentProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) newVal.setOnMouseClicked(e -> {
-                this.getModel().getPopup().hide();
-                this.getModel().getMainController().showSettings();
-            });
-        });
         aboutButton.parentProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) newVal.setOnMouseClicked(e -> {
                 this.getModel().getPopup().hide();
