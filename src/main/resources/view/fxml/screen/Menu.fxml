@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.github.franckyi.emerald.view.MenuDrawer?>
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.materialicons.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<MenuDrawer xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
+            fx:controller="com.github.franckyi.emerald.controller.screen.MenuController" defaultDrawerSize="250">
+    <sidePane>
+        <BorderPane fx:id="sidePane" styleClass="drawer-pane">
+            <top>
+                <VBox>
+                    <HBox fx:id="instancesButton">
+                        <JFXButton onAction="#showInstances">
+                            Instances
+                            <graphic>
+                                <MaterialIconView glyphName="DNS"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton onAction="#showNewInstance" styleClass="small">
+                            <graphic>
+                                <MaterialIconView glyphName="ADD_BOX"/>
+                            </graphic>
+                        </JFXButton>
+                    </HBox>
+                    <JFXButton fx:id="modpacksButton" onAction="#showModpacks">
+                        Modpacks
+                        <graphic>
+                            <MaterialIconView glyphName="WIDGETS"/>
+                        </graphic>
+                    </JFXButton>
+                    <JFXButton fx:id="modsButton" onAction="#showMods">
+                        Mods
+                        <graphic>
+                            <MaterialIconView glyphName="BUILD"/>
+                        </graphic>
+                    </JFXButton>
+                    <JFXButton fx:id="resourcePacksButton" onAction="#showResourcePacks">
+                        Resource Packs
+                        <graphic>
+                            <MaterialIconView glyphName="PHOTO_LIBRARY"/>
+                        </graphic>
+                    </JFXButton>
+                    <JFXButton fx:id="worldsButton" onAction="#showWorlds">
+                        Worlds
+                        <graphic>
+                            <MaterialIconView glyphName="PUBLIC"/>
+                        </graphic>
+                    </JFXButton>
+                </VBox>
+            </top>
+            <bottom>
+                <VBox alignment="BOTTOM_LEFT">
+                    <JFXButton fx:id="settingsButton" onAction="#showSettings">
+                        Settings
+                        <graphic>
+                            <MaterialIconView glyphName="SETTINGS"/>
+                        </graphic>
+                    </JFXButton>
+                    <JFXButton onAction="#showAbout">
+                        About...
+                        <graphic>
+                            <MaterialIconView glyphName="INFO"/>
+                        </graphic>
+                    </JFXButton>
+                </VBox>
+            </bottom>
+        </BorderPane>
+    </sidePane>
+    <BorderPane fx:id="content">
+        <top>
+            <JFXToolbar fx:id="header" BorderPane.alignment="CENTER" styleClass="menu-header">
+                <left>
+                    <JFXRippler onMouseClicked="#toggleDrawer" styleClass="navigation-button">
+                        <StackPane>
+                            <MaterialIconView glyphName="MENU"/>
+                        </StackPane>
+                    </JFXRippler>
+                </left>
+                <center>
+                    <Label fx:id="title" BorderPane.alignment="CENTER_LEFT"/>
+                </center>
+                <right>
+                    <Pane/>
+                </right>
+            </JFXToolbar>
+        </top>
+        <center>
+        </center>
+    </BorderPane>
+</MenuDrawer>

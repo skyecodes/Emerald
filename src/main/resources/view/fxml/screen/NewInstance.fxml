@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
-            fx:controller="com.github.franckyi.emerald.controller.NewInstanceController">
+            fx:controller="com.github.franckyi.emerald.controller.screen.NewInstanceController">
     <top>
         <JFXToolbar BorderPane.alignment="CENTER" styleClass="menu-header">
             <left>
@@ -22,7 +22,7 @@
                 </JFXRippler>
             </left>
             <center>
-                <Label text="Create new instance" BorderPane.alignment="CENTER"/>
+                <Label text="Create new instance" BorderPane.alignment="CENTER_LEFT"/>
             </center>
             <right>
                 <Pane/>
@@ -36,7 +36,7 @@
                     <graphic>
                         <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../img/minecraft.png"/>
+                                <Image url="@../../img/minecraft.png"/>
                             </image>
                         </ImageView>
                     </graphic>
@@ -50,7 +50,7 @@
                     <graphic>
                         <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../img/feed-the-beast.png"/>
+                                <Image url="@../../img/feed-the-beast.png"/>
                             </image>
                         </ImageView>
                     </graphic>

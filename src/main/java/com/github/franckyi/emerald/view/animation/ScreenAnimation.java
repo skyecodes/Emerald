@@ -2,7 +2,7 @@ package com.github.franckyi.emerald.view.animation;
 
 import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.controller.MainController;
-import com.github.franckyi.emerald.controller.MenuController;
+import com.github.franckyi.emerald.controller.screen.ScreenController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -16,27 +16,27 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-public final class MenuAnimation {
+public final class ScreenAnimation {
     private static EmeraldTimeline currentTimeline;
 
-    public static EmeraldTimeline nextMenu(MainController mc, MenuController<?, ?> from, MenuController<?, ?> to) {
+    public static EmeraldTimeline nextScreen(MainController mc, ScreenController<?, ?> from, ScreenController<?, ?> to) {
         if (currentTimeline != null) return new NoopTimeline();
         EmeraldTimeline timeline = forward(mc.getRoot(), from.getRoot(), to.getRoot());
         mc.getRoot().getChildren().add(to.getRoot());
-        applyMenuTransition(timeline, mc, from, to);
+        applyScreenTransition(timeline, mc, from, to);
         return timeline;
     }
 
-    public static EmeraldTimeline previousMenu(MainController mc, MenuController<?, ?> from, MenuController<?, ?> to) {
+    public static EmeraldTimeline previousScreen(MainController mc, ScreenController<?, ?> from, ScreenController<?, ?> to) {
         if (currentTimeline != null) return new NoopTimeline();
         EmeraldTimeline timeline = backward(mc.getRoot(), from.getRoot(), to.getRoot());
         mc.getRoot().getChildren().add(0, to.getRoot());
-        applyMenuTransition(timeline, mc, from, to);
+        applyScreenTransition(timeline, mc, from, to);
         return timeline;
     }
 
-    private static void applyMenuTransition(EmeraldTimeline timeline, MainController mc,
-                                            MenuController<?, ?> from, MenuController<?, ?> to) {
+    private static void applyScreenTransition(EmeraldTimeline timeline, MainController mc,
+                                              ScreenController<?, ?> from, ScreenController<?, ?> to) {
         from.beforeHiding();
         to.beforeShowing();
         timeline.addListener(() -> {
@@ -64,7 +64,7 @@ public final class MenuAnimation {
         BasicTimeline timeline = new BasicTimeline(kf);
         timeline.addListener(() -> {
             root.getChildren().remove(opacityPane);
-            MenuAnimation.resetAnimations(from);
+            ScreenAnimation.resetAnimations(from);
         });
         timeline.play();
         return timeline;
@@ -85,7 +85,7 @@ public final class MenuAnimation {
         BasicTimeline timeline = new BasicTimeline(kf);
         timeline.addListener(() -> {
             root.getChildren().remove(opacityPane);
-            MenuAnimation.resetAnimations(from);
+            ScreenAnimation.resetAnimations(from);
         });
         timeline.play();
         return timeline;

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.scene.layout.VBox?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
+      fx:controller="com.github.franckyi.emerald.controller.screen.primary.SettingsController" alignment="CENTER"
+      styleClass="container">
+    <children>
+        <JFXToggleButton fx:id="darkThemeToggle" text="Dark Theme" toggleColor="#fafafa"
+                         toggleLineColor="#4caf50" unToggleLineColor="#f44336">
+            <styleClass>
+                <String fx:value="subhead"/>
+                <String fx:value="surface"/>
+            </styleClass>
+        </JFXToggleButton>
+    </children>
+</VBox>

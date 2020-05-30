@@ -1,4 +1,4 @@
-package com.github.franckyi.emerald.controller;
+package com.github.franckyi.emerald.controller.screen;
 
 import com.github.franckyi.emerald.service.task.instance.VanillaInstanceCreatorTask;
 import com.github.franckyi.emerald.service.web.resource.mojang.VersionManifest;
@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class NewVanillaInstanceController extends MenuController<Region, VersionManifest> {
+public class NewVanillaInstanceController extends ScreenController<Region, VersionManifest> {
     @FXML
     private JFXTextField instanceNameField;
     @FXML
@@ -123,8 +123,8 @@ public class NewVanillaInstanceController extends MenuController<Region, Version
     @FXML
     private void createInstanceAction() {
         this.getMainController().showHome();
-        this.getMainController().createNewInstance(new VanillaInstanceCreatorTask(instanceNameField.getText(),
-                versionTableView.getSelectionModel().getSelectedItem().getValue().get()));
+        VanillaInstanceCreatorTask task = new VanillaInstanceCreatorTask(instanceNameField.getText(),
+                versionTableView.getSelectionModel().getSelectedItem().getValue().get());
     }
 
     public static class VersionItem extends RecursiveTreeObject<VersionItem> {

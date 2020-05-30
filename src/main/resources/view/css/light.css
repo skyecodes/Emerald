@@ -1,6 +1,7 @@
 .root {
-    -primary: #6200EE;
+    -primary: rgb(98, 0, 238);
     -primary-variant: #3700B3;
+    -primary-background: rgba(98, 0, 238, 0.12);
 
     -text-color: -black;
     -button-text-color: -primary;
@@ -17,7 +18,7 @@
     -checkbox-check-icon-color: -white;
     -scrollbar-background-color: #F1F1F1;
     -scrollbar-color: #BCBCBC;
-    -selected-background-color: -primary;
-    -selected-text-color: -white;
+    -selected-background-color: -primary-background;
+    -selected-text-color: -primary;
     -table-border-color: -black;
 }

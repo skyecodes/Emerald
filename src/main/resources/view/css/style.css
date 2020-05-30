@@ -58,11 +58,6 @@
     -fx-fill: -header-text-color;
 }
 
-.navigation-button .jfx-hamburger StackPane {
-    -fx-background-color: -header-text-color;
-    -fx-background-radius: 5;
-}
-
 .button-surface {
     -fx-background-color: -surface-color;
 }
@@ -90,7 +85,7 @@
 }
 
 .hyperlink .glyph-icon {
-    -fx-fill: -white;
+    -fx-fill: -text-color;
     -glyph-size: 16px;
 }
 
@@ -245,8 +240,9 @@
 
 .menu-header .label {
     -fx-font-family: "Roboto Medium";
-    -fx-font-size: 20.0;
+    -fx-font-size: 20;
     -fx-text-fill: -header-text-color;
+    -fx-padding: 0 0 0 32;
 }
 
 .menu-header > Pane {
@@ -262,19 +258,46 @@
 }
 
 /* Drawer Pane */
-.drawer-pane .jfx-list-view, .drawer-pane .jfx-list-cell {
+.drawer-pane {
     -fx-background-color: -surface-color;
+    -fx-padding: 10;
 }
 
-.drawer-pane .label {
+.drawer-pane HBox {
+    -fx-background-radius: 2;
+}
+
+.drawer-pane .jfx-button {
+    -fx-text-fill: -text-color;
+    -fx-alignment: CENTER_LEFT;
+    -jfx-button-type: FLAT;
     -fx-graphic-text-gap: 24;
+    -fx-padding: 10;
     -fx-font-size: 16;
     -fx-font-family: "Roboto Medium";
+    -fx-pref-width: 250;
 }
 
-.drawer-pane .glyph-icon {
+.drawer-pane .jfx-button.small {
+    -fx-pref-width: 32;
+}
+
+.drawer-pane .jfx-button.selected, .drawer-pane HBox.selected {
+    -fx-text-fill: -selected-text-color;
+    -fx-background-color: -selected-background-color;
+}
+
+.drawer-pane HBox.selected .jfx-button {
+    -fx-text-fill: -selected-text-color;
+}
+
+.drawer-pane .jfx-button .glyph-icon {
     -glyph-size: 24px;
     -fx-fill: -text-color;
+}
+
+.drawer-pane .selected .glyph-icon {
+    -fx-fill: -selected-text-color;
 }
 
 /*

@@ -1,17 +1,25 @@
-package com.github.franckyi.emerald.controller;
+package com.github.franckyi.emerald.controller.screen.primary;
 
 import com.github.franckyi.emerald.EmeraldApp;
+import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.controller.dialog.ResetConfigDialogController;
 import com.github.franckyi.emerald.data.Configuration;
 import com.github.franckyi.emerald.util.ConfigManager;
 import com.github.franckyi.emerald.util.EmeraldUtils;
+import com.jfoenix.controls.JFXRippler;
 import com.jfoenix.controls.JFXToggleButton;
+import de.jensd.fx.glyphs.materialicons.MaterialIcon;
+import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import org.tinylog.Logger;
 
 import java.io.IOException;
 
-public class SettingsController extends MenuController<BorderPane, Configuration> {
+public class SettingsController extends PrimaryScreenController<BorderPane, Configuration> {
     @FXML
     private JFXToggleButton darkThemeToggle;
 
@@ -22,7 +30,7 @@ public class SettingsController extends MenuController<BorderPane, Configuration
 
     @Override
     protected void initialize() {
-        resetConfigDialogController = loadFXML("dialog/ResetConfigDialog.fxml", this);
+        resetConfigDialogController = Controller.loadFXML("dialog/ResetConfigDialog.fxml", this);
         currentConfiguration = EmeraldUtils.getConfiguration();
         this.updateFields();
     }
@@ -45,21 +53,37 @@ public class SettingsController extends MenuController<BorderPane, Configuration
     }
 
     @Override
-    public void beforeShowing() {
-        super.beforeShowing();
+    public void onShow() {
         oldConfiguration = EmeraldUtils.getConfiguration().clone();
     }
 
-    @FXML
-    private void backAction() throws IOException {
+    @Override
+    public void onHide() {
         if (!currentConfiguration.equals(oldConfiguration)) {
-            ConfigManager.save(currentConfiguration);
+            try {
+                ConfigManager.save(currentConfiguration);
+            } catch (IOException e) {
+                Logger.error("Couldn't save configuration", e);
+            }
         }
-        this.getMainController().showPrevious();
     }
 
-    @FXML
-    private void resetAction() {
-        resetConfigDialogController.getRoot().show(this.getMainController().getRoot());
+    @Override
+    public String getTitle() {
+        return "Settings";
+    }
+
+    @Override
+    public Node buildRightHeader() {
+        MaterialIconView icon = new MaterialIconView(MaterialIcon.SETTINGS_BACKUP_RESTORE);
+        StackPane pane = new StackPane(icon);
+        JFXRippler rippler = new JFXRippler(pane);
+        rippler.getStyleClass().add("navigation-button");
+        rippler.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                resetConfigDialogController.getRoot().show(this.getMainController().getRoot());
+            }
+        });
+        return rippler;
     }
 }
