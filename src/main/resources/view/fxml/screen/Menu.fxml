@@ -50,6 +50,16 @@
                     </JFXButton>
                 </VBox>
             </top>
+            <center>
+                <VBox alignment="CENTER">
+                    <JFXButton fx:id="tasksButton" onAction="#showTasks" visible="false" styleClass="important">
+                        Tasks
+                        <graphic>
+                            <MaterialIconView glyphName="GET_APP"/>
+                        </graphic>
+                    </JFXButton>
+                </VBox>
+            </center>
             <bottom>
                 <VBox alignment="BOTTOM_LEFT">
                     <JFXButton fx:id="settingsButton" onAction="#showSettings">
@@ -68,15 +78,17 @@
             </bottom>
         </BorderPane>
     </sidePane>
-    <BorderPane fx:id="content">
+    <BorderPane>
         <top>
             <JFXToolbar fx:id="header" BorderPane.alignment="CENTER" styleClass="menu-header">
                 <left>
-                    <JFXRippler onMouseClicked="#toggleDrawer" styleClass="navigation-button">
-                        <StackPane>
-                            <MaterialIconView glyphName="MENU"/>
-                        </StackPane>
-                    </JFXRippler>
+                    <JFXBadge fx:id="badge">
+                        <JFXRippler onMouseClicked="#openDrawer" styleClass="navigation-button">
+                            <StackPane>
+                                <MaterialIconView glyphName="MENU"/>
+                            </StackPane>
+                        </JFXRippler>
+                    </JFXBadge>
                 </left>
                 <center>
                     <Label fx:id="title" BorderPane.alignment="CENTER_LEFT"/>
@@ -87,6 +99,7 @@
             </JFXToolbar>
         </top>
         <center>
+            <StackPane fx:id="content"/>
         </center>
     </BorderPane>
 </MenuDrawer>

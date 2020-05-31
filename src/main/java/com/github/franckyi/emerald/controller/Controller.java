@@ -1,6 +1,6 @@
 package com.github.franckyi.emerald.controller;
 
-import com.github.franckyi.emerald.util.EmeraldUtils;
+import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.MagicTask;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -11,7 +11,6 @@ import org.tinylog.Logger;
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.Callable;
-import java.util.function.Supplier;
 
 public abstract class Controller<V extends Region, M> {
 
@@ -42,7 +41,7 @@ public abstract class Controller<V extends Region, M> {
     public static <C extends Controller<V, M>, V extends Region, M> C loadFXML(String file, Callable<M> model) {
         return loadFXML(file, url -> {
             MagicTask<M> task = new MagicTask<>(model);
-            EmeraldUtils.getExecutorService().submit(task);
+            Emerald.getExecutorService().submit(task);
             FXMLLoader loader = new FXMLLoader(url);
             V root = loader.load();
             C controller = loader.getController();
@@ -62,14 +61,6 @@ public abstract class Controller<V extends Region, M> {
             Logger.error(e, String.format("Couldn't load FXML view %s", file));
             return null;
         }
-    }
-
-    public static <C extends Controller<V, M>, V extends Region, M> C loadJava(Supplier<V> viewSupplier, Supplier<C> controllerSupplier) {
-        V root = viewSupplier.get();
-        C controller = controllerSupplier.get();
-        controller.setRoot(root);
-        controller.initialize();
-        return controller;
     }
 
     public V getRoot() {

@@ -1,6 +1,7 @@
 package com.github.franckyi.emerald.service.task.instance;
 
-import javafx.concurrent.Task;
+import com.github.franckyi.emerald.model.Instance;
+import com.github.franckyi.emerald.service.task.EmeraldTask;
 
-public abstract class InstanceCreatorTask extends Task<Void> {
+public abstract class InstanceCreatorTask extends EmeraldTask<Instance> {
 }

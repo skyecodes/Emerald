@@ -5,7 +5,7 @@ import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.controller.dialog.ResetConfigDialogController;
 import com.github.franckyi.emerald.data.Configuration;
 import com.github.franckyi.emerald.util.ConfigManager;
-import com.github.franckyi.emerald.util.EmeraldUtils;
+import com.github.franckyi.emerald.util.Emerald;
 import com.jfoenix.controls.JFXRippler;
 import com.jfoenix.controls.JFXToggleButton;
 import de.jensd.fx.glyphs.materialicons.MaterialIcon;
@@ -31,7 +31,7 @@ public class SettingsController extends PrimaryScreenController<BorderPane, Conf
     @Override
     protected void initialize() {
         resetConfigDialogController = Controller.loadFXML("dialog/ResetConfigDialog.fxml", this);
-        currentConfiguration = EmeraldUtils.getConfiguration();
+        currentConfiguration = Emerald.getConfiguration();
         this.updateFields();
     }
 
@@ -53,12 +53,14 @@ public class SettingsController extends PrimaryScreenController<BorderPane, Conf
     }
 
     @Override
-    public void onShow() {
-        oldConfiguration = EmeraldUtils.getConfiguration().clone();
+    public void beforeShowing() {
+        super.beforeShowing();
+        oldConfiguration = Emerald.getConfiguration().clone();
     }
 
     @Override
-    public void onHide() {
+    public void beforeHiding() {
+        super.beforeHiding();
         if (!currentConfiguration.equals(oldConfiguration)) {
             try {
                 ConfigManager.save(currentConfiguration);

@@ -11,7 +11,7 @@ public final class Minecraft {
 
     public static VersionManifest getVersionManifest() throws IOException {
         if (versionManifest == null) {
-            versionManifest = EmeraldUtils.getGson().fromJson(new InputStreamReader(
+            versionManifest = Emerald.getGson().fromJson(new InputStreamReader(
                             new URL("https://launchermeta.mojang.com/mc/game/version_manifest.json").openStream()),
                     VersionManifest.class);
         }

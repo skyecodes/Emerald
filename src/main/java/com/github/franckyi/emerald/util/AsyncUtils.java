@@ -29,11 +29,11 @@ public final class AsyncUtils {
                 consumer.accept(this.getValue());
             }
         };
-        EmeraldUtils.getExecutorService().submit(task);
+        Emerald.getExecutorService().submit(task);
     }
 
     public static void runAfter(int millis, Runnable runnable) {
-        EmeraldUtils.getExecutorService().execute(new Task<Void>() {
+        Emerald.getExecutorService().execute(new Task<Void>() {
             @Override
             protected Void call() throws InterruptedException {
                 Thread.sleep(millis);

@@ -1,7 +1,7 @@
 package com.github.franckyi.emerald.service.init;
 
 import com.github.franckyi.emerald.model.Instance;
-import com.github.franckyi.emerald.util.EmeraldUtils;
+import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.PreferenceManager;
 import org.tinylog.Logger;
 
@@ -12,25 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContextLoader {
-    public static List<Instance> loadInstances() throws IOException {
-        File instanceFolder = new File(PreferenceManager.getApplicationPath(), "instances/");
+    public static List<Instance> loadInstances() {
         List<Instance> instances = new ArrayList<>();
-        if (instanceFolder.isDirectory()) {
-            File[] instanceDirs = instanceFolder.listFiles(File::isDirectory);
-            if (instanceDirs != null) {
-                for (File instanceDir : instanceDirs) {
-                    File instanceJsonFile = new File(instanceDir, "instance.json");
-                    if (instanceJsonFile.isFile()) {
-                        FileReader reader = new FileReader(instanceJsonFile);
-                        Instance instance = EmeraldUtils.getGson().fromJson(reader, Instance.class);
-                        reader.close();
-                        Logger.debug("Instance {} found", instance.getName());
-                        instances.add(instance);
-                    } else {
-                        Logger.error("No instance.json found in folder {}", instanceDir.getAbsolutePath());
+        try {
+            File instanceFolder = new File(PreferenceManager.getApplicationPath(), "instances/");
+            if (instanceFolder.isDirectory()) {
+                File[] instanceDirs = instanceFolder.listFiles(File::isDirectory);
+                if (instanceDirs != null) {
+                    for (File instanceDir : instanceDirs) {
+                        File instanceJsonFile = new File(instanceDir, "instance.json");
+                        if (instanceJsonFile.isFile()) {
+                            FileReader reader = new FileReader(instanceJsonFile);
+                            Instance instance = Emerald.getGson().fromJson(reader, Instance.class);
+                            reader.close();
+                            Logger.debug("Instance {} found", instance.getName());
+                            instances.add(instance);
+                        } else {
+                            Logger.error("No instance.json found in folder {}", instanceDir.getAbsolutePath());
+                        }
                     }
                 }
             }
+        } catch (IOException e) {
+            Logger.error(e, "Unable to load instances");
         }
         return instances;
     }

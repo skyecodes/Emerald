@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import com.jfoenix.controls.JFXProgressBar?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
+           fx:controller="com.github.franckyi.emerald.controller.partial.TaskController">
+    <HBox alignment="CENTER" styleClass="surface">
+        <VBox alignment="CENTER" spacing="10.0">
+            <Label fx:id="titleLabel" styleClass="subhead"/>
+            <Label fx:id="messageLabel"/>
+            <HBox alignment="CENTER" spacing="10.0">
+                <Pane prefWidth="50"/>
+                <JFXProgressBar fx:id="progressBar"/>
+                <Label fx:id="progressLabel" prefWidth="50"/>
+            </HBox>
+        </VBox>
+        <padding>
+            <Insets topRightBottomLeft="10.0"/>
+        </padding>
+        <StackPane.margin>
+            <Insets topRightBottomLeft="10.0"/>
+        </StackPane.margin>
+    </HBox>
+</StackPane>

@@ -22,23 +22,31 @@ public class MainController extends Controller<StackPane, Void> {
     protected void initialize() {
         flow = new LinkedList<>();
         menuController = Controller.loadFXML("screen/Menu.fxml");
-        newInstanceController = Controller.loadFXML("screen/NewInstance.fxml");
-        newVanillaInstanceController = Controller.loadFXML("screen/NewVanillaInstance.fxml", Minecraft::getVersionManifest);
         flow.add(menuController);
         this.getRoot().getChildren().add(menuController.getRoot());
     }
 
+    public MenuController getMenuController() {
+        return menuController;
+    }
+
     public EmeraldTimeline showNewInstance() {
+        if (newInstanceController == null) {
+            newInstanceController = Controller.loadFXML("screen/NewInstance.fxml");
+        }
         return this.showNext(newInstanceController);
     }
 
     public EmeraldTimeline showNewVanillaInstance() {
+        if (newVanillaInstanceController == null) {
+            newVanillaInstanceController = Controller.loadFXML("screen/NewVanillaInstance.fxml", Minecraft::getVersionManifest);
+        }
         return this.showNext(newVanillaInstanceController);
     }
 
     private EmeraldTimeline showNext(ScreenController<?, ?> to) {
         ScreenController<?, ?> from = flow.getLast();
-        EmeraldTimeline timeline = ScreenAnimation.nextScreen(this, from, to);
+        EmeraldTimeline timeline = ScreenAnimation.nextScreen(this.getRoot(), from, to);
         timeline.addListener(() -> flow.add(to));
         timeline.play();
         return timeline;
@@ -47,7 +55,7 @@ public class MainController extends Controller<StackPane, Void> {
     public EmeraldTimeline showPrevious() {
         ScreenController<?, ?> from = flow.getLast();
         ScreenController<?, ?> to = flow.get(flow.size() - 2);
-        EmeraldTimeline timeline = ScreenAnimation.previousScreen(this, from, to);
+        EmeraldTimeline timeline = ScreenAnimation.previousScreen(this.getRoot(), from, to);
         timeline.addListener(flow::removeLast);
         timeline.play();
         return timeline;

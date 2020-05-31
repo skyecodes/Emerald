@@ -31,7 +31,7 @@ public final class SystemUtils {
 
     public static void openBrowser(String url) {
         if (Desktop.isDesktopSupported()) {
-            EmeraldUtils.getExecutorService().submit(() -> {
+            Emerald.getExecutorService().submit(() -> {
                 try {
                     Desktop.getDesktop().browse(new URI(url));
                 } catch (IOException | URISyntaxException e) {

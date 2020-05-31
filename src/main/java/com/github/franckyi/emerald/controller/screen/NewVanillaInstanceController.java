@@ -44,8 +44,6 @@ public class NewVanillaInstanceController extends ScreenController<Region, Versi
     private JFXCheckBox showBetaVersionsCheckbox;
     @FXML
     private JFXCheckBox showAlphaVersionsCheckbox;
-    @FXML
-    private JFXButton createInstanceButton;
 
     @Override
     protected void initialize() {
@@ -58,6 +56,11 @@ public class NewVanillaInstanceController extends ScreenController<Region, Versi
             }
         });
         versionTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        versionTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                instanceNameField.setPromptText(newVal.getValue().getVersion());
+            }
+        });
         latestColumn.setCellValueFactory(new TreeItemPropertyValueFactory<>("latest"));
         versionColumn.setCellValueFactory(new TreeItemPropertyValueFactory<>("version"));
         typeColumn.setCellValueFactory(new TreeItemPropertyValueFactory<>("type"));
@@ -66,8 +69,6 @@ public class NewVanillaInstanceController extends ScreenController<Region, Versi
         showSnapshotsCheckbox.selectedProperty().addListener((obs, oldVal, newVal) -> this.updatePredicate());
         showBetaVersionsCheckbox.selectedProperty().addListener((obs, oldVal, newVal) -> this.updatePredicate());
         showAlphaVersionsCheckbox.selectedProperty().addListener((obs, oldVal, newVal) -> this.updatePredicate());
-        createInstanceButton.disableProperty().bind(instanceNameField.textProperty().isEmpty().or(
-                versionTableView.getSelectionModel().selectedItemProperty().isNull()));
     }
 
     @Override
@@ -123,8 +124,10 @@ public class NewVanillaInstanceController extends ScreenController<Region, Versi
     @FXML
     private void createInstanceAction() {
         this.getMainController().showHome();
-        VanillaInstanceCreatorTask task = new VanillaInstanceCreatorTask(instanceNameField.getText(),
-                versionTableView.getSelectionModel().getSelectedItem().getValue().get());
+        this.getMainController().getMenuController().showTasks();
+        this.getMainController().getMenuController().submitNewInstanceTask(new VanillaInstanceCreatorTask(
+                instanceNameField.getText().isEmpty() ? instanceNameField.getPromptText() : instanceNameField.getText(),
+                versionTableView.getSelectionModel().getSelectedItem().getValue().get()));
     }
 
     public static class VersionItem extends RecursiveTreeObject<VersionItem> {

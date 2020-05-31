@@ -4,7 +4,7 @@ import java.time.Instant;
 
 public class Instance {
     private String name;
-    private String folderName;
+    private String displayName;
     private Instant creationDate;
     private String minecraftVersion;
 
@@ -16,12 +16,12 @@ public class Instance {
         this.name = name;
     }
 
-    public String getFolderName() {
-        return folderName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setFolderName(String folderName) {
-        this.folderName = folderName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public Instant getCreationDate() {

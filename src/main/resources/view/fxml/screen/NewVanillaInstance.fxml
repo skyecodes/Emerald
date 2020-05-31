@@ -36,7 +36,7 @@
                 <HBox alignment="CENTER" spacing="20.0" styleClass="surface">
                     <children>
                         <Label styleClass="subhead" text="Instance name"/>
-                        <JFXTextField fx:id="instanceNameField"/>
+                        <JFXTextField fx:id="instanceNameField" prefWidth="250"/>
                     </children>
                 </HBox>
                 <HBox alignment="CENTER" spacing="20.0">
@@ -71,8 +71,7 @@
                         </VBox>
                     </children>
                 </HBox>
-                <JFXButton fx:id="createInstanceButton" disable="true" styleClass="button-success"
-                           text="Create instance" onAction="#createInstanceAction">
+                <JFXButton styleClass="button-success" text="Create instance" onAction="#createInstanceAction">
                     <graphic>
                         <MaterialIconView glyphName="CREATE_NEW_FOLDER" size="24.0"/>
                     </graphic>

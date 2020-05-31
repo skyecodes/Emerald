@@ -7,6 +7,7 @@
     -white: white;
     -black: black;
     -error: #B00020;
+    -error-background: rgba(176, 0, 32, 0.24);
     -success: #4CAF50;
 }
 
@@ -249,14 +250,6 @@
     -fx-pref-width: 36px;
 }
 
-/*
- * INSTANCE LIST
- */
-
-.instance-list-button .glyph-icon {
-    -glyph-size: 64px;
-}
-
 /* Drawer Pane */
 .drawer-pane {
     -fx-background-color: -surface-color;
@@ -264,7 +257,7 @@
 }
 
 .drawer-pane HBox {
-    -fx-background-radius: 2;
+    -fx-background-radius: 3;
 }
 
 .drawer-pane .jfx-button {
@@ -280,6 +273,10 @@
 
 .drawer-pane .jfx-button.small {
     -fx-pref-width: 32;
+}
+
+.drawer-pane .jfx-button.important {
+    -fx-background-color: -error-background;
 }
 
 .drawer-pane .jfx-button.selected, .drawer-pane HBox.selected {
@@ -298,6 +295,55 @@
 
 .drawer-pane .selected .glyph-icon {
     -fx-fill: -selected-text-color;
+}
+
+/* Badge */
+.jfx-badge .badge-pane {
+    -fx-background-color: -error;
+    -fx-background-radius: 18;
+    -fx-pref-width: 18;
+    -fx-pref-height: 18;
+    -fx-alignment: center;
+}
+
+.jfx-badge .label {
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+    -fx-text-fill: -white;
+    -fx-padding: 0;
+}
+
+/* ValidationPane */
+ValidationPane {
+    -fx-background-color: -error;
+    -fx-background-insets: 4 0 0 0;
+    -fx-background-radius: 3;
+    -fx-padding: 8 4 4 4;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.26), 15, 0.16, 0, 4);
+}
+
+ValidationPane .label {
+    -fx-text-fill: -white;
+}
+
+ValidationPane .glyph-icon {
+    -fx-fill: -white;
+}
+
+/*
+ * INSTANCE LIST
+ */
+
+.instance-list-button .glyph-icon {
+    -glyph-size: 64px;
+}
+
+/*
+ * TASK LIST
+ */
+
+.task-list, .task-list .list-cell {
+    -fx-background-color: -background-color;
 }
 
 /*

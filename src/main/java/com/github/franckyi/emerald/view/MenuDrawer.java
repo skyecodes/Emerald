@@ -5,6 +5,6 @@ import javafx.util.Duration;
 
 public class MenuDrawer extends JFXDrawer {
     public MenuDrawer() {
-        super(Duration.millis(225));
+        super(Duration.millis(200));
     }
 }

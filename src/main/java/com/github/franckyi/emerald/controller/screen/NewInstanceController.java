@@ -40,9 +40,4 @@ public class NewInstanceController extends ScreenController<Region, Void> {
     private void backAction() {
         this.getMainController().showPrevious();
     }
-
-    @FXML
-    private void homeAction() {
-        this.getMainController().showHome();
-    }
 }

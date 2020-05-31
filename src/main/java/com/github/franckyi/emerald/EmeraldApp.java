@@ -4,7 +4,7 @@ import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.controller.MainController;
 import com.github.franckyi.emerald.data.Configuration;
 import com.github.franckyi.emerald.util.AsyncUtils;
-import com.github.franckyi.emerald.util.EmeraldUtils;
+import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.PreferenceManager;
 import com.jfoenix.assets.JFoenixResources;
 import com.jfoenix.controls.JFXDecorator;
@@ -79,14 +79,14 @@ public final class EmeraldApp extends Application {
         File applicationPath = this.loadApplicationPath();
         if (applicationPath == null) return;
         Logger.debug("Application path: {}", applicationPath.getAbsolutePath());
-        EmeraldUtils.init();
+        Emerald.initServices();
         Logger.debug("Starting application");
         this.loadView();
     }
 
     @Override
     public void stop() throws Exception {
-        EmeraldUtils.getExecutorService().shutdown();
+        Emerald.getExecutorService().shutdown();
         Logger.debug("Goodbye world!");
     }
 
@@ -138,7 +138,7 @@ public final class EmeraldApp extends Application {
     }
 
     public void updateTheme() {
-        Configuration c = EmeraldUtils.getConfiguration();
+        Configuration c = Emerald.getConfiguration();
         scene.getStylesheets().remove(currentThemeStylesheet);
         if (c.getTheme() == Configuration.Theme.DARK) {
             currentThemeStylesheet = darkThemeStylesheet;

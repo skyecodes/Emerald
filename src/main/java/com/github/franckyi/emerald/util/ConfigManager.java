@@ -23,7 +23,7 @@ public final class ConfigManager {
 
     public static Configuration load() throws IOException {
         Logger.debug("Loading configuration");
-        Gson gson = EmeraldUtils.getGson();
+        Gson gson = Emerald.getGson();
         File path = PreferenceManager.getApplicationPath();
         File configFile = new File(path, FILE_NAME);
         Configuration configuration;
@@ -41,7 +41,7 @@ public final class ConfigManager {
 
     public static void save(Configuration config) throws IOException {
         Logger.debug("Saving configuration");
-        Gson gson = EmeraldUtils.getGson();
+        Gson gson = Emerald.getGson();
         File path = PreferenceManager.getApplicationPath();
         File configFile = new File(path, FILE_NAME);
         FileWriter writer = new FileWriter(configFile);

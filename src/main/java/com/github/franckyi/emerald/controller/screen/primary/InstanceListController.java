@@ -26,7 +26,8 @@ public class InstanceListController extends PrimaryScreenController<ScrollPane, 
     }
 
     @Override
-    public void onShow() {
+    public void beforeShowing() {
+        super.beforeShowing();
         this.getRoot().setVvalue(0);
     }
 
