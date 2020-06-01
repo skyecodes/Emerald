@@ -1,6 +1,7 @@
 package com.github.franckyi.emerald.util;
 
 import javafx.concurrent.Task;
+import org.tinylog.Logger;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
@@ -15,7 +16,12 @@ public class MagicTask<V> extends Task<V> {
 
     @Override
     protected V call() throws Exception {
-        return value = callable.call();
+        try {
+            return value = callable.call();
+        } catch (Exception e) {
+            Logger.error(e);
+            throw e;
+        }
     }
 
     public V getTaskValue() {

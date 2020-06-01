@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import java.lang.String?>
+<StackPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
+           fx:controller="com.github.franckyi.emerald.controller.partial.InstanceButtonController">
+    <VBox fx:id="instanceMenu" alignment="CENTER" spacing="10" opacity="0" styleClass="instance-list-item-menu">
+        <JFXButton styleClass="button-success-variant" prefWidth="120" prefHeight="80" onAction="#launchInstanceAction">
+            <graphic>
+                <MaterialIconView glyphName="PLAY_ARROW" size="64"/>
+            </graphic>
+        </JFXButton>
+        <HBox alignment="CENTER" spacing="10">
+            <JFXButton styleClass="button-surface-variant" prefWidth="55" prefHeight="30"
+                       onAction="#openSettingsAction">
+                <graphic>
+                    <MaterialIconView glyphName="SETTINGS" size="16"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton styleClass="button-error-variant" prefWidth="55" prefHeight="30"
+                       onAction="#deleteInstanceAction">
+                <graphic>
+                    <MaterialIconView glyphName="DELETE" size="16"/>
+                </graphic>
+            </JFXButton>
+        </HBox>
+    </VBox>
+    <VBox alignment="CENTER" spacing="10">
+        <ImageView fitHeight="80" fitWidth="80">
+            <Image url="@../../img/minecraft.png"/>
+        </ImageView>
+        <Label fx:id="instanceNameLabel" styleClass="subhead"/>
+    </VBox>
+    <styleClass>
+        <String fx:value="surface"/>
+        <String fx:value="instance-list-item"/>
+    </styleClass>
+</StackPane>

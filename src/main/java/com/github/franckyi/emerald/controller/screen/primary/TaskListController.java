@@ -38,6 +38,12 @@ public class TaskListController extends PrimaryScreenController<ListView<Emerald
         Emerald.getExecutorService().submit(task);
     }
 
+    @Override
+    public void afterHiding() {
+        super.afterHiding();
+        this.getRoot().getItems().clear();
+    }
+
     private static class TaskCell extends ListCell<EmeraldTask<?>> {
         private TaskController taskController;
 

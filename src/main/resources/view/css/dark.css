@@ -3,17 +3,19 @@
  */
 
 .root {
-    -dark1: #111111;
-    -dark2: #1E1E1E;
-    -dark3: #2D2D2D;
-    -dark4: #353535;
-    -primary: #BB86FC;
+    -dark1: rgb(17, 17, 17);
+    -dark2: rgb(30, 30, 30);
+    -dark3: rgb(45, 45, 45);
+    -dark4: rgb(53, 53, 53);
+    -primary: rgb(187, 134, 252);
 
     -text-color: -white;
     -button-text-color: -white;
     -background-color: -dark1;
     -surface-color: -dark2;
     -surface-color2: -dark3;
+    -surface-color-overlay: rgba(30, 30, 30, 0.3);
+    -surface-color-variant: rgba(45, 45, 45, 0.8);
     -rippler-fill: -grey-600;
     -navigation-rippler-fill: -grey-400;
     -decorator-background-color: -black;

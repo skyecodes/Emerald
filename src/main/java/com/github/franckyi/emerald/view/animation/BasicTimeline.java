@@ -2,6 +2,7 @@ package com.github.franckyi.emerald.view.animation;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 public class BasicTimeline extends AbstractTimeline {
     private final Timeline timeline;
@@ -15,5 +16,10 @@ public class BasicTimeline extends AbstractTimeline {
     @Override
     public void play() {
         timeline.play();
+    }
+
+    @Override
+    public void stop() {
+        timeline.jumpTo(Duration.hours(1));
     }
 }

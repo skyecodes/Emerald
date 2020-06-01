@@ -15,9 +15,6 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import org.tinylog.Logger;
-
-import java.io.IOException;
 
 public class SettingsController extends PrimaryScreenController<BorderPane, Configuration> {
     @FXML
@@ -62,11 +59,7 @@ public class SettingsController extends PrimaryScreenController<BorderPane, Conf
     public void beforeHiding() {
         super.beforeHiding();
         if (!currentConfiguration.equals(oldConfiguration)) {
-            try {
-                ConfigManager.save(currentConfiguration);
-            } catch (IOException e) {
-                Logger.error("Couldn't save configuration", e);
-            }
+            ConfigManager.save(currentConfiguration);
         }
     }
 

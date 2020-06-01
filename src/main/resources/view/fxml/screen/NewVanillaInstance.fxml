@@ -71,7 +71,8 @@
                         </VBox>
                     </children>
                 </HBox>
-                <JFXButton styleClass="button-success" text="Create instance" onAction="#createInstanceAction">
+                <JFXButton fx:id="createInstanceButton" styleClass="button-success" text="Create instance"
+                           onAction="#createInstanceAction">
                     <graphic>
                         <MaterialIconView glyphName="CREATE_NEW_FOLDER" size="24.0"/>
                     </graphic>

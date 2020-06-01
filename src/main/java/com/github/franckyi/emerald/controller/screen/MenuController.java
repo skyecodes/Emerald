@@ -24,6 +24,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
+import java.util.function.Supplier;
+
 public class MenuController extends ScreenController<JFXDrawer, Void> {
     @FXML
     private BorderPane sidePane;
@@ -59,11 +61,25 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
     private SettingsController settingsController;
     private AboutDialogController aboutDialogController;
 
-    private PrimaryScreenController<?, ?> currentScreen;
-    private Node selectedButton;
+    public static Screen<InstanceListController> INSTANCES;
+    public static Screen<ModpackListController> MODPACKS;
+    public static Screen<ModListController> MODS;
+    public static Screen<ResourcePackListController> RESOURCE_PACKS;
+    public static Screen<WorldListController> WORLDS;
+    public static Screen<TaskListController> TASKS;
+    public static Screen<SettingsController> SETTINGS;
+
+    private Screen<?> currentScreen;
 
     @Override
     protected void initialize() {
+        INSTANCES = new Screen<>(this::getInstanceListController, this::getInstancesButton);
+        MODPACKS = new Screen<>(this::getModpackListController, this::getModpacksButton);
+        MODS = new Screen<>(this::getModListController, this::getModsButton);
+        RESOURCE_PACKS = new Screen<>(this::getResourcePackListController, this::getResourcePacksButton);
+        WORLDS = new Screen<>(this::getWorldListController, this::getWorldsButton);
+        TASKS = new Screen<>(this::getTaskListController, this::getTasksButton);
+        SETTINGS = new Screen<>(this::getSettingsController, this::getSettingsButton);
         // fixing node hierarchy
         this.getRoot().lookup(".jfx-drawer-overlay-pane").toFront();
         sidePane.getParent().toFront();
@@ -93,51 +109,158 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
 
     @FXML
     public EmeraldTimeline showInstances() {
-        if (instanceListController == null) {
-            instanceListController = Controller.loadFXML("screen/primary/InstanceList.fxml", Emerald::getInstances);
-        }
-        return this.selectScreen(instanceListController, instancesButton);
+        return this.showScreen(INSTANCES);
     }
 
     @FXML
-    private EmeraldTimeline showNewInstance() {
+    public EmeraldTimeline showNewInstance() {
         return this.getMainController().showNewInstance();
     }
 
     @FXML
-    private EmeraldTimeline showModpacks() {
-        if (modpackListController == null) {
-            modpackListController = Controller.loadFXML("screen/primary/ModpackList.fxml");
-        }
-        return this.selectScreen(modpackListController, modpacksButton);
+    public EmeraldTimeline showModpacks() {
+        return this.showScreen(MODPACKS);
     }
 
     @FXML
-    private EmeraldTimeline showMods() {
-        if (modListController == null) {
-            modListController = Controller.loadFXML("screen/primary/ModList.fxml");
-        }
-        return this.selectScreen(modListController, modsButton);
+    public EmeraldTimeline showMods() {
+        return this.showScreen(MODS);
     }
 
     @FXML
-    private EmeraldTimeline showResourcePacks() {
-        if (resourcePackListController == null) {
-            resourcePackListController = Controller.loadFXML("screen/primary/ResourcePackList.fxml");
-        }
-        return this.selectScreen(resourcePackListController, resourcePacksButton);
+    public EmeraldTimeline showResourcePacks() {
+        return this.showScreen(RESOURCE_PACKS);
     }
 
     @FXML
-    private EmeraldTimeline showWorlds() {
-        if (worldListController == null) {
-            worldListController = Controller.loadFXML("screen/primary/WorldList.fxml");
-        }
-        return this.selectScreen(worldListController, worldsButton);
+    public EmeraldTimeline showWorlds() {
+        return this.showScreen(WORLDS);
     }
 
     @FXML
     public EmeraldTimeline showTasks() {
+        return this.showScreen(TASKS);
+    }
+
+    @FXML
+    public EmeraldTimeline showSettings() {
+        return this.showScreen(SETTINGS);
+    }
+
+    @FXML
+    public void showAbout() {
+        if (aboutDialogController == null) {
+            aboutDialogController = Controller.loadFXML("dialog/AboutDialog.fxml");
+        }
+        aboutDialogController.getRoot().show(this.getMainController().getRoot());
+    }
+
+    public void showScreenInstant(Screen<?> screen) {
+        if (currentScreen != screen) {
+            if (currentScreen != null) {
+                currentScreen.getButton().getStyleClass().remove("selected");
+                content.getChildren().set(0, screen.getController().getRoot());
+            } else {
+                content.getChildren().add(screen.getController().getRoot());
+            }
+            currentScreen = screen;
+            header.setRight(screen.getController().getRightHeader());
+            title.setText(screen.getController().getTitle());
+            screen.getButton().getStyleClass().add("selected");
+        }
+    }
+
+    public EmeraldTimeline showScreen(Screen<?> screen) {
+        EmeraldTimeline timeline = new InstantTimeline();
+        if (currentScreen != screen) {
+            if (currentScreen != null) {
+                currentScreen.getButton().getStyleClass().remove("selected");
+                this.getRoot().close();
+                timeline = ScreenAnimation.changePrimaryScreen(content, currentScreen.getController(), screen.getController());
+            } else {
+                content.getChildren().add(screen.getController().getRoot());
+            }
+            currentScreen = screen;
+            header.setRight(screen.getController().getRightHeader());
+            title.setText(screen.getController().getTitle());
+            screen.getButton().getStyleClass().add("selected");
+        }
+        return timeline;
+    }
+
+    public void submitNewInstanceTask(InstanceCreatorTask task) {
+        task.getOnLastTaskSucceededListeners().add(() -> {
+            if (currentScreen == TASKS) {
+                EmeraldApp.getInstance().getMainController().getMenuController().showInstances();
+            }
+        });
+        taskListController.submit(task);
+    }
+
+    public HBox getInstancesButton() {
+        return instancesButton;
+    }
+
+    public JFXButton getModpacksButton() {
+        return modpacksButton;
+    }
+
+    public JFXButton getModsButton() {
+        return modsButton;
+    }
+
+    public JFXButton getResourcePacksButton() {
+        return resourcePacksButton;
+    }
+
+    public JFXButton getWorldsButton() {
+        return worldsButton;
+    }
+
+    public JFXButton getTasksButton() {
+        return tasksButton;
+    }
+
+    public JFXButton getSettingsButton() {
+        return settingsButton;
+    }
+
+    public InstanceListController getInstanceListController() {
+        if (instanceListController == null) {
+            instanceListController = Controller.loadFXML("screen/primary/InstanceList.fxml", Emerald.getInstances());
+        }
+        return instanceListController;
+    }
+
+    public ModpackListController getModpackListController() {
+        if (modpackListController == null) {
+            modpackListController = Controller.loadFXML("screen/primary/ModpackList.fxml");
+        }
+        return modpackListController;
+    }
+
+    public ModListController getModListController() {
+        if (modListController == null) {
+            modListController = Controller.loadFXML("screen/primary/ModList.fxml");
+        }
+        return modListController;
+    }
+
+    public ResourcePackListController getResourcePackListController() {
+        if (resourcePackListController == null) {
+            resourcePackListController = Controller.loadFXML("screen/primary/ResourcePackList.fxml");
+        }
+        return resourcePackListController;
+    }
+
+    public WorldListController getWorldListController() {
+        if (worldListController == null) {
+            worldListController = Controller.loadFXML("screen/primary/WorldList.fxml");
+        }
+        return worldListController;
+    }
+
+    public TaskListController getTaskListController() {
         if (taskListController == null) {
             taskListController = Controller.loadFXML("screen/primary/TaskList.fxml", FXCollections.observableArrayList());
             taskListController.getModel().addListener((ListChangeListener<Task<?>>) change -> {
@@ -148,50 +271,31 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
                 tasksButton.setText(String.format("Tasks (%d)", size));
             });
         }
-        return this.selectScreen(taskListController, tasksButton);
+        return taskListController;
     }
 
-    @FXML
-    private EmeraldTimeline showSettings() {
+    public SettingsController getSettingsController() {
         if (settingsController == null) {
             settingsController = Controller.loadFXML("screen/primary/Settings.fxml", Emerald.getConfiguration());
         }
-        return this.selectScreen(settingsController, settingsButton);
+        return settingsController;
     }
 
-    @FXML
-    private void showAbout() {
-        if (aboutDialogController == null) {
-            aboutDialogController = Controller.loadFXML("dialog/AboutDialog.fxml");
+    private static class Screen<C extends PrimaryScreenController<?, ?>> {
+        private final Supplier<C> controller;
+        private final Supplier<Node> button;
+
+        private Screen(Supplier<C> controller, Supplier<Node> button) {
+            this.controller = controller;
+            this.button = button;
         }
-        aboutDialogController.getRoot().show(this.getMainController().getRoot());
-    }
 
-    private EmeraldTimeline selectScreen(PrimaryScreenController<?, ?> screen, Node button) {
-        EmeraldTimeline timeline = new InstantTimeline();
-        if (button != selectedButton) {
-            if (currentScreen != null) {
-                selectedButton.getStyleClass().remove("selected");
-                this.getRoot().close();
-                timeline = ScreenAnimation.changePrimaryScreen(content, currentScreen, screen);
-            } else {
-                content.getChildren().add(screen.getRoot());
-            }
-            currentScreen = screen;
-            selectedButton = button;
-            header.setRight(screen.getRightHeader());
-            title.setText(screen.getTitle());
-            button.getStyleClass().add("selected");
+        public C getController() {
+            return controller.get();
         }
-        return timeline;
-    }
 
-    public void submitNewInstanceTask(InstanceCreatorTask task) {
-        task.getOnLastTaskSucceededListeners().add(() -> {
-            if (currentScreen == taskListController) {
-                EmeraldApp.getInstance().getMainController().getMenuController().showInstances();
-            }
-        });
-        taskListController.submit(task);
+        public Node getButton() {
+            return button.get();
+        }
     }
 }

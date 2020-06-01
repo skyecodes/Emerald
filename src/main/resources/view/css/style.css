@@ -6,9 +6,11 @@
     -fx-font-family: Roboto;
     -white: white;
     -black: black;
-    -error: #B00020;
+    -success: rgb(76, 175, 80);
+    -success-variant: rgba(76, 175, 80, 0.8);
+    -error: rgb(176, 0, 32);
     -error-background: rgba(176, 0, 32, 0.24);
-    -success: #4CAF50;
+    -error-variant: rgba(176, 0, 32, 0.8);
 }
 
 #root {
@@ -63,16 +65,36 @@
     -fx-background-color: -surface-color;
 }
 
-.button-surface .glyph-icon {
-    -fx-fill: -text-color;
+.button-surface-variant {
+    -fx-background-color: -surface-color-variant;
 }
 
 .button-success {
     -fx-background-color: -success;
+}
+
+.button-success-variant {
+    -fx-background-color: -success-variant;
+}
+
+.button-error {
+    -fx-background-color: -error;
+}
+
+.button-error-variant {
+    -fx-background-color: -error-variant;
+}
+
+.button-success, .button-error, .button-success-variant, .button-error-variant {
     -fx-text-fill: -white;
 }
 
-.button-success .glyph-icon {
+.button-surface .glyph-icon, .button-surface-variant .glyph-icon {
+    -fx-fill: -text-color;
+}
+
+.button-success .glyph-icon, .button-error .glyph-icon,
+.button-success-variant .glyph-icon, .button-error-variant .glyph-icon {
     -fx-fill: -white;
 }
 
@@ -134,6 +156,10 @@
 
 .button-success .jfx-rippler {
     -jfx-rippler-fill: green;
+}
+
+.button-error .jfx-rippler {
+    -jfx-rippler-fill: darkred;
 }
 
 /* Dialog */
@@ -334,8 +360,14 @@ ValidationPane .glyph-icon {
  * INSTANCE LIST
  */
 
-.instance-list-button .glyph-icon {
-    -glyph-size: 64px;
+.instance-list-item {
+    -fx-padding: 0;
+    -fx-pref-width: 120;
+    -fx-pref-height: 120;
+}
+
+.instance-list-item-menu {
+    -fx-background-color: -surface-color-overlay;
 }
 
 /*

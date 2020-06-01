@@ -44,6 +44,8 @@ public class NewVanillaInstanceController extends ScreenController<Region, Versi
     private JFXCheckBox showBetaVersionsCheckbox;
     @FXML
     private JFXCheckBox showAlphaVersionsCheckbox;
+    @FXML
+    private JFXButton createInstanceButton;
 
     @Override
     protected void initialize() {
@@ -69,6 +71,7 @@ public class NewVanillaInstanceController extends ScreenController<Region, Versi
         showSnapshotsCheckbox.selectedProperty().addListener((obs, oldVal, newVal) -> this.updatePredicate());
         showBetaVersionsCheckbox.selectedProperty().addListener((obs, oldVal, newVal) -> this.updatePredicate());
         showAlphaVersionsCheckbox.selectedProperty().addListener((obs, oldVal, newVal) -> this.updatePredicate());
+        createInstanceButton.disableProperty().bind(versionTableView.getSelectionModel().selectedItemProperty().isNull());
     }
 
     @Override
@@ -124,7 +127,7 @@ public class NewVanillaInstanceController extends ScreenController<Region, Versi
     @FXML
     private void createInstanceAction() {
         this.getMainController().showHome();
-        this.getMainController().getMenuController().showTasks();
+        this.getMainController().getMenuController().showScreenInstant(MenuController.TASKS);
         this.getMainController().getMenuController().submitNewInstanceTask(new VanillaInstanceCreatorTask(
                 instanceNameField.getText().isEmpty() ? instanceNameField.getPromptText() : instanceNameField.getText(),
                 versionTableView.getSelectionModel().getSelectedItem().getValue().get()));

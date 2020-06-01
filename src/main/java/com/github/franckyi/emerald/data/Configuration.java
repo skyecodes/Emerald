@@ -53,11 +53,15 @@ public class Configuration implements Cloneable {
 
     @Override
     public Configuration clone() {
-        Configuration c = new Configuration();
-        c.setVersion(version);
-        c.setTheme(theme);
-        c.setCustomTheme(customTheme);
-        return c;
+        try {
+            return (Configuration) super.clone();
+        } catch (CloneNotSupportedException e) {
+            Configuration c = new Configuration();
+            c.setVersion(version);
+            c.setTheme(theme);
+            c.setCustomTheme(customTheme);
+            return c;
+        }
     }
 
     public void set(Configuration config) {

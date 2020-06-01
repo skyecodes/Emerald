@@ -3,12 +3,12 @@ package com.github.franckyi.emerald;
 import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.controller.MainController;
 import com.github.franckyi.emerald.data.Configuration;
+import com.github.franckyi.emerald.service.storage.InstanceStorage;
 import com.github.franckyi.emerald.util.AsyncUtils;
 import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.PreferenceManager;
 import com.jfoenix.assets.JFoenixResources;
 import com.jfoenix.controls.JFXDecorator;
-import com.jfoenix.controls.JFXTooltip;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -20,10 +20,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.tinylog.Logger;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public final class EmeraldApp extends Application {
     private static EmeraldApp instance;
@@ -42,7 +43,7 @@ public final class EmeraldApp extends Application {
     }
 
     public static void main(String[] args) {
-        Logger.debug("Hello world!");
+        Logger.info("Hello world!");
         Application.launch(args);
     }
 
@@ -70,39 +71,38 @@ public final class EmeraldApp extends Application {
     public void init() throws Exception {
         Logger.debug("Initializing application");
         instance = this;
-        JFXTooltip.setHoverDelay(Duration.millis(300));
+        Emerald.getExecutorService().submit(InstanceStorage::reloadInstances);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        File applicationPath = this.loadApplicationPath();
+        Path applicationPath = this.loadApplicationPath();
         if (applicationPath == null) return;
-        Logger.debug("Application path: {}", applicationPath.getAbsolutePath());
-        Emerald.initServices();
-        Logger.debug("Starting application");
+        Logger.debug("Application path: {}", applicationPath.toString());
+        Logger.info("Starting application");
         this.loadView();
     }
 
     @Override
     public void stop() throws Exception {
         Emerald.getExecutorService().shutdown();
-        Logger.debug("Goodbye world!");
+        Logger.info("Goodbye world!");
     }
 
-    private File loadApplicationPath() {
-        File path = PreferenceManager.getApplicationPath();
+    private Path loadApplicationPath() {
+        Path path = PreferenceManager.getApplicationPath();
         if (path == null) {
             Logger.info("No application path found - opening dialog");
             DirectoryChooser chooser = new DirectoryChooser();
             chooser.setTitle("Choose an installation path");
-            path = chooser.showDialog(stage);
-            if (path == null || !path.isDirectory()) {
+            File file = chooser.showDialog(stage);
+            if (file != null && file.isDirectory()) {
+                PreferenceManager.setApplicationPath(path = file.toPath());
+            } else {
                 Logger.debug("Invalid path - exiting application");
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a valid path.", ButtonType.CLOSE);
                 alert.showAndWait();
-            } else {
-                PreferenceManager.setApplicationPath(path);
             }
         }
         return path;
@@ -145,10 +145,10 @@ public final class EmeraldApp extends Application {
         } else if (c.getTheme() == Configuration.Theme.LIGHT) {
             currentThemeStylesheet = lightThemeStylesheet;
         } else {
-            File file = new File(PreferenceManager.getApplicationPath(),
+            Path path = PreferenceManager.getApplicationPath().resolve(
                     String.format("themes%s%s", File.pathSeparator, c.getCustomTheme()));
-            if (file.exists()) {
-                currentThemeStylesheet = file.getAbsolutePath();
+            if (Files.isRegularFile(path)) {
+                currentThemeStylesheet = path.toString();
             } else {
                 Logger.error("Custom style {} not found - defaulting to dark theme", c.getCustomTheme());
                 currentThemeStylesheet = darkThemeStylesheet;

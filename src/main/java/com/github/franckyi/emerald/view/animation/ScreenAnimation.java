@@ -20,7 +20,7 @@ public final class ScreenAnimation {
     private static EmeraldTimeline currentScreenTimeline, currentPrimaryScreenTimeline;
 
     public static EmeraldTimeline nextScreen(StackPane root, ScreenController<?, ?> from, ScreenController<?, ?> to) {
-        if (currentScreenTimeline != null) return new NoopTimeline();
+        if (currentScreenTimeline != null) currentScreenTimeline.stop();
         EmeraldTimeline timeline = forward(root, from.getRoot(), to.getRoot());
         root.getChildren().add(to.getRoot());
         applyScreenTransition(timeline, root, from, to);
@@ -28,7 +28,7 @@ public final class ScreenAnimation {
     }
 
     public static EmeraldTimeline previousScreen(StackPane root, ScreenController<?, ?> from, ScreenController<?, ?> to) {
-        if (currentScreenTimeline != null) return new NoopTimeline();
+        if (currentScreenTimeline != null) currentScreenTimeline.stop();
         EmeraldTimeline timeline = backward(root, from.getRoot(), to.getRoot());
         root.getChildren().add(0, to.getRoot());
         applyScreenTransition(timeline, root, from, to);
@@ -36,7 +36,7 @@ public final class ScreenAnimation {
     }
 
     public static EmeraldTimeline changePrimaryScreen(StackPane root, PrimaryScreenController<?, ?> from, PrimaryScreenController<?, ?> to) {
-        if (currentPrimaryScreenTimeline != null) return new NoopTimeline();
+        if (currentPrimaryScreenTimeline != null) currentScreenTimeline.stop();
         EmeraldTimeline timeline = change(root, from.getRoot(), to.getRoot());
         applyPrimaryScreenTransition(timeline, root, from, to);
         return timeline;

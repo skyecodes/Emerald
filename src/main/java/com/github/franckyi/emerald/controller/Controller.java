@@ -54,7 +54,9 @@ public abstract class Controller<V extends Region, M> {
 
     private static <C extends Controller<V, M>, V extends Region, M> C loadFXML(String file, Loader<C> loader) {
         URL resource = Controller.class.getResource("/view/fxml/" + file);
-        Logger.debug("Loading FXML view '{}'", file);
+        if (!file.startsWith("partial/")) {
+            Logger.debug("Loading FXML view '{}'", file);
+        }
         try {
             return loader.load(resource);
         } catch (IOException e) {

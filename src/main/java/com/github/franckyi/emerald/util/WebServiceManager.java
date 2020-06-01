@@ -3,7 +3,6 @@ package com.github.franckyi.emerald.util;
 import com.github.franckyi.emerald.service.web.MojangAuthService;
 import com.github.franckyi.emerald.service.web.TwitchAppService;
 import com.google.gson.Gson;
-import org.tinylog.Logger;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -15,17 +14,17 @@ public final class WebServiceManager {
     private static MojangAuthService mojangAuthService;
 
     public static TwitchAppService getTwitchAppService() {
+        if (twitchAppService == null) {
+            twitchAppService = buildWebService(Emerald.getGson(), TWITCH_APP_SERVICE_BASE_URL, TwitchAppService.class);
+        }
         return twitchAppService;
     }
 
     public static MojangAuthService getMojangAuthService() {
+        if (mojangAuthService == null) {
+            mojangAuthService = buildWebService(Emerald.getGson(), MOJANG_AUTH_SERVICE_BASE_URL, MojangAuthService.class);
+        }
         return mojangAuthService;
-    }
-
-    public static void init(Gson gson) {
-        Logger.debug("Initializing WebService clients");
-        twitchAppService = buildWebService(gson, TWITCH_APP_SERVICE_BASE_URL, TwitchAppService.class);
-        mojangAuthService = buildWebService(gson, MOJANG_AUTH_SERVICE_BASE_URL, MojangAuthService.class);
     }
 
     private static <T> T buildWebService(Gson gson, String baseUrl, Class<T> type) {

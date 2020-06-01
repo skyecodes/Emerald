@@ -1,6 +1,6 @@
 .root {
     -primary: rgb(98, 0, 238);
-    -primary-variant: #3700B3;
+    -primary-variant: rgb(55, 0, 179);
     -primary-background: rgba(98, 0, 238, 0.12);
 
     -text-color: -black;
@@ -8,6 +8,8 @@
     -background-color: -white;
     -surface-color: -white;
     -surface-color2: -white;
+    -surface-color-overlay: rgba(255, 255, 255, 0.3);
+    -surface-color-variant: rgba(255, 255, 255, 0.8);
     -rippler-fill: -grey-400;
     -navigation-rippler-fill: -white;
     -decorator-background-color: -primary-variant;
@@ -16,8 +18,8 @@
     -textfield-focus-color: -primary;
     -checkbox-checked-color: -primary;
     -checkbox-check-icon-color: -white;
-    -scrollbar-background-color: #F1F1F1;
-    -scrollbar-color: #BCBCBC;
+    -scrollbar-background-color: rgb(241, 241, 241);
+    -scrollbar-color: rgb(188, 188, 188);
     -selected-background-color: -primary-background;
     -selected-text-color: -primary;
     -table-border-color: -black;

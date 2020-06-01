@@ -6,4 +6,6 @@ public interface EmeraldTimeline {
     void removeListener(Runnable r);
 
     void play();
+
+    void stop();
 }
