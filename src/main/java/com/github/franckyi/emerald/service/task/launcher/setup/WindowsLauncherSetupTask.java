@@ -1,4 +1,4 @@
-package com.github.franckyi.emerald.service.task.launcher;
+package com.github.franckyi.emerald.service.task.launcher.setup;
 
 public class WindowsLauncherSetupTask extends LauncherSetupTask {
     @Override

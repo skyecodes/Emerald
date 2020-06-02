@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<JFXDialog transitionType="CENTER" xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.github.franckyi.emerald.controller.dialog.LoginDialogController">
+    <JFXDialogLayout>
+        <heading>
+            <Label>Login to your Mojang account</Label>
+        </heading>
+        <body>
+            <VBox spacing="10">
+                <VBox spacing="5">
+                    <Label>Please enter your credentials.</Label>
+                    <Label fx:id="errorLabel" styleClass="text-error">
+                        <graphic>
+                            <MaterialIconView glyphName="ERROR"/>
+                        </graphic>
+                    </Label>
+                </VBox>
+                <HBox spacing="20">
+                    <Label>Username</Label>
+                    <JFXTextField fx:id="usernameField" prefWidth="250"/>
+                </HBox>
+                <HBox spacing="20">
+                    <Label>Password</Label>
+                    <JFXPasswordField fx:id="passwordField" prefWidth="250"/>
+                </HBox>
+            </VBox>
+        </body>
+        <actions>
+            <JFXButton onAction="#closeDialogAction" styleClass="dialog-close">CANCEL</JFXButton>
+            <JFXButton fx:id="loginButton" onAction="#loginAction" styleClass="dialog-close">LOGIN</JFXButton>
+        </actions>
+    </JFXDialogLayout>
+</JFXDialog>

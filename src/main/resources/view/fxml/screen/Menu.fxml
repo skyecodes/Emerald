@@ -3,55 +3,82 @@
 <?import com.github.franckyi.emerald.view.MenuDrawer?>
 <?import com.jfoenix.controls.*?>
 <?import de.jensd.fx.glyphs.materialicons.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <MenuDrawer xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
             fx:controller="com.github.franckyi.emerald.controller.screen.MenuController" defaultDrawerSize="250">
     <sidePane>
         <BorderPane fx:id="sidePane" styleClass="drawer-pane">
             <top>
-                <VBox>
-                    <HBox fx:id="instancesButton">
-                        <JFXButton onAction="#showInstances">
-                            Instances
-                            <graphic>
-                                <MaterialIconView glyphName="DNS"/>
-                            </graphic>
-                        </JFXButton>
-                        <JFXButton onAction="#showNewInstance" styleClass="small">
-                            <graphic>
-                                <MaterialIconView glyphName="ADD_BOX"/>
-                            </graphic>
-                        </JFXButton>
+                <VBox spacing="5">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <ImageView fx:id="userImageView" fitWidth="50" fitHeight="50"/>
+                        <VBox spacing="5" alignment="CENTER_LEFT">
+                            <Label fx:id="usernameLabel" styleClass="subhead"/>
+                            <Label fx:id="userStatusLabel">
+                                <graphic>
+                                    <MaterialIconView glyphName="FIBER_MANUAL_RECORD"/>
+                                </graphic>
+                            </Label>
+                        </VBox>
+                        <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                            <JFXButton fx:id="userButton" onAction="#userAction" prefWidth="40" prefHeight="40">
+                                <graphic>
+                                    <MaterialIconView fx:id="userButtonGlyph" glyphSize="24"/>
+                                </graphic>
+                            </JFXButton>
+                        </VBox>
+                        <padding>
+                            <Insets topRightBottomLeft="10"/>
+                        </padding>
                     </HBox>
-                    <JFXButton fx:id="modpacksButton" onAction="#showModpacks">
-                        Modpacks
-                        <graphic>
-                            <MaterialIconView glyphName="WIDGETS"/>
-                        </graphic>
-                    </JFXButton>
-                    <JFXButton fx:id="modsButton" onAction="#showMods">
-                        Mods
-                        <graphic>
-                            <MaterialIconView glyphName="BUILD"/>
-                        </graphic>
-                    </JFXButton>
-                    <JFXButton fx:id="resourcePacksButton" onAction="#showResourcePacks">
-                        Resource Packs
-                        <graphic>
-                            <MaterialIconView glyphName="PHOTO_LIBRARY"/>
-                        </graphic>
-                    </JFXButton>
-                    <JFXButton fx:id="worldsButton" onAction="#showWorlds">
-                        Worlds
-                        <graphic>
-                            <MaterialIconView glyphName="PUBLIC"/>
-                        </graphic>
-                    </JFXButton>
+                    <Separator/>
+                    <VBox spacing="5" styleClass="button-list">
+                        <HBox fx:id="instancesButton">
+                            <JFXButton onAction="#showInstances">
+                                Instances
+                                <graphic>
+                                    <MaterialIconView glyphName="DNS"/>
+                                </graphic>
+                            </JFXButton>
+                            <JFXButton onAction="#showNewInstance" styleClass="small">
+                                <graphic>
+                                    <MaterialIconView glyphName="ADD_BOX"/>
+                                </graphic>
+                            </JFXButton>
+                        </HBox>
+                        <JFXButton fx:id="modpacksButton" onAction="#showModpacks">
+                            Modpacks
+                            <graphic>
+                                <MaterialIconView glyphName="WIDGETS"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="modsButton" onAction="#showMods">
+                            Mods
+                            <graphic>
+                                <MaterialIconView glyphName="BUILD"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="resourcePacksButton" onAction="#showResourcePacks">
+                            Resource Packs
+                            <graphic>
+                                <MaterialIconView glyphName="PHOTO_LIBRARY"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="worldsButton" onAction="#showWorlds">
+                            Worlds
+                            <graphic>
+                                <MaterialIconView glyphName="PUBLIC"/>
+                            </graphic>
+                        </JFXButton>
+                    </VBox>
                 </VBox>
             </top>
             <center>
-                <VBox alignment="CENTER">
+                <VBox spacing="5" styleClass="button-list" alignment="CENTER">
                     <JFXButton fx:id="tasksButton" onAction="#showTasks" visible="false" styleClass="important">
                         Tasks
                         <graphic>
@@ -61,7 +88,7 @@
                 </VBox>
             </center>
             <bottom>
-                <VBox alignment="BOTTOM_LEFT">
+                <VBox spacing="5" styleClass="button-list" alignment="BOTTOM_LEFT">
                     <JFXButton fx:id="settingsButton" onAction="#showSettings">
                         Settings
                         <graphic>

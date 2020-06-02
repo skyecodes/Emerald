@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class CopyTask extends EmeraldTask<Void> {
+    private static final int BUFFER_SIZE = 8192;
     protected InputStream in;
     protected OutputStream out;
     protected int totalSize;
@@ -25,16 +26,18 @@ public class CopyTask extends EmeraldTask<Void> {
 
     @Override
     protected Void call() throws Exception {
-        byte[] dataBuffer = new byte[1024];
+        byte[] dataBuffer = new byte[BUFFER_SIZE];
         int downloadedSize = 0;
         int bytesRead;
-        while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+        while ((bytesRead = in.read(dataBuffer, 0, BUFFER_SIZE)) != -1) {
             out.write(dataBuffer, 0, bytesRead);
             downloadedSize += bytesRead;
             if (totalSize > 0) {
                 this.updateProgress(downloadedSize, totalSize);
             }
         }
+        in.close();
+        out.close();
         return null;
     }
 }

@@ -1,60 +1,61 @@
 package com.github.franckyi.emerald.service.task.base;
 
-import javafx.concurrent.Task;
+import com.github.franckyi.emerald.service.task.EmeraldTask;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.zip.GZIPInputStream;
 
-public class LinuxUnzipFileTask extends Task<Void> {
-    private final File tarGzFile;
-    private final File outputDir;
-    private final File tmp = new File("com.github.franckyi.emerald.temp");
+public class LinuxUnzipFileTask extends EmeraldTask<Void> {
+    private final Path tarGzFile;
+    private final Path outputDir;
+    private Path tmp;
 
-    public LinuxUnzipFileTask(File tarGzFile, File outputDir) {
+    public LinuxUnzipFileTask(Path tarGzFile, Path outputDir) {
         this.tarGzFile = tarGzFile;
         this.outputDir = outputDir;
     }
 
     @Override
     protected Void call() throws Exception {
+        tmp = Files.createTempFile("archive", null);
         this.decompress();
+        this.updateProgress(1, 2);
         this.unarchive();
-        tarGzFile.delete();
-        tmp.delete();
+        Files.delete(tmp);
+        this.updateProgress(1, 1);
         return null;
     }
 
     private void decompress() throws IOException {
-        FileInputStream fis = new FileInputStream(tarGzFile);
-        GZIPInputStream gis = new GZIPInputStream(fis);
-        FileOutputStream fos = new FileOutputStream(tmp);
-        IOUtils.copy(gis, fos);
-        fos.close();
-        gis.close();
+        GZIPInputStream gis = new GZIPInputStream(Files.newInputStream(tarGzFile));
+        OutputStream os = Files.newOutputStream(tmp);
+        new CopyTask(gis, os).run();
     }
 
     private void unarchive() throws IOException, ArchiveException {
-        final InputStream is = new FileInputStream(tmp);
-        final TarArchiveInputStream debInputStream = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar", is);
+        InputStream is = Files.newInputStream(tmp);
+        TarArchiveInputStream debInputStream = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar", is);
         TarArchiveEntry entry;
         while ((entry = (TarArchiveEntry) debInputStream.getNextEntry()) != null) {
-            final File outputFile = new File(outputDir, entry.getName());
+            Path outputFile = outputDir.resolve(entry.getName());
             if (entry.isDirectory()) {
-                if (!outputFile.exists()) {
-                    if (!outputFile.mkdirs()) {
-                        throw new IllegalStateException(String.format("Couldn't create directory %s.", outputFile.getAbsolutePath()));
-                    }
+                if (!Files.exists(outputFile)) {
+                    Files.createDirectories(outputFile);
                 }
             } else {
-                final OutputStream outputFileStream = new FileOutputStream(outputFile);
+                OutputStream outputFileStream = Files.newOutputStream(outputFile);
                 IOUtils.copy(debInputStream, outputFileStream);
                 if (entry.getMode() == 493) {
-                    outputFile.setExecutable(true);
+                    outputFile.toFile().setExecutable(true);
                 }
                 outputFileStream.close();
             }

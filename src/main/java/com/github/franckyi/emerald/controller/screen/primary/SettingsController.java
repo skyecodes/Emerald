@@ -76,7 +76,7 @@ public class SettingsController extends PrimaryScreenController<BorderPane, Conf
         rippler.getStyleClass().add("navigation-button");
         rippler.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
-                resetConfigDialogController.getRoot().show(this.getMainController().getRoot());
+                resetConfigDialogController.open();
             }
         });
         return rippler;

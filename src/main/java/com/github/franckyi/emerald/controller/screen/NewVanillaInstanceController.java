@@ -85,6 +85,12 @@ public class NewVanillaInstanceController extends ScreenController<Region, Versi
     }
 
     @Override
+    public void afterHiding() {
+        super.afterHiding();
+        versionTableView.scrollTo(0);
+    }
+
+    @Override
     protected void modelUpdated() {
         List<VersionItem> collect = this.getModel().getVersions().stream()
                 .map(version -> new VersionItem(this.getModel().getLatest(), version))

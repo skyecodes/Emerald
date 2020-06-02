@@ -1,9 +1,11 @@
 package com.github.franckyi.emerald.controller.partial;
 
+import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.model.Instance;
 import com.github.franckyi.emerald.service.storage.InstanceStorage;
 import com.github.franckyi.emerald.util.Emerald;
+import com.github.franckyi.emerald.util.Minecraft;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -37,6 +39,7 @@ public class InstanceButtonController extends Controller<StackPane, Instance> {
 
     @FXML
     private void launchInstanceAction() {
+        Minecraft.launch(this.getModel());
     }
 
     @FXML
@@ -46,5 +49,6 @@ public class InstanceButtonController extends Controller<StackPane, Instance> {
     @FXML
     private void deleteInstanceAction() {
         Emerald.getExecutorService().submit(() -> InstanceStorage.deleteInstance(this.getModel()));
+        EmeraldApp.getInstance().fixFocus();
     }
 }

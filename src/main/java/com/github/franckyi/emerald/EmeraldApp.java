@@ -7,6 +7,7 @@ import com.github.franckyi.emerald.service.storage.InstanceStorage;
 import com.github.franckyi.emerald.util.AsyncUtils;
 import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.PreferenceManager;
+import com.github.franckyi.emerald.util.UserManager;
 import com.jfoenix.assets.JFoenixResources;
 import com.jfoenix.controls.JFXDecorator;
 import javafx.application.Application;
@@ -72,6 +73,7 @@ public final class EmeraldApp extends Application {
         Logger.debug("Initializing application");
         instance = this;
         Emerald.getExecutorService().submit(InstanceStorage::reloadInstances);
+        Emerald.getExecutorService().submit(UserManager::load);
     }
 
     @Override
@@ -91,7 +93,7 @@ public final class EmeraldApp extends Application {
     }
 
     private Path loadApplicationPath() {
-        Path path = PreferenceManager.getApplicationPath();
+        Path path = PreferenceManager.loadApplicationPath();
         if (path == null) {
             Logger.info("No application path found - opening dialog");
             DirectoryChooser chooser = new DirectoryChooser();
@@ -145,7 +147,7 @@ public final class EmeraldApp extends Application {
         } else if (c.getTheme() == Configuration.Theme.LIGHT) {
             currentThemeStylesheet = lightThemeStylesheet;
         } else {
-            Path path = PreferenceManager.getApplicationPath().resolve(
+            Path path = Emerald.getApplicationPath().resolve(
                     String.format("themes%s%s", File.pathSeparator, c.getCustomTheme()));
             if (Files.isRegularFile(path)) {
                 currentThemeStylesheet = path.toString();

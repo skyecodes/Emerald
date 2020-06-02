@@ -3,6 +3,7 @@ package com.github.franckyi.emerald.service.task;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import org.tinylog.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public abstract class EmeraldTask<V> extends Task<V> {
         this.setOnSucceeded(e -> onSucceededListeners.forEach(listener -> listener.handle(e)));
         this.setOnCancelled(e -> onCancelledListeners.forEach(listener -> listener.handle(e)));
         this.setOnFailed(e -> onFailedListeners.forEach(listener -> listener.handle(e)));
+        onFailedListeners.add(e -> Logger.error(this.getException(), "Error in task {}", this.getClass().getSimpleName()));
     }
 
     public List<EventHandler<WorkerStateEvent>> getOnScheduledListeners() {

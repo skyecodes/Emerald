@@ -18,8 +18,25 @@
 }
 
 /* Text */
-.label, .jfx-toggle-button, .jfx-text-field, .jfx-check-box, .button-surface, .hyperlink {
+.label, .jfx-toggle-button, .jfx-text-field, .jfx-password-field, .jfx-check-box, .button-surface, .hyperlink {
     -fx-text-fill: -text-color;
+}
+
+.text-error {
+    -fx-text-fill: -error;
+}
+
+.text-error .glyph-icon {
+    -fx-fill: -error;
+}
+
+/* Glyph */
+.glyph-icon.fill-error {
+    -fx-fill: -error;
+}
+
+.glyph-icon.fill-success {
+    -fx-fill: -success;
 }
 
 /* Decorator */
@@ -115,6 +132,7 @@
 /* TextField */
 .jfx-text-field {
     -jfx-focus-color: -textfield-focus-color;
+    -fx-prompt-text-fill: -text-color-variant;
 }
 
 /* CheckBox */
@@ -282,11 +300,11 @@
     -fx-padding: 10;
 }
 
-.drawer-pane HBox {
+.drawer-pane .button-list HBox {
     -fx-background-radius: 3;
 }
 
-.drawer-pane .jfx-button {
+.drawer-pane .button-list .jfx-button {
     -fx-text-fill: -text-color;
     -fx-alignment: CENTER_LEFT;
     -jfx-button-type: FLAT;
@@ -297,29 +315,29 @@
     -fx-pref-width: 250;
 }
 
-.drawer-pane .jfx-button.small {
+.drawer-pane .button-list .jfx-button.small {
     -fx-pref-width: 32;
 }
 
-.drawer-pane .jfx-button.important {
+.drawer-pane .button-list .jfx-button.important {
     -fx-background-color: -error-background;
 }
 
-.drawer-pane .jfx-button.selected, .drawer-pane HBox.selected {
+.drawer-pane .button-list .jfx-button.selected, .drawer-pane HBox.selected {
     -fx-text-fill: -selected-text-color;
     -fx-background-color: -selected-background-color;
 }
 
-.drawer-pane HBox.selected .jfx-button {
+.drawer-pane .button-list HBox.selected .jfx-button {
     -fx-text-fill: -selected-text-color;
 }
 
-.drawer-pane .jfx-button .glyph-icon {
+.drawer-pane .button-list .jfx-button .glyph-icon {
     -glyph-size: 24px;
     -fx-fill: -text-color;
 }
 
-.drawer-pane .selected .glyph-icon {
+.drawer-pane .button-list .selected .glyph-icon {
     -fx-fill: -selected-text-color;
 }
 

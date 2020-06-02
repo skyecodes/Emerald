@@ -10,6 +10,7 @@
     -primary: rgb(187, 134, 252);
 
     -text-color: -white;
+    -text-color-variant: rgba(255, 255, 255, 0.7);
     -button-text-color: -white;
     -background-color: -dark1;
     -surface-color: -dark2;

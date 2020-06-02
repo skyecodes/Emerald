@@ -2,7 +2,6 @@ package com.github.franckyi.emerald.service.storage;
 
 import com.github.franckyi.emerald.model.Instance;
 import com.github.franckyi.emerald.util.Emerald;
-import com.github.franckyi.emerald.util.PreferenceManager;
 import com.google.gson.Gson;
 import javafx.application.Platform;
 import org.tinylog.Logger;
@@ -21,7 +20,7 @@ public final class InstanceStorage {
         List<Instance> instances = Emerald.getInstances();
         instances.clear();
         try {
-            Path instancesDirectory = PreferenceManager.getApplicationPath().resolve("instances/");
+            Path instancesDirectory = Emerald.getApplicationPath().resolve("instances/");
             if (Files.isDirectory(instancesDirectory)) {
                 Files.list(instancesDirectory).filter(Files::isDirectory).forEach(instanceDirectory -> {
                     Path instanceJsonFile = instanceDirectory.resolve("instance.json");
@@ -44,21 +43,20 @@ public final class InstanceStorage {
         instances.sort(Comparator.comparing(Instance::getCreationDate));
     }
 
-    public static void createInstance(Instance instance) throws IOException {
+    public static Path createInstance(Instance instance) throws IOException {
         Gson gson = Emerald.getGson();
-        Path instanceDirectory = PreferenceManager.getApplicationPath().resolve("instances").resolve(instance.getName());
-        Files.createDirectory(instanceDirectory);
+        Path instanceDirectory = Emerald.getApplicationPath().resolve("instances").resolve(instance.getName());
+        Files.createDirectories(instanceDirectory);
         Path instanceJsonFile = instanceDirectory.resolve("instance.json");
         BufferedWriter writer = Files.newBufferedWriter(instanceJsonFile);
         gson.toJson(instance, writer);
         writer.close();
-        Path minecraftDirectory = instanceDirectory.resolve(".minecraft");
-        Files.createDirectory(minecraftDirectory);
+        return instanceDirectory;
     }
 
     public static void deleteInstance(Instance instance) {
         try {
-            Storage.deleteDirectory(PreferenceManager.getApplicationPath().resolve("instances/").resolve(instance.getName()));
+            Storage.deleteDirectory(Emerald.getApplicationPath().resolve("instances/").resolve(instance.getName()));
             Platform.runLater(() -> Emerald.getInstances().remove(instance));
             Logger.info("Instance \"{}\" deleted", instance.getDisplayName());
         } catch (IOException e) {

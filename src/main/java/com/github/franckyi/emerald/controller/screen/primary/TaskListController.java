@@ -10,6 +10,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
 
+import java.util.concurrent.FutureTask;
+
 public class TaskListController extends PrimaryScreenController<ListView<EmeraldTask<?>>, ObservableList<EmeraldTask<?>>> {
     @Override
     protected void initialize() {
@@ -41,7 +43,9 @@ public class TaskListController extends PrimaryScreenController<ListView<Emerald
     @Override
     public void afterHiding() {
         super.afterHiding();
-        this.getRoot().getItems().clear();
+        if (this.getModel().isEmpty()) {
+            this.getRoot().getItems().removeIf(FutureTask::isDone);
+        }
     }
 
     private static class TaskCell extends ListCell<EmeraldTask<?>> {

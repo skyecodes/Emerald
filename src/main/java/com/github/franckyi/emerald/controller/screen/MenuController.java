@@ -3,9 +3,15 @@ package com.github.franckyi.emerald.controller.screen;
 import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.controller.dialog.AboutDialogController;
+import com.github.franckyi.emerald.controller.dialog.LoginDialogController;
 import com.github.franckyi.emerald.controller.screen.primary.*;
+import com.github.franckyi.emerald.data.User;
 import com.github.franckyi.emerald.service.task.instance.InstanceCreatorTask;
+import com.github.franckyi.emerald.service.web.CallHandler;
+import com.github.franckyi.emerald.service.web.resource.mojang.auth.invalidate.InvalidateRequest;
 import com.github.franckyi.emerald.util.Emerald;
+import com.github.franckyi.emerald.util.UserManager;
+import com.github.franckyi.emerald.util.WebServiceManager;
 import com.github.franckyi.emerald.view.animation.EmeraldTimeline;
 import com.github.franckyi.emerald.view.animation.InstantTimeline;
 import com.github.franckyi.emerald.view.animation.ScreenAnimation;
@@ -13,6 +19,9 @@ import com.jfoenix.controls.JFXBadge;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXToolbar;
+import de.jensd.fx.glyphs.materialicons.MaterialIcon;
+import de.jensd.fx.glyphs.materialicons.MaterialIconView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.concurrent.Task;
@@ -20,15 +29,31 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import org.tinylog.Logger;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class MenuController extends ScreenController<JFXDrawer, Void> {
     @FXML
     private BorderPane sidePane;
+    @FXML
+    private ImageView userImageView;
+    @FXML
+    private Label usernameLabel;
+    @FXML
+    private Label userStatusLabel;
+    @FXML
+    private JFXButton userButton;
+    @FXML
+    private MaterialIconView userButtonGlyph;
     @FXML
     private HBox instancesButton;
     @FXML
@@ -60,6 +85,7 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
     private TaskListController taskListController;
     private SettingsController settingsController;
     private AboutDialogController aboutDialogController;
+    private LoginDialogController loginDialogController;
 
     public static Screen<InstanceListController> INSTANCES;
     public static Screen<ModpackListController> MODPACKS;
@@ -80,6 +106,8 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
         WORLDS = new Screen<>(this::getWorldListController, this::getWorldsButton);
         TASKS = new Screen<>(this::getTaskListController, this::getTasksButton);
         SETTINGS = new Screen<>(this::getSettingsController, this::getSettingsButton);
+        Emerald.getUser().addListener(obs -> Platform.runLater(this::updateUser));
+        this.updateUser();
         // fixing node hierarchy
         this.getRoot().lookup(".jfx-drawer-overlay-pane").toFront();
         sidePane.getParent().toFront();
@@ -97,9 +125,54 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
         badge.refreshBadge();
     }
 
+    private void updateUser() {
+        User user = Emerald.getUser().get();
+        userStatusLabel.getGraphic().getStyleClass().removeAll("fill-error", "fill-success");
+        userButton.getStyleClass().removeAll("button-success", "button-error");
+        if (user != null) {
+            try { // TODO cache the image
+                userImageView.setImage(new Image(new URL("https://crafatar.com/avatars/" + user.getProfileId() + "?size=50&default=MHF_Steve").openStream()));
+            } catch (IOException e) {
+                Logger.error(e);
+            }
+            usernameLabel.setText(user.getDisplayName());
+            userStatusLabel.setText("Logged in");
+            userStatusLabel.getGraphic().getStyleClass().add("fill-success");
+            userButton.getStyleClass().add("button-error");
+            userButtonGlyph.setIcon(MaterialIcon.PERSON_OUTLINE);
+        } else {
+            userImageView.setImage(new Image(this.getClass().getResourceAsStream("/view/img/steve.png")));
+            usernameLabel.setText("Steve");
+            userStatusLabel.setText("Not logged in");
+            userStatusLabel.getGraphic().getStyleClass().add("fill-error");
+            userButton.getStyleClass().add("button-success");
+            userButtonGlyph.setIcon(MaterialIcon.PERSON_ADD);
+        }
+        userButton.setDisable(false);
+    }
+
     @Override
     public void afterHiding() {
         this.getRoot().close();
+    }
+
+    @FXML
+    private void userAction() {
+        User user = Emerald.getUser().get();
+        if (user == null) {
+            this.showLogin();
+        } else {
+            userButton.setDisable(true);
+            Logger.info("Logging out...");
+            CallHandler.builder(WebServiceManager.getMojangAuthService().invalidate(new InvalidateRequest(user.getAccessToken(), user.getClientToken())))
+                    .onResponse(v -> {
+                        Logger.info("Logout succeeded");
+                        Emerald.getUser().set(null);
+                        UserManager.save();
+                    })
+                    .onFailure(throwable -> Logger.warn(throwable, "Logout failed"))
+                    .build().runAsync();
+        }
     }
 
     @FXML
@@ -152,7 +225,28 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
         if (aboutDialogController == null) {
             aboutDialogController = Controller.loadFXML("dialog/AboutDialog.fxml");
         }
-        aboutDialogController.getRoot().show(this.getMainController().getRoot());
+        aboutDialogController.open();
+    }
+
+    public void showLogin() {
+        this.showLogin(null, null);
+    }
+
+    public void showLogin(Consumer<User> callback) {
+        this.showLogin(callback, null);
+    }
+
+    public void showLogin(String errorText) {
+        this.showLogin(null, errorText);
+    }
+
+    public void showLogin(Consumer<User> callback, String errorText) {
+        if (loginDialogController == null) {
+            loginDialogController = Controller.loadFXML("dialog/LoginDialog.fxml");
+        }
+        loginDialogController.setLoginAction(callback);
+        loginDialogController.setErrorText(errorText);
+        loginDialogController.open();
     }
 
     public void showScreenInstant(Screen<?> screen) {

@@ -1,8 +1,8 @@
-package com.github.franckyi.emerald.service.web.resource.mojang.auth;
+package com.github.franckyi.emerald.service.web.resource.mojang.auth.authenticate;
 
 import java.util.List;
 
-public class AuthResponse {
+public class AuthenticateResponse {
     private User user;
     private String accessToken;
     private String clientToken;

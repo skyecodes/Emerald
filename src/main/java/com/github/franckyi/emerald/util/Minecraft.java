@@ -3,7 +3,8 @@ package com.github.franckyi.emerald.util;
 import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.model.Instance;
 import com.github.franckyi.emerald.service.storage.LauncherStorage;
-import com.github.franckyi.emerald.service.task.launcher.LauncherSetupTask;
+import com.github.franckyi.emerald.service.task.launcher.run.LauncherRunTask;
+import com.github.franckyi.emerald.service.task.launcher.setup.LauncherSetupTask;
 import com.github.franckyi.emerald.service.web.resource.mojang.VersionManifest;
 import org.tinylog.Logger;
 
@@ -26,8 +27,18 @@ public final class Minecraft {
 
     public static void launch(Instance instance) {
         if (!LauncherStorage.isLauncherInitialized()) {
+            LauncherSetupTask task = LauncherSetupTask.create();
+            task.getOnSucceededListeners().add(e -> launch(instance));
+            task.getOnLastTaskSucceededListeners().add(EmeraldApp.getInstance().getMainController().getMenuController()::showInstances);
             EmeraldApp.getInstance().getMainController().getMenuController().showTasks();
-            EmeraldApp.getInstance().getMainController().getMenuController().getTaskListController().submit(LauncherSetupTask.create());
+            EmeraldApp.getInstance().getMainController().getMenuController().getTaskListController().submit(task);
+            return;
+        }
+        if (Emerald.getUser().get() == null) {
+            EmeraldApp.getInstance().getMainController().getMenuController().showLogin(user -> launch(instance));
+        } else {
+            Emerald.getExecutorService().submit(LauncherRunTask.create(instance));
+            Logger.info("Launching instance \"{}\"", instance.getDisplayName());
         }
     }
 
