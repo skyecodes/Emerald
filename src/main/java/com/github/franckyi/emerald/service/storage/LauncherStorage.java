@@ -9,7 +9,7 @@ public final class LauncherStorage {
     public static boolean isLauncherInitialized() {
         switch (SystemUtils.getOS()) {
             case WINDOWS:
-                break;
+                return Files.isRegularFile(Emerald.getApplicationPath().resolve("minecraft-launcher").resolve("Minecraft.exe"));
             case LINUX:
                 return Files.isDirectory(Emerald.getApplicationPath().resolve("minecraft-launcher"));
             case MAC:
