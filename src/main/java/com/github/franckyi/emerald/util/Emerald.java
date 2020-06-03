@@ -18,55 +18,79 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public final class Emerald {
-    private static Gson gson;
-    private static ExecutorService executorService;
-    private static Configuration configuration;
-    private static ObjectProperty<User> user;
-    private static ObservableList<Instance> instances;
-    private static Path applicationPath;
+    private static volatile Gson gson;
+    private static volatile ExecutorService executorService;
+    private static volatile Configuration configuration;
+    private static volatile ObjectProperty<User> user;
+    private static volatile ObservableList<Instance> instances;
+    private static volatile Path applicationPath;
 
     public static Gson getGson() {
         if (gson == null) {
-            Logger.debug("Loading Gson");
-            gson = new GsonBuilder()
-                    .registerTypeAdapter(Instant.class, new InstantTypeAdapter())
-                    .create();
+            synchronized (Emerald.class) {
+                if (gson == null) {
+                    Logger.debug("Loading Gson");
+                    gson = new GsonBuilder()
+                            .registerTypeAdapter(Instant.class, new InstantTypeAdapter())
+                            .create();
+                }
+            }
         }
         return gson;
     }
 
     public static ExecutorService getExecutorService() {
         if (executorService == null) {
-            Logger.debug("Loading executor service");
-            executorService = Executors.newCachedThreadPool();
+            synchronized (Emerald.class) {
+                if (executorService == null) {
+                    Logger.debug("Loading executor service");
+                    executorService = Executors.newCachedThreadPool();
+                }
+            }
         }
         return executorService;
     }
 
     public static Configuration getConfiguration() {
         if (configuration == null) {
-            configuration = ConfigManager.load();
+            synchronized (Emerald.class) {
+                if (configuration == null) {
+                    configuration = ConfigManager.load();
+                }
+            }
         }
         return configuration;
     }
 
     public static ObjectProperty<User> getUser() {
         if (user == null) {
-            user = new SimpleObjectProperty<>();
+            synchronized (Emerald.class) {
+                if (user == null) {
+                    user = new SimpleObjectProperty<>();
+                }
+            }
         }
         return user;
     }
 
     public static ObservableList<Instance> getInstances() {
         if (instances == null) {
-            instances = FXCollections.observableArrayList();
+            synchronized (Emerald.class) {
+                if (user == null) {
+                    instances = FXCollections.observableArrayList();
+                }
+            }
         }
         return instances;
     }
 
     public static Path getApplicationPath() {
         if (applicationPath == null) {
-            applicationPath = PreferenceManager.loadApplicationPath();
+            synchronized (Emerald.class) {
+                if (user == null) {
+                    applicationPath = PreferenceManager.loadApplicationPath();
+                }
+            }
         }
         return applicationPath;
     }

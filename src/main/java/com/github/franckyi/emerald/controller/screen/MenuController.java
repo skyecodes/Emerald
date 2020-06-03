@@ -9,6 +9,7 @@ import com.github.franckyi.emerald.data.User;
 import com.github.franckyi.emerald.service.task.instance.InstanceCreatorTask;
 import com.github.franckyi.emerald.service.web.CallHandler;
 import com.github.franckyi.emerald.service.web.resource.mojang.auth.invalidate.InvalidateRequest;
+import com.github.franckyi.emerald.util.Cache;
 import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.UserManager;
 import com.github.franckyi.emerald.util.WebServiceManager;
@@ -36,8 +37,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import org.tinylog.Logger;
 
-import java.io.IOException;
-import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -97,6 +98,8 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
 
     private Screen<?> currentScreen;
 
+    private Map<String, Image> avatars;
+
     @Override
     protected void initialize() {
         INSTANCES = new Screen<>(this::getInstanceListController, this::getInstancesButton);
@@ -106,6 +109,7 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
         WORLDS = new Screen<>(this::getWorldListController, this::getWorldsButton);
         TASKS = new Screen<>(this::getTaskListController, this::getTasksButton);
         SETTINGS = new Screen<>(this::getSettingsController, this::getSettingsButton);
+        avatars = new HashMap<>();
         Emerald.getUser().addListener(obs -> Platform.runLater(this::updateUser));
         this.updateUser();
         // fixing node hierarchy
@@ -130,18 +134,20 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
         userStatusLabel.getGraphic().getStyleClass().removeAll("fill-error", "fill-success");
         userButton.getStyleClass().removeAll("button-success", "button-error");
         if (user != null) {
-            try { // TODO cache the image
-                userImageView.setImage(new Image(new URL("https://crafatar.com/avatars/" + user.getProfileId() + "?size=50&default=MHF_Steve").openStream()));
-            } catch (IOException e) {
-                Logger.error(e);
+            if (!avatars.containsKey(user.getProfileId())) {
+                avatars.put(user.getProfileId(), new Image(Cache.getOrDefault(Cache.AVATARS, user.getProfileId() + ".png", "https://crafatar.com/avatars/" + user.getProfileId() + "?size=50&default=MHF_Steve")));
             }
+            userImageView.setImage(avatars.get(user.getProfileId()));
             usernameLabel.setText(user.getDisplayName());
             userStatusLabel.setText("Logged in");
             userStatusLabel.getGraphic().getStyleClass().add("fill-success");
             userButton.getStyleClass().add("button-error");
             userButtonGlyph.setIcon(MaterialIcon.PERSON_OUTLINE);
         } else {
-            userImageView.setImage(new Image(this.getClass().getResourceAsStream("/view/img/steve.png")));
+            if (!avatars.containsKey(null)) {
+                avatars.put(null, new Image(this.getClass().getResourceAsStream("/view/img/steve.png")));
+            }
+            userImageView.setImage(avatars.get(null));
             usernameLabel.setText("Steve");
             userStatusLabel.setText("Not logged in");
             userStatusLabel.getGraphic().getStyleClass().add("fill-error");
