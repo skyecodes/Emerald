@@ -25,7 +25,7 @@
             </VBox>
         </body>
         <actions>
-            <JFXButton onAction="#closeDialogAction" styleClass="dialog-close">CLOSE</JFXButton>
+            <JFXButton onAction="#close" styleClass="dialog-close">CLOSE</JFXButton>
         </actions>
     </JFXDialogLayout>
 </JFXDialog>

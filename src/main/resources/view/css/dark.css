@@ -9,6 +9,11 @@
     -dark4: rgb(53, 53, 53);
     -primary: rgb(187, 134, 252);
 
+    -error: rgb(207, 102, 121);
+    -error-background: rgba(207, 102, 121, 0.24);
+    -error-variant: rgba(207, 102, 121, 0.8);
+    -error-text: -black;
+
     -text-color: -white;
     -text-color-variant: rgba(255, 255, 255, 0.7);
     -button-text-color: -white;

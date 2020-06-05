@@ -5,11 +5,6 @@ import javafx.fxml.FXML;
 
 public class ResetConfigDialogController extends DialogController<SettingsController> {
     @FXML
-    private void closeDialogAction() {
-        this.close();
-    }
-
-    @FXML
     private void resetAction() {
         this.close();
         this.getModel().resetConfig();

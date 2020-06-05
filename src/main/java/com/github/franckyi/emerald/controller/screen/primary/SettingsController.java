@@ -3,6 +3,7 @@ package com.github.franckyi.emerald.controller.screen.primary;
 import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.controller.dialog.ResetConfigDialogController;
+import com.github.franckyi.emerald.controller.dialog.UpdateLauncherDialogController;
 import com.github.franckyi.emerald.data.Configuration;
 import com.github.franckyi.emerald.util.ConfigManager;
 import com.github.franckyi.emerald.util.Emerald;
@@ -21,13 +22,13 @@ public class SettingsController extends PrimaryScreenController<BorderPane, Conf
     private JFXToggleButton darkThemeToggle;
 
     private ResetConfigDialogController resetConfigDialogController;
+    private UpdateLauncherDialogController updateLauncherDialogController;
 
     private Configuration currentConfiguration;
     private Configuration oldConfiguration;
 
     @Override
     protected void initialize() {
-        resetConfigDialogController = Controller.loadFXML("dialog/ResetConfigDialog.fxml", this);
         currentConfiguration = Emerald.getConfiguration();
         this.updateFields();
     }
@@ -42,6 +43,14 @@ public class SettingsController extends PrimaryScreenController<BorderPane, Conf
                 EmeraldApp.getInstance().updateTheme();
             });
         }
+    }
+
+    @FXML
+    private void updateLauncherAction() {
+        if (updateLauncherDialogController == null) {
+            updateLauncherDialogController = Controller.loadFXML("dialog/UpdateLauncherDialog.fxml");
+        }
+        updateLauncherDialogController.open();
     }
 
     public void resetConfig() {
@@ -76,6 +85,9 @@ public class SettingsController extends PrimaryScreenController<BorderPane, Conf
         rippler.getStyleClass().add("navigation-button");
         rippler.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
+                if (resetConfigDialogController == null) {
+                    resetConfigDialogController = Controller.loadFXML("dialog/ResetConfigDialog.fxml");
+                }
                 resetConfigDialogController.open();
             }
         });

@@ -8,9 +8,6 @@
     -black: black;
     -success: rgb(76, 175, 80);
     -success-variant: rgba(76, 175, 80, 0.8);
-    -error: rgb(176, 0, 32);
-    -error-background: rgba(176, 0, 32, 0.24);
-    -error-variant: rgba(176, 0, 32, 0.8);
 }
 
 #root {
@@ -102,17 +99,24 @@
     -fx-background-color: -error-variant;
 }
 
-.button-success, .button-error, .button-success-variant, .button-error-variant {
+.button-success, .button-success-variant {
     -fx-text-fill: -white;
+}
+
+.button-error, .button-error-variant {
+    -fx-text-fill: -error-text;
 }
 
 .button-surface .glyph-icon, .button-surface-variant .glyph-icon {
     -fx-fill: -text-color;
 }
 
-.button-success .glyph-icon, .button-error .glyph-icon,
-.button-success-variant .glyph-icon, .button-error-variant .glyph-icon {
+.button-success .glyph-icon, .button-success-variant .glyph-icon {
     -fx-fill: -white;
+}
+
+.button-error .glyph-icon, .button-error-variant .glyph-icon {
+    -fx-fill: -error-text;
 }
 
 /* Hyperlink */
@@ -172,11 +176,11 @@
     -jfx-mask-type: CIRCLE;
 }
 
-.button-success .jfx-rippler {
+.button-success .jfx-rippler, .button-success-variant .jfx-rippler {
     -jfx-rippler-fill: green;
 }
 
-.button-error .jfx-rippler {
+.button-error .jfx-rippler, .button-error-variant .jfx-rippler {
     -jfx-rippler-fill: darkred;
 }
 
@@ -274,6 +278,27 @@
 
 .jfx-tree-table-view .tree-table-row-cell:selected .tree-table-cell .glyph-icon {
     -fx-fill: -selected-text-color;
+}
+
+/* TabPane */
+.jfx-tab-pane .tab-header-area .tab {
+    -fx-padding: 5;
+}
+
+.jfx-tab-pane .tab-header-area .tab .tab-label {
+    -fx-text-fill: -text-color-variant;
+}
+
+.jfx-tab-pane .tab-header-area .tab:selected .tab-label {
+    -fx-text-fill: -text-color;
+}
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: -surface-color2;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: -primary;
 }
 
 /* Menu Header */

@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXToggleButton?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.VBox?>
 <?import java.lang.String?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
-      fx:controller="com.github.franckyi.emerald.controller.screen.primary.SettingsController" alignment="CENTER"
-      styleClass="container">
-    <children>
-        <JFXToggleButton fx:id="darkThemeToggle" text="Dark Theme" toggleColor="#fafafa"
-                         toggleLineColor="#4caf50" unToggleLineColor="#f44336">
-            <styleClass>
-                <String fx:value="subhead"/>
-                <String fx:value="surface"/>
-            </styleClass>
-        </JFXToggleButton>
-    </children>
-</VBox>
+<JFXTabPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
+            fx:controller="com.github.franckyi.emerald.controller.screen.primary.SettingsController"
+            styleClass="container">
+    <Tab text="General">
+        <VBox alignment="CENTER">
+            <JFXToggleButton fx:id="darkThemeToggle" text="Dark Theme" toggleColor="#fafafa"
+                             toggleLineColor="#4caf50" unToggleLineColor="#f44336">
+                <styleClass>
+                    <String fx:value="subhead"/>
+                    <String fx:value="surface"/>
+                </styleClass>
+            </JFXToggleButton>
+        </VBox>
+    </Tab>
+    <Tab text="Minecraft">
+        <VBox alignment="CENTER">
+            <JFXButton onAction="#updateLauncherAction" styleClass="button-surface">
+                Update Launcher
+                <graphic>
+                    <MaterialIconView glyphName="UPDATE"/>
+                </graphic>
+                <padding>
+                    <Insets topRightBottomLeft="20"/>
+                </padding>
+            </JFXButton>
+        </VBox>
+    </Tab>
+    <Tab text="Data Storage">
+    </Tab>
+</JFXTabPane>

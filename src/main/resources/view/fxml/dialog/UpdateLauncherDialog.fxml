@@ -6,17 +6,19 @@
 <?import javafx.scene.control.Label?>
 <JFXDialog transitionType="CENTER" xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.github.franckyi.emerald.controller.dialog.ResetConfigDialogController">
+           fx:controller="com.github.franckyi.emerald.controller.dialog.UpdateLauncherDialogController">
     <JFXDialogLayout>
         <heading>
-            <Label>Reset configuration</Label>
+            <Label>Update Minecraft launcher</Label>
         </heading>
         <body>
-            <Label>Do you want to reset the configuration to the default values?</Label>
+            <Label>This operation will delete the current Minecraft launcher files. The new launcher will be downloaded
+                the next time you launch an instance.
+            </Label>
         </body>
         <actions>
             <JFXButton onAction="#close" styleClass="dialog-close">CANCEL</JFXButton>
-            <JFXButton onAction="#resetAction" styleClass="dialog-close">YES</JFXButton>
+            <JFXButton onAction="#updateLauncherAction" styleClass="dialog-close">OK</JFXButton>
         </actions>
     </JFXDialogLayout>
 </JFXDialog>

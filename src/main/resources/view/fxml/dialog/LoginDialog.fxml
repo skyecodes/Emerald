@@ -33,7 +33,7 @@
             </VBox>
         </body>
         <actions>
-            <JFXButton onAction="#closeDialogAction" styleClass="dialog-close">CANCEL</JFXButton>
+            <JFXButton onAction="#close" styleClass="dialog-close">CANCEL</JFXButton>
             <JFXButton fx:id="loginButton" onAction="#loginAction" styleClass="dialog-close">LOGIN</JFXButton>
         </actions>
     </JFXDialogLayout>

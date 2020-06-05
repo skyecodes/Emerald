@@ -72,11 +72,6 @@ public class LoginDialogController extends DialogController<Void> {
     }
 
     @FXML
-    private void closeDialogAction() {
-        this.close();
-    }
-
-    @FXML
     private void loginAction() {
         if (!usernameField.validate() || !passwordField.validate()) return;
         loginButton.setDisable(true);

@@ -3,6 +3,11 @@
     -primary-variant: rgb(55, 0, 179);
     -primary-background: rgba(98, 0, 238, 0.12);
 
+    -error: rgb(176, 0, 32);
+    -error-background: rgba(176, 0, 32, 0.24);
+    -error-variant: rgba(176, 0, 32, 0.8);
+    -error-text: -white;
+
     -text-color: -black;
     -text-color-variant: rgba(0, 0, 0, 0.7);
     -button-text-color: -primary;
