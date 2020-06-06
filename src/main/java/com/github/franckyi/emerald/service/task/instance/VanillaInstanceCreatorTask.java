@@ -6,6 +6,7 @@ import com.github.franckyi.emerald.service.storage.InstanceStorage;
 import com.github.franckyi.emerald.service.task.base.DownloadFileTask;
 import com.github.franckyi.emerald.service.web.resource.mojang.VersionManifest;
 import com.github.franckyi.emerald.util.Emerald;
+import com.github.franckyi.emerald.util.PathUtils;
 import com.google.gson.Gson;
 import org.tinylog.Logger;
 
@@ -34,8 +35,8 @@ public class VanillaInstanceCreatorTask extends InstanceCreatorTask {
         this.updateProgress(1, 3);
 
         this.updateMessage("Downloading version file");
-        Path minecraftDir = instanceDirectory.resolve(".minecraft");
-        Path versionDir = Files.createDirectories(minecraftDir.resolve("versions").resolve(version.getId()));
+        Path minecraftDir = PathUtils.getInstanceMinecraftPath(instanceDirectory);
+        Path versionDir = Files.createDirectories(PathUtils.getInstanceVersionsPath(minecraftDir).resolve(version.getId()));
         Path versionFile = versionDir.resolve(version.getId() + ".json");
         this.downloadVersionFile(versionFile);
 
@@ -62,7 +63,6 @@ public class VanillaInstanceCreatorTask extends InstanceCreatorTask {
     }
 
     private void setupLauncherProfile(Path minecraftDir) throws IOException {
-        Path launcherProfilesFile = minecraftDir.resolve("launcher_profiles.json");
         Gson gson = Emerald.getGson();
         InputStreamReader reader = new InputStreamReader(this.getClass().getResourceAsStream("/minecraft/launcher_profiles.json"));
         LauncherProfiles profiles = gson.fromJson(reader, LauncherProfiles.class);
@@ -75,6 +75,7 @@ public class VanillaInstanceCreatorTask extends InstanceCreatorTask {
         profile.setName(instance.getDisplayName());
         profile.setType("custom");
         profiles.getProfiles().put("00000000000000000000000000000000", profile);
+        Path launcherProfilesFile = minecraftDir.resolve("launcher_profiles.json");
         BufferedWriter writer = Files.newBufferedWriter(launcherProfilesFile);
         gson.toJson(profiles, writer);
         writer.close();

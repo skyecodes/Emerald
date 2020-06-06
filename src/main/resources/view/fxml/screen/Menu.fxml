@@ -38,8 +38,7 @@
                     <Separator/>
                     <VBox spacing="5" styleClass="button-list">
                         <HBox fx:id="instancesButton">
-                            <JFXButton onAction="#showInstances">
-                                Instances
+                            <JFXButton text="Instances" onAction="#showInstances">
                                 <graphic>
                                     <MaterialIconView glyphName="DNS"/>
                                 </graphic>
@@ -50,26 +49,22 @@
                                 </graphic>
                             </JFXButton>
                         </HBox>
-                        <JFXButton fx:id="modpacksButton" onAction="#showModpacks">
-                            Modpacks
+                        <JFXButton text="Modpacks" fx:id="modpacksButton" onAction="#showModpacks">
                             <graphic>
                                 <MaterialIconView glyphName="WIDGETS"/>
                             </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="modsButton" onAction="#showMods">
-                            Mods
+                        <JFXButton text="Mods" fx:id="modsButton" onAction="#showMods">
                             <graphic>
                                 <MaterialIconView glyphName="BUILD"/>
                             </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="resourcePacksButton" onAction="#showResourcePacks">
-                            Resource Packs
+                        <JFXButton text="Resource Packs" fx:id="resourcePacksButton" onAction="#showResourcePacks">
                             <graphic>
                                 <MaterialIconView glyphName="PHOTO_LIBRARY"/>
                             </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="worldsButton" onAction="#showWorlds">
-                            Worlds
+                        <JFXButton text="Worlds" fx:id="worldsButton" onAction="#showWorlds">
                             <graphic>
                                 <MaterialIconView glyphName="PUBLIC"/>
                             </graphic>
@@ -79,8 +74,8 @@
             </top>
             <center>
                 <VBox spacing="5" styleClass="button-list" alignment="CENTER">
-                    <JFXButton fx:id="tasksButton" onAction="#showTasks" visible="false" styleClass="important">
-                        Tasks
+                    <JFXButton text="Tasks" fx:id="tasksButton" onAction="#showTasks" visible="false"
+                               styleClass="important">
                         <graphic>
                             <MaterialIconView glyphName="GET_APP"/>
                         </graphic>
@@ -89,14 +84,12 @@
             </center>
             <bottom>
                 <VBox spacing="5" styleClass="button-list" alignment="BOTTOM_LEFT">
-                    <JFXButton fx:id="settingsButton" onAction="#showSettings">
-                        Settings
+                    <JFXButton text="Settings" fx:id="settingsButton" onAction="#showSettings">
                         <graphic>
                             <MaterialIconView glyphName="SETTINGS"/>
                         </graphic>
                     </JFXButton>
-                    <JFXButton onAction="#showAbout">
-                        About...
+                    <JFXButton text="About..." onAction="#showAbout">
                         <graphic>
                             <MaterialIconView glyphName="INFO"/>
                         </graphic>

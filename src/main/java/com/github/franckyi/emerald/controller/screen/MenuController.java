@@ -6,13 +6,10 @@ import com.github.franckyi.emerald.controller.dialog.AboutDialogController;
 import com.github.franckyi.emerald.controller.dialog.LoginDialogController;
 import com.github.franckyi.emerald.controller.screen.primary.*;
 import com.github.franckyi.emerald.data.User;
+import com.github.franckyi.emerald.service.storage.Cache;
 import com.github.franckyi.emerald.service.task.instance.InstanceCreatorTask;
-import com.github.franckyi.emerald.service.web.CallHandler;
-import com.github.franckyi.emerald.service.web.resource.mojang.auth.invalidate.InvalidateRequest;
-import com.github.franckyi.emerald.util.Cache;
 import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.UserManager;
-import com.github.franckyi.emerald.util.WebServiceManager;
 import com.github.franckyi.emerald.view.animation.EmeraldTimeline;
 import com.github.franckyi.emerald.view.animation.InstantTimeline;
 import com.github.franckyi.emerald.view.animation.ScreenAnimation;
@@ -37,6 +34,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import org.tinylog.Logger;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -133,11 +131,16 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
         User user = Emerald.getUser().get();
         userStatusLabel.getGraphic().getStyleClass().removeAll("fill-error", "fill-success");
         userButton.getStyleClass().removeAll("button-success", "button-error");
-        if (user != null) {
+        if (UserManager.isUserLoggedIn()) {
             if (!avatars.containsKey(user.getProfileId())) {
-                avatars.put(user.getProfileId(), new Image(Cache.getOrDefault(Cache.AVATARS, user.getProfileId() + ".png", "https://crafatar.com/avatars/" + user.getProfileId() + "?size=50&default=MHF_Steve")));
+                Emerald.getExecutorService().submit(() -> {
+                    InputStream is = Cache.getOrDefault(Cache.AVATARS, user.getProfileId() + ".png", "https://crafatar.com/avatars/" + user.getProfileId() + "?size=50&default=MHF_Steve");
+                    if (is != null) {
+                        avatars.put(user.getProfileId(), new Image(is));
+                    }
+                    Platform.runLater(() -> userImageView.setImage(avatars.getOrDefault(user.getProfileId(), null)));
+                });
             }
-            userImageView.setImage(avatars.get(user.getProfileId()));
             usernameLabel.setText(user.getDisplayName());
             userStatusLabel.setText("Logged in");
             userStatusLabel.getGraphic().getStyleClass().add("fill-success");
@@ -164,20 +167,13 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
 
     @FXML
     private void userAction() {
-        User user = Emerald.getUser().get();
-        if (user == null) {
-            this.showLogin();
-        } else {
+        if (UserManager.isUserLoggedIn()) {
             userButton.setDisable(true);
+            EmeraldApp.getInstance().fixFocus();
             Logger.info("Logging out...");
-            CallHandler.builder(WebServiceManager.getMojangAuthService().invalidate(new InvalidateRequest(user.getAccessToken(), user.getClientToken())))
-                    .onResponse(v -> {
-                        Logger.info("Logout succeeded");
-                        Emerald.getUser().set(null);
-                        UserManager.save();
-                    })
-                    .onFailure(throwable -> Logger.warn(throwable, "Logout failed"))
-                    .build().runAsync();
+            UserManager.invalidate();
+        } else {
+            this.showLogin();
         }
     }
 

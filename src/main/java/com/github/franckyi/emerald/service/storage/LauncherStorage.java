@@ -1,6 +1,6 @@
 package com.github.franckyi.emerald.service.storage;
 
-import com.github.franckyi.emerald.util.Emerald;
+import com.github.franckyi.emerald.util.PathUtils;
 import com.github.franckyi.emerald.util.SystemUtils;
 
 import java.nio.file.Files;
@@ -9,9 +9,9 @@ public final class LauncherStorage {
     public static boolean isLauncherInitialized() {
         switch (SystemUtils.getOS()) {
             case WINDOWS:
-                return Files.isRegularFile(Emerald.getApplicationPath().resolve("minecraft-launcher").resolve("Minecraft.exe"));
+                return Files.isRegularFile(PathUtils.getLauncherPath().resolve("Minecraft.exe"));
             case LINUX:
-                return Files.isDirectory(Emerald.getApplicationPath().resolve("minecraft-launcher"));
+                return Files.isDirectory(PathUtils.getLauncherPath());
             case MAC:
                 break;
         }

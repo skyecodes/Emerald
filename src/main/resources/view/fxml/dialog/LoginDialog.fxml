@@ -10,12 +10,12 @@
            fx:controller="com.github.franckyi.emerald.controller.dialog.LoginDialogController">
     <JFXDialogLayout>
         <heading>
-            <Label>Login to your Mojang account</Label>
+            <Label text="Login to your Mojang account"/>
         </heading>
         <body>
             <VBox spacing="10">
                 <VBox spacing="5">
-                    <Label>Please enter your credentials.</Label>
+                    <Label text="Please enter your credentials."/>
                     <Label fx:id="errorLabel" styleClass="text-error">
                         <graphic>
                             <MaterialIconView glyphName="ERROR"/>
@@ -23,18 +23,18 @@
                     </Label>
                 </VBox>
                 <HBox spacing="20">
-                    <Label>Username</Label>
+                    <Label text="Username"/>
                     <JFXTextField fx:id="usernameField" prefWidth="250"/>
                 </HBox>
                 <HBox spacing="20">
-                    <Label>Password</Label>
+                    <Label text="Password"/>
                     <JFXPasswordField fx:id="passwordField" prefWidth="250"/>
                 </HBox>
             </VBox>
         </body>
         <actions>
-            <JFXButton onAction="#close" styleClass="dialog-close">CANCEL</JFXButton>
-            <JFXButton fx:id="loginButton" onAction="#loginAction" styleClass="dialog-close">LOGIN</JFXButton>
+            <JFXButton text="CANCEL" onAction="#close" styleClass="dialog-close"/>
+            <JFXButton text="LOGIN" fx:id="loginButton" onAction="#loginAction" styleClass="dialog-close"/>
         </actions>
     </JFXDialogLayout>
 </JFXDialog>

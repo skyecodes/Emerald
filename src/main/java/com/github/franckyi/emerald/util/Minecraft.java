@@ -34,7 +34,7 @@ public final class Minecraft {
             EmeraldApp.getInstance().getMainController().getMenuController().getTaskListController().submit(task);
             return;
         }
-        if (Emerald.getUser().get() == null) {
+        if (!UserManager.isUserLoggedIn()) {
             EmeraldApp.getInstance().getMainController().getMenuController().showLogin(user -> launch(instance));
         } else {
             Emerald.getExecutorService().submit(LauncherRunTask.create(instance));

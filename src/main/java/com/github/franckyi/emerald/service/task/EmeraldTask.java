@@ -1,5 +1,7 @@
 package com.github.franckyi.emerald.service.task;
 
+import com.github.franckyi.emerald.view.ExceptionDialog;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -29,7 +31,10 @@ public abstract class EmeraldTask<V> extends Task<V> {
         this.setOnSucceeded(e -> onSucceededListeners.forEach(listener -> listener.handle(e)));
         this.setOnCancelled(e -> onCancelledListeners.forEach(listener -> listener.handle(e)));
         this.setOnFailed(e -> onFailedListeners.forEach(listener -> listener.handle(e)));
-        onFailedListeners.add(e -> Logger.error(this.getException(), "Error in task {}", this.getClass().getSimpleName()));
+        onFailedListeners.add(e -> {
+            Logger.error(this.getException(), "Error in task {}", this.getClass().getSimpleName());
+            Platform.runLater(() -> new ExceptionDialog(this.getException(), "Error in task " + this.getClass().getSimpleName()).show());
+        });
     }
 
     public List<EventHandler<WorkerStateEvent>> getOnScheduledListeners() {

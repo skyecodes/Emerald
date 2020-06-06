@@ -9,14 +9,14 @@
            fx:controller="com.github.franckyi.emerald.controller.dialog.ResetConfigDialogController">
     <JFXDialogLayout>
         <heading>
-            <Label>Reset configuration</Label>
+            <Label text="Reset configuration"/>
         </heading>
         <body>
-            <Label>Do you want to reset the configuration to the default values?</Label>
+            <Label text="Do you want to reset the configuration to the default values?"/>
         </body>
         <actions>
-            <JFXButton onAction="#close" styleClass="dialog-close">CANCEL</JFXButton>
-            <JFXButton onAction="#resetAction" styleClass="dialog-close">YES</JFXButton>
+            <JFXButton text="CANCEL" onAction="#close" styleClass="dialog-close"/>
+            <JFXButton text="YES" onAction="#resetAction" styleClass="dialog-close"/>
         </actions>
     </JFXDialogLayout>
 </JFXDialog>

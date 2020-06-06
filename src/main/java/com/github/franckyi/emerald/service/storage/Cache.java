@@ -1,11 +1,13 @@
-package com.github.franckyi.emerald.util;
+package com.github.franckyi.emerald.service.storage;
 
+import com.github.franckyi.emerald.util.PathUtils;
 import org.apache.commons.compress.utils.IOUtils;
 import org.tinylog.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,7 +17,7 @@ public final class Cache {
 
     public static void put(String category, String name, InputStream is) {
         try (OutputStream os = Files.newOutputStream(Files.createDirectories(
-                Emerald.getApplicationPath().resolve("cache").resolve(category)).resolve(name))) {
+                PathUtils.getCachePath().resolve(category)).resolve(name))) {
             IOUtils.copy(is, os);
         } catch (IOException e) {
             Logger.error(e, "Could not save data to cache");
@@ -23,7 +25,7 @@ public final class Cache {
     }
 
     public static InputStream get(String category, String name) {
-        Path path = Emerald.getApplicationPath().resolve("cache").resolve(category).resolve(name);
+        Path path = PathUtils.getCachePath().resolve(category).resolve(name);
         if (Files.isRegularFile(path)) {
             try {
                 return Files.newInputStream(path);
@@ -37,8 +39,14 @@ public final class Cache {
     public static InputStream getOrDefault(String category, String name, String url) {
         InputStream is = get(category, name);
         if (is != null) return is;
-        try (InputStream is1 = new URL(url).openStream()) {
-            put(category, name, is1);
+        try {
+            HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
+            if (c.getResponseCode() > 200 && c.getResponseCode() < 300) {
+                is = c.getInputStream();
+            } else {
+                is = c.getErrorStream();
+            }
+            put(category, name, is);
             return get(category, name);
         } catch (IOException e) {
             Logger.error(e, "Could not load data from URL");

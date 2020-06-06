@@ -12,12 +12,12 @@
            fx:controller="com.github.franckyi.emerald.controller.dialog.AboutDialogController">
     <JFXDialogLayout>
         <heading>
-            <Label>Emerald v0.0.1</Label>
+            <Label text="Emerald v0.0.1"/>
         </heading>
         <body>
             <VBox spacing="10">
-                <Label>Created by Franckyi</Label>
-                <Hyperlink onAction="#openWebsite">Open Website
+                <Label text="Created by Franckyi"/>
+                <Hyperlink text="Open Website" onAction="#openWebsite">
                     <graphic>
                         <MaterialIconView glyphName="PUBLIC"/>
                     </graphic>
@@ -25,7 +25,7 @@
             </VBox>
         </body>
         <actions>
-            <JFXButton onAction="#close" styleClass="dialog-close">CLOSE</JFXButton>
+            <JFXButton text="CLOSE" onAction="#close" styleClass="dialog-close"/>
         </actions>
     </JFXDialogLayout>
 </JFXDialog>

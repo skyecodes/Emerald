@@ -9,16 +9,14 @@
            fx:controller="com.github.franckyi.emerald.controller.dialog.UpdateLauncherDialogController">
     <JFXDialogLayout>
         <heading>
-            <Label>Update Minecraft launcher</Label>
+            <Label text="Update Minecraft launcher"/>
         </heading>
         <body>
-            <Label>This operation will delete the current Minecraft launcher files. The new launcher will be downloaded
-                the next time you launch an instance.
-            </Label>
+            <Label text="This operation will delete the current Minecraft launcher files. The new launcher will be downloaded the next time you launch an instance."/>
         </body>
         <actions>
-            <JFXButton onAction="#close" styleClass="dialog-close">CANCEL</JFXButton>
-            <JFXButton onAction="#updateLauncherAction" styleClass="dialog-close">OK</JFXButton>
+            <JFXButton text="CANCEL" onAction="#close" styleClass="dialog-close"/>
+            <JFXButton text="OK" onAction="#updateLauncherAction" styleClass="dialog-close"/>
         </actions>
     </JFXDialogLayout>
 </JFXDialog>

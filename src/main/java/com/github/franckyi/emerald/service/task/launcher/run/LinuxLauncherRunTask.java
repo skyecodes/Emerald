@@ -1,6 +1,7 @@
 package com.github.franckyi.emerald.service.task.launcher.run;
 
 import com.github.franckyi.emerald.model.Instance;
+import com.github.franckyi.emerald.util.PathUtils;
 
 public class LinuxLauncherRunTask extends LauncherRunTask {
     public LinuxLauncherRunTask(Instance instance) {
@@ -9,8 +10,8 @@ public class LinuxLauncherRunTask extends LauncherRunTask {
 
     @Override
     protected void runLauncher() throws Exception {
-        Process process = new ProcessBuilder("./minecraft-launcher", "-w", path.resolve("instances").resolve(instance.getName()).resolve(".minecraft").toString())
-                .directory(path.resolve("minecraft-launcher").toFile())
+        Process process = new ProcessBuilder("./minecraft-launcher", "-w", PathUtils.getInstanceMinecraftPath(instance.getName()).toString())
+                .directory(PathUtils.getLauncherPath().toFile())
                 .inheritIO()
                 .start();
         process.waitFor();

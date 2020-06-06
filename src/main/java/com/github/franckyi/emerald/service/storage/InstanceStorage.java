@@ -2,6 +2,7 @@ package com.github.franckyi.emerald.service.storage;
 
 import com.github.franckyi.emerald.model.Instance;
 import com.github.franckyi.emerald.util.Emerald;
+import com.github.franckyi.emerald.util.PathUtils;
 import com.google.gson.Gson;
 import javafx.application.Platform;
 import org.tinylog.Logger;
@@ -45,7 +46,7 @@ public final class InstanceStorage {
 
     public static Path createInstance(Instance instance) throws IOException {
         Gson gson = Emerald.getGson();
-        Path instanceDirectory = Emerald.getApplicationPath().resolve("instances").resolve(instance.getName());
+        Path instanceDirectory = PathUtils.getInstancePath(instance.getName());
         Files.createDirectories(instanceDirectory);
         Path instanceJsonFile = instanceDirectory.resolve("instance.json");
         BufferedWriter writer = Files.newBufferedWriter(instanceJsonFile);
@@ -56,7 +57,7 @@ public final class InstanceStorage {
 
     public static void deleteInstance(Instance instance) {
         try {
-            Storage.deleteDirectory(Emerald.getApplicationPath().resolve("instances/").resolve(instance.getName()));
+            Storage.deleteDirectory(PathUtils.getInstancePath(instance.getName()));
             Platform.runLater(() -> Emerald.getInstances().remove(instance));
             Logger.info("Instance \"{}\" deleted", instance.getDisplayName());
         } catch (IOException e) {

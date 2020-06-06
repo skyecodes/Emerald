@@ -1,8 +1,16 @@
 package com.github.franckyi.emerald.util;
 
 import com.github.franckyi.emerald.data.User;
+import com.github.franckyi.emerald.service.web.CallHandler;
+import com.github.franckyi.emerald.service.web.MojangAuthException;
+import com.github.franckyi.emerald.service.web.resource.mojang.auth.invalidate.InvalidateRequest;
+import com.github.franckyi.emerald.service.web.resource.mojang.auth.refresh.RefreshRequest;
+import com.github.franckyi.emerald.service.web.resource.mojang.auth.refresh.RefreshResponse;
+import com.github.franckyi.emerald.service.web.resource.mojang.auth.validate.ValidateRequest;
 import com.google.gson.Gson;
 import org.tinylog.Logger;
+import retrofit2.Call;
+import retrofit2.Response;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -31,6 +39,17 @@ public final class UserManager {
             }
         }
         Emerald.getUser().set(user);
+        if (UserManager.isUserLoggedIn()) {
+            try {
+                validate();
+            } catch (MojangAuthException e) {
+                Logger.warn(e.getMessage() + " - will ask for credentials when launching an instance");
+            } catch (IOException e) {
+                Logger.error(e, "Error while refreshing user token");
+            }
+        } else {
+            Logger.debug("No logged in user found");
+        }
     }
 
     public static void save() {
@@ -54,4 +73,42 @@ public final class UserManager {
         }
     }
 
+    public static void validate() throws IOException {
+        User user = Emerald.getUser().get();
+        Call<Void> call = WebServiceManager.getMojangAuthService().validate(new ValidateRequest(user.getAccessToken(), user.getClientToken()));
+        try {
+            call.execute();
+            Logger.debug("User \"{}\" is logged in", user.getUserName());
+        } catch (MojangAuthException e) {
+            Logger.info(e.getMessage() + " - refreshing user");
+            Call<RefreshResponse> call1 = WebServiceManager.getMojangAuthService().refresh(new RefreshRequest(user.getAccessToken(), user.getClientToken(), false));
+            Response<RefreshResponse> response1 = call1.execute();
+            if (response1.isSuccessful()) {
+                RefreshResponse body = response1.body();
+                user.setAccessToken(body.getAccessToken());
+                user.setClientToken(body.getClientToken());
+                UserManager.save();
+            }
+        }
+    }
+
+    public static void invalidate() {
+        User user = Emerald.getUser().get();
+        CallHandler.builder(WebServiceManager.getMojangAuthService().invalidate(new InvalidateRequest(user.getAccessToken(), user.getClientToken())))
+                .onResponse(v -> {
+                    User newUser = new User();
+                    newUser.setUserName(user.getUserName());
+                    newUser.setClientToken(user.getClientToken());
+                    Emerald.getUser().set(newUser);
+                    UserManager.save();
+                    Logger.info("Logout succeeded");
+                })
+                .onFailure(throwable -> Logger.error(throwable, "Logout failed"))
+                .build().runAsync();
+    }
+
+    public static boolean isUserLoggedIn() {
+        User user = Emerald.getUser().get();
+        return user != null && user.getAccessToken() != null;
+    }
 }

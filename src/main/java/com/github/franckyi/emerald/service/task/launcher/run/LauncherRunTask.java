@@ -26,11 +26,9 @@ import java.util.HashMap;
 
 public abstract class LauncherRunTask extends EmeraldTask<Void> {
     protected final Instance instance;
-    protected final Path path;
 
     protected LauncherRunTask(Instance instance) {
         this.instance = instance;
-        path = Emerald.getApplicationPath();
     }
 
     @Override
@@ -54,7 +52,7 @@ public abstract class LauncherRunTask extends EmeraldTask<Void> {
             }
         } catch (MojangAuthException e) {
             Logger.info(e.getMessage() + " - refreshing user");
-            Call<RefreshResponse> call1 = WebServiceManager.getMojangAuthService().refresh(new RefreshRequest(user.getAccessToken(), user.getClientToken(), true));
+            Call<RefreshResponse> call1 = WebServiceManager.getMojangAuthService().refresh(new RefreshRequest(user.getAccessToken(), user.getClientToken(), false));
             try {
                 Response<RefreshResponse> response1 = call1.execute();
                 if (response1.isSuccessful()) {
@@ -75,7 +73,7 @@ public abstract class LauncherRunTask extends EmeraldTask<Void> {
     private void updateLauncherProfileData() throws IOException {
         Gson gson = Emerald.getGson();
         User user = Emerald.getUser().get();
-        Path launcherProfilesFile = path.resolve("instances").resolve(instance.getName()).resolve(".minecraft").resolve("launcher_profiles.json");
+        Path launcherProfilesFile = PathUtils.getInstanceMinecraftPath(instance.getName()).resolve("launcher_profiles.json");
 
         BufferedReader reader = Files.newBufferedReader(launcherProfilesFile);
         LauncherProfiles profiles = gson.fromJson(reader, LauncherProfiles.class);

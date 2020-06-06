@@ -5,13 +5,13 @@
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <JFXTabPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
             fx:controller="com.github.franckyi.emerald.controller.screen.primary.SettingsController"
             styleClass="container">
-    <Tab text="General">
+    <Tab text="General" fx:id="generalTab">
         <VBox alignment="CENTER">
             <JFXToggleButton fx:id="darkThemeToggle" text="Dark Theme" toggleColor="#fafafa"
                              toggleLineColor="#4caf50" unToggleLineColor="#f44336">
@@ -22,10 +22,10 @@
             </JFXToggleButton>
         </VBox>
     </Tab>
-    <Tab text="Minecraft">
+    <Tab text="Minecraft" fx:id="minecraftTab">
         <VBox alignment="CENTER">
-            <JFXButton onAction="#updateLauncherAction" styleClass="button-surface">
-                Update Launcher
+            <JFXButton text="Update Launcher" fx:id="updateLauncherButton" onAction="#updateLauncherAction"
+                       styleClass="button-surface">
                 <graphic>
                     <MaterialIconView glyphName="UPDATE"/>
                 </graphic>
@@ -35,6 +35,21 @@
             </JFXButton>
         </VBox>
     </Tab>
-    <Tab text="Data Storage">
+    <Tab text="Data Storage" fx:id="dataStorageTab">
+        <VBox alignment="CENTER" spacing="10">
+            <VBox alignment="CENTER" spacing="5" styleClass="surface" VBox.vgrow="NEVER">
+                <Label fx:id="cacheSizeLabel"/>
+                <Label fx:id="instancesSizeLabel"/>
+                <Label fx:id="launcherSizeLabel"/>
+            </VBox>
+            <JFXButton text="Clear cache" onAction="#clearCacheAction" styleClass="button-surface">
+                <graphic>
+                    <MaterialIconView glyphName="UPDATE"/>
+                </graphic>
+                <padding>
+                    <Insets topRightBottomLeft="20"/>
+                </padding>
+            </JFXButton>
+        </VBox>
     </Tab>
 </JFXTabPane>
