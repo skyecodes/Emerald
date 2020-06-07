@@ -1,5 +1,6 @@
 package com.github.franckyi.emerald.util;
 
+import com.github.franckyi.emerald.Emerald;
 import javafx.concurrent.Task;
 
 import java.util.concurrent.Callable;

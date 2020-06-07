@@ -1,5 +1,7 @@
 package com.github.franckyi.emerald.util;
 
+import com.github.franckyi.emerald.Emerald;
+
 import java.nio.file.Path;
 
 public final class PathUtils {

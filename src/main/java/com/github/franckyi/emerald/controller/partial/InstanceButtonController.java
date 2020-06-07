@@ -1,10 +1,10 @@
 package com.github.franckyi.emerald.controller.partial;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.model.Instance;
 import com.github.franckyi.emerald.service.storage.InstanceStorage;
-import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.Minecraft;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -26,7 +26,7 @@ public class InstanceButtonController extends Controller<StackPane, Instance> {
         instanceMenu.toFront();
         this.getRoot().hoverProperty().addListener((obs, oldVal, newVal) -> {
             KeyValue kv = new KeyValue(instanceMenu.opacityProperty(), newVal ? 1 : 0);
-            KeyFrame kf = new KeyFrame(Duration.millis(50), kv);
+            KeyFrame kf = new KeyFrame(Duration.millis(100), kv);
             Timeline timeline = new Timeline(kf);
             timeline.play();
         });

@@ -1,5 +1,6 @@
 package com.github.franckyi.emerald.util;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.service.web.MojangAuthException;
 import com.github.franckyi.emerald.service.web.MojangAuthService;
 import com.github.franckyi.emerald.service.web.TwitchAppService;

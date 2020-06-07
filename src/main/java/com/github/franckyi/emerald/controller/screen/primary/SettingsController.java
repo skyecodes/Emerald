@@ -1,5 +1,6 @@
 package com.github.franckyi.emerald.controller.screen.primary;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.controller.dialog.ResetConfigDialogController;
@@ -9,7 +10,6 @@ import com.github.franckyi.emerald.service.storage.LauncherStorage;
 import com.github.franckyi.emerald.service.storage.Storage;
 import com.github.franckyi.emerald.util.AsyncUtils;
 import com.github.franckyi.emerald.util.ConfigManager;
-import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.PathUtils;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRippler;

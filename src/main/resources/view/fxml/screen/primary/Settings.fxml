@@ -6,7 +6,7 @@
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
 <?import java.lang.String?>
 <JFXTabPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
             fx:controller="com.github.franckyi.emerald.controller.screen.primary.SettingsController"
@@ -36,15 +36,15 @@
         </VBox>
     </Tab>
     <Tab text="Data Storage" fx:id="dataStorageTab">
-        <VBox alignment="CENTER" spacing="10">
-            <VBox alignment="CENTER" spacing="5" styleClass="surface" VBox.vgrow="NEVER">
+        <VBox alignment="CENTER" spacing="10" fillWidth="false">
+            <VBox alignment="CENTER" spacing="5" styleClass="surface">
                 <Label fx:id="cacheSizeLabel"/>
                 <Label fx:id="instancesSizeLabel"/>
                 <Label fx:id="launcherSizeLabel"/>
             </VBox>
             <JFXButton text="Clear cache" onAction="#clearCacheAction" styleClass="button-surface">
                 <graphic>
-                    <MaterialIconView glyphName="UPDATE"/>
+                    <MaterialIconView glyphName="DELETE"/>
                 </graphic>
                 <padding>
                     <Insets topRightBottomLeft="20"/>

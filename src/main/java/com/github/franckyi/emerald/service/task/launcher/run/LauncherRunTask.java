@@ -1,5 +1,6 @@
 package com.github.franckyi.emerald.service.task.launcher.run;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.data.LauncherProfiles;
 import com.github.franckyi.emerald.data.User;

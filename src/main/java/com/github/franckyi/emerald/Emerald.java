@@ -1,8 +1,10 @@
-package com.github.franckyi.emerald.util;
+package com.github.franckyi.emerald;
 
 import com.github.franckyi.emerald.data.Configuration;
 import com.github.franckyi.emerald.data.User;
 import com.github.franckyi.emerald.model.Instance;
+import com.github.franckyi.emerald.util.ConfigManager;
+import com.github.franckyi.emerald.util.PreferenceManager;
 import com.github.franckyi.emerald.util.adapter.InstantTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,6 +20,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public final class Emerald {
+    public static void main(String[] args) {
+        Logger.info("Hello world!");
+        EmeraldApp.launch(EmeraldApp.class, args);
+    }
+
     private static volatile Gson gson;
     private static volatile ExecutorService executorService;
     private static volatile Configuration configuration;

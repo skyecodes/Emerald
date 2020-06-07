@@ -1,11 +1,11 @@
 package com.github.franckyi.emerald.service.task.instance;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.data.LauncherProfiles;
 import com.github.franckyi.emerald.model.Instance;
 import com.github.franckyi.emerald.service.storage.InstanceStorage;
 import com.github.franckyi.emerald.service.task.base.DownloadFileTask;
 import com.github.franckyi.emerald.service.web.resource.mojang.VersionManifest;
-import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.PathUtils;
 import com.google.gson.Gson;
 import org.tinylog.Logger;

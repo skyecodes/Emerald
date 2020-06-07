@@ -1,8 +1,8 @@
 package com.github.franckyi.emerald.service.task.launcher.setup;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.service.task.base.DownloadFileTask;
 import com.github.franckyi.emerald.service.task.base.LinuxUnzipFileTask;
-import com.github.franckyi.emerald.util.Emerald;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,9 +1,9 @@
 package com.github.franckyi.emerald.controller.screen.primary;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.controller.partial.TaskController;
 import com.github.franckyi.emerald.service.task.EmeraldTask;
-import com.github.franckyi.emerald.util.Emerald;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;

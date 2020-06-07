@@ -1,5 +1,6 @@
 package com.github.franckyi.emerald.controller.screen;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.EmeraldApp;
 import com.github.franckyi.emerald.controller.Controller;
 import com.github.franckyi.emerald.controller.dialog.AboutDialogController;
@@ -8,7 +9,6 @@ import com.github.franckyi.emerald.controller.screen.primary.*;
 import com.github.franckyi.emerald.data.User;
 import com.github.franckyi.emerald.service.storage.Cache;
 import com.github.franckyi.emerald.service.task.instance.InstanceCreatorTask;
-import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.UserManager;
 import com.github.franckyi.emerald.view.animation.EmeraldTimeline;
 import com.github.franckyi.emerald.view.animation.InstantTimeline;

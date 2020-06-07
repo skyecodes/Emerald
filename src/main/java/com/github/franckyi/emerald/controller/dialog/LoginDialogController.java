@@ -1,9 +1,9 @@
 package com.github.franckyi.emerald.controller.dialog;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.data.User;
 import com.github.franckyi.emerald.service.web.CallHandler;
 import com.github.franckyi.emerald.service.web.resource.mojang.auth.authenticate.AuthenticateRequest;
-import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.UserManager;
 import com.github.franckyi.emerald.util.WebServiceManager;
 import com.jfoenix.controls.JFXButton;

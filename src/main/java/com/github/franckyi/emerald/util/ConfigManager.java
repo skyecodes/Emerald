@@ -1,5 +1,6 @@
 package com.github.franckyi.emerald.util;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.data.Configuration;
 import com.google.gson.Gson;
 import org.tinylog.Logger;

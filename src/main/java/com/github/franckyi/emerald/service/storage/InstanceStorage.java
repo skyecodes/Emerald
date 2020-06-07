@@ -1,7 +1,7 @@
 package com.github.franckyi.emerald.service.storage;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.model.Instance;
-import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.PathUtils;
 import com.google.gson.Gson;
 import javafx.application.Platform;

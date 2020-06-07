@@ -43,10 +43,10 @@ public final class Cache {
             HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
             if (c.getResponseCode() > 200 && c.getResponseCode() < 300) {
                 is = c.getInputStream();
+                put(category, name, is);
             } else {
-                is = c.getErrorStream();
+                return c.getErrorStream();
             }
-            put(category, name, is);
             return get(category, name);
         } catch (IOException e) {
             Logger.error(e, "Could not load data from URL");

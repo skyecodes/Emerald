@@ -10,9 +10,7 @@ import java.nio.file.Paths;
 import java.util.prefs.Preferences;
 
 public final class PreferenceManager {
-
     private static final String APPLICATION_PATH_KEY = "APPLICATION_PATH";
-
     private static Preferences preferences;
 
     public static Path loadApplicationPath() {
@@ -24,6 +22,7 @@ public final class PreferenceManager {
                     Files.createDirectory(applicationPath);
                 } catch (IOException e) {
                     Logger.error(e, "Unable to create application directory");
+                    return null;
                 }
             }
             return applicationPath;

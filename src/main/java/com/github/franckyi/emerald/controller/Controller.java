@@ -1,6 +1,6 @@
 package com.github.franckyi.emerald.controller;
 
-import com.github.franckyi.emerald.util.Emerald;
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.util.MagicTask;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;

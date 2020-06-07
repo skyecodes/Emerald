@@ -1,5 +1,6 @@
 package com.github.franckyi.emerald.util;
 
+import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.data.User;
 import com.github.franckyi.emerald.service.web.CallHandler;
 import com.github.franckyi.emerald.service.web.MojangAuthException;

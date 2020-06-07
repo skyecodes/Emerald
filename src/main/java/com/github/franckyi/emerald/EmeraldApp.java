@@ -5,7 +5,6 @@ import com.github.franckyi.emerald.controller.MainController;
 import com.github.franckyi.emerald.data.Configuration;
 import com.github.franckyi.emerald.service.storage.InstanceStorage;
 import com.github.franckyi.emerald.util.AsyncUtils;
-import com.github.franckyi.emerald.util.Emerald;
 import com.github.franckyi.emerald.util.PreferenceManager;
 import com.github.franckyi.emerald.util.UserManager;
 import com.jfoenix.assets.JFoenixResources;
@@ -41,11 +40,6 @@ public final class EmeraldApp extends Application {
     public EmeraldApp() {
         this.darkThemeStylesheet = this.getClass().getResource("/view/css/dark.css").toExternalForm();
         this.lightThemeStylesheet = this.getClass().getResource("/view/css/light.css").toExternalForm();
-    }
-
-    public static void main(String[] args) {
-        Logger.info("Hello world!");
-        Application.launch(args);
     }
 
     public static EmeraldApp getInstance() {
