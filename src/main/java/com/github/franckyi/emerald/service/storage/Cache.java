@@ -41,7 +41,7 @@ public final class Cache {
         if (is != null) return is;
         try {
             HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
-            if (c.getResponseCode() > 200 && c.getResponseCode() < 300) {
+            if (c.getResponseCode() >= 200 && c.getResponseCode() < 300) {
                 is = c.getInputStream();
                 put(category, name, is);
             } else {

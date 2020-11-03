@@ -22,7 +22,10 @@
                 </JFXRippler>
             </left>
             <center>
-                <Label text="Create new instance" BorderPane.alignment="CENTER_LEFT"/>
+                <HBox spacing="10" alignment="CENTER_LEFT" BorderPane.alignment="CENTER_LEFT">
+                    <MaterialIconView glyphName="ADD_BOX"/>
+                    <Label text="Create new instance"/>
+                </HBox>
             </center>
             <right>
                 <Pane/>

@@ -1,6 +1,6 @@
 package com.github.franckyi.emerald.controller.screen.primary;
 
-import com.github.franckyi.emerald.controller.Controller;
+import com.github.franckyi.emerald.controller.AbstractController;
 import com.github.franckyi.emerald.controller.partial.InstanceButtonController;
 import com.github.franckyi.emerald.model.Instance;
 import com.jfoenix.controls.JFXMasonryPane;
@@ -10,6 +10,8 @@ import de.jensd.fx.glyphs.materialicons.MaterialIcon;
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -20,7 +22,7 @@ import javafx.scene.layout.StackPane;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstanceListController extends PrimaryScreenController<ScrollPane, ObservableList<Instance>> {
+public class InstanceListController extends AbstractPrimaryScreenController<ScrollPane, ObservableList<Instance>> {
     @FXML
     private JFXMasonryPane instanceListPane;
 
@@ -50,7 +52,7 @@ public class InstanceListController extends PrimaryScreenController<ScrollPane, 
         for (Instance instance : this.getModel()) {
             InstanceButtonController c;
             if (controllerList.size() == i) {
-                c = Controller.loadFXML("partial/InstanceButton.fxml", instance);
+                c = AbstractController.loadFXML("partial/InstanceButton.fxml", instance);
                 controllerList.add(c);
             } else {
                 c = controllerList.get(i);
@@ -67,8 +69,13 @@ public class InstanceListController extends PrimaryScreenController<ScrollPane, 
     }
 
     @Override
-    public String getTitle() {
-        return "Instances";
+    public MaterialIcon getGlyphIcon() {
+        return MaterialIcon.DNS;
+    }
+
+    @Override
+    public ObservableValue<String> getTitle() {
+        return new ReadOnlyStringWrapper("Instances");
     }
 
     @Override

@@ -12,21 +12,21 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.Callable;
 
-public abstract class Controller<V extends Region, M> {
+public abstract class AbstractController<V extends Region, M> {
 
     private final ObjectProperty<M> model;
     private V root;
 
-    protected Controller() {
+    protected AbstractController() {
         model = new SimpleObjectProperty<>();
         model.addListener((obs, oldVal, newVal) -> this.modelUpdated());
     }
 
-    public static <C extends Controller<V, M>, V extends Region, M> C loadFXML(String file) {
-        return Controller.loadFXML(file, (M) null);
+    public static <C extends AbstractController<V, M>, V extends Region, M> C loadFXML(String file) {
+        return AbstractController.loadFXML(file, (M) null);
     }
 
-    public static <C extends Controller<V, M>, V extends Region, M> C loadFXML(String file, M model) {
+    public static <C extends AbstractController<V, M>, V extends Region, M> C loadFXML(String file, M model) {
         return loadFXML(file, url -> {
             FXMLLoader loader = new FXMLLoader(url);
             V root = loader.load();
@@ -38,7 +38,7 @@ public abstract class Controller<V extends Region, M> {
         });
     }
 
-    public static <C extends Controller<V, M>, V extends Region, M> C loadFXML(String file, Callable<M> model) {
+    public static <C extends AbstractController<V, M>, V extends Region, M> C loadFXML(String file, Callable<M> model) {
         return loadFXML(file, url -> {
             MagicTask<M> task = new MagicTask<>(model);
             Emerald.getExecutorService().submit(task);
@@ -52,8 +52,8 @@ public abstract class Controller<V extends Region, M> {
         });
     }
 
-    private static <C extends Controller<V, M>, V extends Region, M> C loadFXML(String file, Loader<C> loader) {
-        URL resource = Controller.class.getResource("/view/fxml/" + file);
+    private static <C extends AbstractController<V, M>, V extends Region, M> C loadFXML(String file, Loader<C> loader) {
+        URL resource = AbstractController.class.getResource("/view/fxml/" + file);
         if (!file.startsWith("partial/")) {
             Logger.debug("Loading FXML view \"{}\"", file);
         }
@@ -92,7 +92,7 @@ public abstract class Controller<V extends Region, M> {
     }
 
     @FunctionalInterface
-    private interface Loader<C extends Controller<?, ?>> {
+    private interface Loader<C extends AbstractController<?, ?>> {
         C load(URL url) throws IOException;
     }
 

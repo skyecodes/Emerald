@@ -1,9 +1,9 @@
 package com.github.franckyi.emerald.controller;
 
+import com.github.franckyi.emerald.controller.screen.AbstractScreenController;
 import com.github.franckyi.emerald.controller.screen.MenuController;
 import com.github.franckyi.emerald.controller.screen.NewInstanceController;
 import com.github.franckyi.emerald.controller.screen.NewVanillaInstanceController;
-import com.github.franckyi.emerald.controller.screen.ScreenController;
 import com.github.franckyi.emerald.util.Minecraft;
 import com.github.franckyi.emerald.view.animation.EmeraldTimeline;
 import com.github.franckyi.emerald.view.animation.ScreenAnimation;
@@ -11,17 +11,17 @@ import javafx.scene.layout.StackPane;
 
 import java.util.LinkedList;
 
-public class MainController extends Controller<StackPane, Void> {
+public class MainController extends AbstractController<StackPane, Void> {
     private MenuController menuController;
     private NewInstanceController newInstanceController;
     private NewVanillaInstanceController newVanillaInstanceController;
 
-    private LinkedList<ScreenController<?, ?>> flow;
+    private LinkedList<AbstractScreenController<?, ?>> flow;
 
     @Override
     protected void initialize() {
         flow = new LinkedList<>();
-        menuController = Controller.loadFXML("screen/Menu.fxml");
+        menuController = AbstractController.loadFXML("screen/Menu.fxml");
         flow.add(menuController);
         this.getRoot().getChildren().add(menuController.getRoot());
     }
@@ -32,20 +32,20 @@ public class MainController extends Controller<StackPane, Void> {
 
     public EmeraldTimeline showNewInstance() {
         if (newInstanceController == null) {
-            newInstanceController = Controller.loadFXML("screen/NewInstance.fxml");
+            newInstanceController = AbstractController.loadFXML("screen/NewInstance.fxml");
         }
         return this.showNext(newInstanceController);
     }
 
     public EmeraldTimeline showNewVanillaInstance() {
         if (newVanillaInstanceController == null) {
-            newVanillaInstanceController = Controller.loadFXML("screen/NewVanillaInstance.fxml", Minecraft::getVersionManifest);
+            newVanillaInstanceController = AbstractController.loadFXML("screen/NewVanillaInstance.fxml", Minecraft::getVersionManifest);
         }
         return this.showNext(newVanillaInstanceController);
     }
 
-    private EmeraldTimeline showNext(ScreenController<?, ?> to) {
-        ScreenController<?, ?> from = flow.getLast();
+    private EmeraldTimeline showNext(AbstractScreenController<?, ?> to) {
+        AbstractScreenController<?, ?> from = flow.getLast();
         EmeraldTimeline timeline = ScreenAnimation.nextScreen(this.getRoot(), from, to);
         timeline.addListener(() -> flow.add(to));
         timeline.play();
@@ -53,8 +53,8 @@ public class MainController extends Controller<StackPane, Void> {
     }
 
     public EmeraldTimeline showPrevious() {
-        ScreenController<?, ?> from = flow.getLast();
-        ScreenController<?, ?> to = flow.get(flow.size() - 2);
+        AbstractScreenController<?, ?> from = flow.getLast();
+        AbstractScreenController<?, ?> to = flow.get(flow.size() - 2);
         EmeraldTimeline timeline = ScreenAnimation.previousScreen(this.getRoot(), from, to);
         timeline.addListener(flow::removeLast);
         timeline.play();

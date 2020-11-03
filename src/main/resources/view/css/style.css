@@ -7,7 +7,7 @@
     -white: white;
     -black: black;
     -success: rgb(76, 175, 80);
-    -success-variant: rgba(76, 175, 80, 0.8);
+    -success-variant: rgba(76, 175, 80, 0.6);
 }
 
 #root {
@@ -83,6 +83,10 @@
     -fx-background-color: -surface-color-variant;
 }
 
+.button-surface-variant:hover {
+    -fx-background-color: -surface-color2;
+}
+
 .button-success {
     -fx-background-color: -success;
 }
@@ -91,12 +95,20 @@
     -fx-background-color: -success-variant;
 }
 
+.button-success-variant:hover {
+    -fx-background-color: -success;
+}
+
 .button-error {
     -fx-background-color: -error;
 }
 
 .button-error-variant {
     -fx-background-color: -error-variant;
+}
+
+.button-error-variant:hover {
+    -fx-background-color: -error;
 }
 
 .button-success, .button-success-variant {
@@ -308,11 +320,19 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.26), 15, 0.16, 0, 4);
 }
 
+.menu-header HBox {
+    -fx-padding: 0 0 0 24;
+}
+
+.menu-header .glyph-icon {
+    -fx-fill: -header-text-color;
+    -glyph-size: 24px;
+}
+
 .menu-header .label {
     -fx-font-family: "Roboto Medium";
     -fx-font-size: 20;
     -fx-text-fill: -header-text-color;
-    -fx-padding: 0 0 0 32;
 }
 
 .menu-header > Pane {

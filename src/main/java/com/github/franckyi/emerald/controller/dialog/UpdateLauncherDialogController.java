@@ -6,7 +6,7 @@ import com.github.franckyi.emerald.util.AsyncUtils;
 import com.github.franckyi.emerald.util.PathUtils;
 import javafx.fxml.FXML;
 
-public class UpdateLauncherDialogController extends DialogController<SettingsController> {
+public class UpdateLauncherDialogController extends AbstractDialogController<SettingsController> {
     @FXML
     private void updateLauncherAction() {
         AsyncUtils.runThenUpdate(() -> Storage.deleteDirectory(PathUtils.getLauncherPath()), path -> {

@@ -28,7 +28,7 @@ public final class InstanceStorage {
                     if (Files.isRegularFile(instanceJsonFile)) {
                         try (BufferedReader reader = Files.newBufferedReader(instanceJsonFile)) {
                             Instance instance = Emerald.getGson().fromJson(reader, Instance.class);
-                            Logger.debug("Instance {} found", instance.getDisplayName());
+                            Logger.debug("Instance {} found", instance.getName());
                             instances.add(instance);
                         } catch (IOException e) {
                             Logger.error(e, "Unable to load instances");
@@ -46,7 +46,7 @@ public final class InstanceStorage {
 
     public static Path createInstance(Instance instance) throws IOException {
         Gson gson = Emerald.getGson();
-        Path instanceDirectory = PathUtils.getInstancePath(instance.getName());
+        Path instanceDirectory = PathUtils.getInstancePath(instance.getId());
         Files.createDirectories(instanceDirectory);
         Path instanceJsonFile = instanceDirectory.resolve("instance.json");
         BufferedWriter writer = Files.newBufferedWriter(instanceJsonFile);
@@ -55,13 +55,22 @@ public final class InstanceStorage {
         return instanceDirectory;
     }
 
+    public static void updateInstance(Instance instance) {
+        try {
+            Logger.debug("Saving instance \"{}\" to disk", instance.getId());
+            createInstance(instance);
+        } catch (IOException e) {
+            Logger.error(e, "Unable to save instance data");
+        }
+    }
+
     public static void deleteInstance(Instance instance) {
         try {
-            Storage.deleteDirectory(PathUtils.getInstancePath(instance.getName()));
+            Storage.deleteDirectory(PathUtils.getInstancePath(instance.getId()));
             Platform.runLater(() -> Emerald.getInstances().remove(instance));
-            Logger.info("Instance \"{}\" deleted", instance.getDisplayName());
+            Logger.info("Instance \"{}\" deleted", instance.getName());
         } catch (IOException e) {
-            Logger.error(e, "Unable to delete instance \"{}\"", instance.getDisplayName());
+            Logger.error(e, "Unable to delete instance \"{}\"", instance.getName());
         }
     }
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDialog?>
+<?import com.jfoenix.controls.JFXDialogLayout?>
+<?import javafx.scene.control.Label?>
+<JFXDialog xmlns:fx="http://javafx.com/fxml" transitionType="CENTER"
+           xmlns="http://javafx.com/javafx"
+           fx:controller="com.github.franckyi.emerald.controller.dialog.DeleteInstanceDialogController">
+    <JFXDialogLayout>
+        <heading>
+            <Label text="Delete instance"/>
+        </heading>
+        <body>
+            <Label text="Are you sure you want to delete this instance? This action is irreversible."/>
+        </body>
+        <actions>
+            <JFXButton text="CANCEL" onAction="#close" styleClass="dialog-close"/>
+            <JFXButton text="OK" onAction="#deleteInstanceAction" styleClass="dialog-close"/>
+        </actions>
+    </JFXDialogLayout>
+</JFXDialog>

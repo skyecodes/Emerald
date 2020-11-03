@@ -10,7 +10,7 @@ public class LinuxLauncherRunTask extends LauncherRunTask {
 
     @Override
     protected void runLauncher() throws Exception {
-        Process process = new ProcessBuilder("./minecraft-launcher", "-w", PathUtils.getInstanceMinecraftPath(instance.getName()).toString())
+        Process process = new ProcessBuilder("./minecraft-launcher", "-w", PathUtils.getInstanceMinecraftPath(instance.getId()).toString())
                 .directory(PathUtils.getLauncherPath().toFile())
                 .inheritIO()
                 .start();

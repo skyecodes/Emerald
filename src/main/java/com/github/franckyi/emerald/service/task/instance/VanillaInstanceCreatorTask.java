@@ -49,8 +49,8 @@ public class VanillaInstanceCreatorTask extends InstanceCreatorTask {
     }
 
     private Path createEnvironment() throws IOException {
-        instance.setName(this.getName());
-        instance.setDisplayName(this.getDisplayName());
+        instance.setId(this.getName());
+        instance.setName(this.getDisplayName());
         instance.setCreationDate(Instant.now());
         instance.setMinecraftVersion(version.getId());
         return InstanceStorage.createInstance(instance);
@@ -72,7 +72,7 @@ public class VanillaInstanceCreatorTask extends InstanceCreatorTask {
         profile.setIcon("Grass");
         profile.setLastUsed(Instant.now());
         profile.setLastVersionId(version.getId());
-        profile.setName(instance.getDisplayName());
+        profile.setName(instance.getName());
         profile.setType("custom");
         profiles.getProfiles().put("00000000000000000000000000000000", profile);
         Path launcherProfilesFile = minecraftDir.resolve("launcher_profiles.json");

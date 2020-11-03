@@ -2,7 +2,7 @@ package com.github.franckyi.emerald.controller.screen.primary;
 
 import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.EmeraldApp;
-import com.github.franckyi.emerald.controller.Controller;
+import com.github.franckyi.emerald.controller.AbstractController;
 import com.github.franckyi.emerald.controller.dialog.ResetConfigDialogController;
 import com.github.franckyi.emerald.controller.dialog.UpdateLauncherDialogController;
 import com.github.franckyi.emerald.data.Configuration;
@@ -17,6 +17,8 @@ import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXToggleButton;
 import de.jensd.fx.glyphs.materialicons.MaterialIcon;
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -24,7 +26,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 
-public class SettingsController extends PrimaryScreenController<JFXTabPane, Configuration> {
+public class SettingsController extends AbstractPrimaryScreenController<JFXTabPane, Configuration> {
     @FXML
     private Tab generalTab;
     @FXML
@@ -59,7 +61,7 @@ public class SettingsController extends PrimaryScreenController<JFXTabPane, Conf
     @FXML
     private void updateLauncherAction() {
         if (updateLauncherDialogController == null) {
-            updateLauncherDialogController = Controller.loadFXML("dialog/UpdateLauncherDialog.fxml", this);
+            updateLauncherDialogController = AbstractController.loadFXML("dialog/UpdateLauncherDialog.fxml", this);
         }
         updateLauncherDialogController.open();
     }
@@ -86,8 +88,7 @@ public class SettingsController extends PrimaryScreenController<JFXTabPane, Conf
     public void beforeShowing() {
         super.beforeShowing();
         currentConfiguration = Emerald.getConfiguration();
-        oldConfiguration = Emerald.getConfiguration().clone();
-        updateLauncherButton.setDisable(!LauncherStorage.isLauncherInitialized());
+        oldConfiguration = currentConfiguration.clone();
         this.updateCacheSizeLabel();
         AsyncUtils.runThenUpdate(() -> Storage.sizeOf(PathUtils.getInstancesPath()), s -> instancesSizeLabel.setText("Instances folder size: " + s));
         this.updateLauncherSizeLabel();
@@ -100,6 +101,7 @@ public class SettingsController extends PrimaryScreenController<JFXTabPane, Conf
 
     public void updateLauncherSizeLabel() {
         AsyncUtils.runThenUpdate(() -> Storage.sizeOf(PathUtils.getLauncherPath()), s -> launcherSizeLabel.setText("Launcher folder size: " + s));
+        updateLauncherButton.setDisable(!LauncherStorage.isLauncherInitialized());
     }
 
     @Override
@@ -117,8 +119,13 @@ public class SettingsController extends PrimaryScreenController<JFXTabPane, Conf
     }
 
     @Override
-    public String getTitle() {
-        return "Settings";
+    public MaterialIcon getGlyphIcon() {
+        return MaterialIcon.TUNE;
+    }
+
+    @Override
+    public ObservableValue<String> getTitle() {
+        return new ReadOnlyStringWrapper("Settings");
     }
 
     @Override
@@ -130,7 +137,7 @@ public class SettingsController extends PrimaryScreenController<JFXTabPane, Conf
         rippler.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
                 if (resetConfigDialogController == null) {
-                    resetConfigDialogController = Controller.loadFXML("dialog/ResetConfigDialog.fxml");
+                    resetConfigDialogController = AbstractController.loadFXML("dialog/ResetConfigDialog.fxml");
                 }
                 resetConfigDialogController.open();
             }

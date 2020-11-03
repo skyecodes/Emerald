@@ -74,7 +74,7 @@ public abstract class LauncherRunTask extends EmeraldTask<Void> {
     private void updateLauncherProfileData() throws IOException {
         Gson gson = Emerald.getGson();
         User user = Emerald.getUser().get();
-        Path launcherProfilesFile = PathUtils.getInstanceMinecraftPath(instance.getName()).resolve("launcher_profiles.json");
+        Path launcherProfilesFile = PathUtils.getInstanceMinecraftPath(instance.getId()).resolve("launcher_profiles.json");
 
         BufferedReader reader = Files.newBufferedReader(launcherProfilesFile);
         LauncherProfiles profiles = gson.fromJson(reader, LauncherProfiles.class);

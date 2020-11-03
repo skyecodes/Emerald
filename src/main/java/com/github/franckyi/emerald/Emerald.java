@@ -7,11 +7,11 @@ import com.github.franckyi.emerald.util.ConfigManager;
 import com.github.franckyi.emerald.util.PreferenceManager;
 import com.github.franckyi.emerald.util.adapter.InstantTypeAdapter;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.hildan.fxgson.FxGson;
 import org.tinylog.Logger;
 
 import java.nio.file.Path;
@@ -37,7 +37,7 @@ public final class Emerald {
             synchronized (Emerald.class) {
                 if (gson == null) {
                     Logger.debug("Loading Gson");
-                    gson = new GsonBuilder()
+                    gson = FxGson.coreBuilder()
                             .registerTypeAdapter(Instant.class, new InstantTypeAdapter())
                             .create();
                 }

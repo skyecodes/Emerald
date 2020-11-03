@@ -1,8 +1,8 @@
 package com.github.franckyi.emerald.view.animation;
 
 import com.github.franckyi.emerald.EmeraldApp;
-import com.github.franckyi.emerald.controller.screen.ScreenController;
-import com.github.franckyi.emerald.controller.screen.primary.PrimaryScreenController;
+import com.github.franckyi.emerald.controller.screen.AbstractScreenController;
+import com.github.franckyi.emerald.controller.screen.primary.AbstractPrimaryScreenController;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -19,7 +19,7 @@ import javafx.util.Duration;
 public final class ScreenAnimation {
     private static EmeraldTimeline currentScreenTimeline, currentPrimaryScreenTimeline;
 
-    public static EmeraldTimeline nextScreen(StackPane root, ScreenController<?, ?> from, ScreenController<?, ?> to) {
+    public static EmeraldTimeline nextScreen(StackPane root, AbstractScreenController<?, ?> from, AbstractScreenController<?, ?> to) {
         if (currentScreenTimeline != null) currentScreenTimeline.stop();
         EmeraldTimeline timeline = forward(root, from.getRoot(), to.getRoot());
         root.getChildren().add(to.getRoot());
@@ -27,7 +27,7 @@ public final class ScreenAnimation {
         return timeline;
     }
 
-    public static EmeraldTimeline previousScreen(StackPane root, ScreenController<?, ?> from, ScreenController<?, ?> to) {
+    public static EmeraldTimeline previousScreen(StackPane root, AbstractScreenController<?, ?> from, AbstractScreenController<?, ?> to) {
         if (currentScreenTimeline != null) currentScreenTimeline.stop();
         EmeraldTimeline timeline = backward(root, from.getRoot(), to.getRoot());
         root.getChildren().add(0, to.getRoot());
@@ -35,15 +35,15 @@ public final class ScreenAnimation {
         return timeline;
     }
 
-    public static EmeraldTimeline changePrimaryScreen(StackPane root, PrimaryScreenController<?, ?> from, PrimaryScreenController<?, ?> to) {
-        if (currentPrimaryScreenTimeline != null) currentScreenTimeline.stop();
+    public static EmeraldTimeline changePrimaryScreen(StackPane root, AbstractPrimaryScreenController<?, ?> from, AbstractPrimaryScreenController<?, ?> to) {
+        if (currentPrimaryScreenTimeline != null) currentPrimaryScreenTimeline.stop();
         EmeraldTimeline timeline = change(root, from.getRoot(), to.getRoot());
         applyPrimaryScreenTransition(timeline, root, from, to);
         return timeline;
     }
 
     private static void applyScreenTransition(EmeraldTimeline timeline, StackPane root,
-                                              ScreenController<?, ?> from, ScreenController<?, ?> to) {
+                                              AbstractScreenController<?, ?> from, AbstractScreenController<?, ?> to) {
         from.beforeHiding();
         to.beforeShowing();
         timeline.addListener(() -> {
@@ -57,7 +57,7 @@ public final class ScreenAnimation {
     }
 
     private static void applyPrimaryScreenTransition(EmeraldTimeline timeline, StackPane root,
-                                                     PrimaryScreenController<?, ?> from, PrimaryScreenController<?, ?> to) {
+                                                     AbstractPrimaryScreenController<?, ?> from, AbstractPrimaryScreenController<?, ?> to) {
         from.beforeHiding();
         to.beforeShowing();
         timeline.addListener(() -> {

@@ -2,11 +2,13 @@ package com.github.franckyi.emerald.controller.screen;
 
 import com.github.franckyi.emerald.Emerald;
 import com.github.franckyi.emerald.EmeraldApp;
-import com.github.franckyi.emerald.controller.Controller;
+import com.github.franckyi.emerald.controller.AbstractController;
 import com.github.franckyi.emerald.controller.dialog.AboutDialogController;
+import com.github.franckyi.emerald.controller.dialog.DeleteInstanceDialogController;
 import com.github.franckyi.emerald.controller.dialog.LoginDialogController;
 import com.github.franckyi.emerald.controller.screen.primary.*;
 import com.github.franckyi.emerald.data.User;
+import com.github.franckyi.emerald.model.Instance;
 import com.github.franckyi.emerald.service.storage.Cache;
 import com.github.franckyi.emerald.service.task.instance.InstanceCreatorTask;
 import com.github.franckyi.emerald.util.UserManager;
@@ -40,7 +42,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class MenuController extends ScreenController<JFXDrawer, Void> {
+public class MenuController extends AbstractScreenController<JFXDrawer, Void> {
     @FXML
     private BorderPane sidePane;
     @FXML
@@ -65,16 +67,18 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
     private JFXButton worldsButton;
     @FXML
     private JFXButton tasksButton;
+    public static Screen<InstanceSettingsController> INSTANCE_SETTINGS;
     @FXML
     private JFXButton settingsButton;
     @FXML
     private JFXToolbar header;
     @FXML
     private JFXBadge badge;
-    @FXML
-    private StackPane content;
+    private static Image DEFAULT_AVATAR;
     @FXML
     private Label title;
+    @FXML
+    private HBox instanceSettingsButton;
 
     private InstanceListController instanceListController;
     private ModpackListController modpackListController;
@@ -82,9 +86,14 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
     private ResourcePackListController resourcePackListController;
     private WorldListController worldListController;
     private TaskListController taskListController;
+    @FXML
+    private MaterialIconView icon;
     private SettingsController settingsController;
+
     private AboutDialogController aboutDialogController;
     private LoginDialogController loginDialogController;
+    @FXML
+    private StackPane content;
 
     public static Screen<InstanceListController> INSTANCES;
     public static Screen<ModpackListController> MODPACKS;
@@ -92,10 +101,11 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
     public static Screen<ResourcePackListController> RESOURCE_PACKS;
     public static Screen<WorldListController> WORLDS;
     public static Screen<TaskListController> TASKS;
+    private InstanceSettingsController instanceSettingsController;
     public static Screen<SettingsController> SETTINGS;
 
     private Screen<?> currentScreen;
-
+    private DeleteInstanceDialogController deleteInstanceDialogController;
     private Map<String, Image> avatars;
 
     @Override
@@ -106,8 +116,11 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
         RESOURCE_PACKS = new Screen<>(this::getResourcePackListController, this::getResourcePacksButton);
         WORLDS = new Screen<>(this::getWorldListController, this::getWorldsButton);
         TASKS = new Screen<>(this::getTaskListController, this::getTasksButton);
+        INSTANCE_SETTINGS = new Screen<>(this::getInstanceSettingsController, this::getInstanceSettingsButton);
         SETTINGS = new Screen<>(this::getSettingsController, this::getSettingsButton);
+        DEFAULT_AVATAR = new Image(this.getClass().getResourceAsStream("/view/img/steve.png"));
         avatars = new HashMap<>();
+        avatars.put(null, DEFAULT_AVATAR);
         Emerald.getUser().addListener(obs -> Platform.runLater(this::updateUser));
         this.updateUser();
         // fixing node hierarchy
@@ -134,11 +147,11 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
         if (UserManager.isUserLoggedIn()) {
             if (!avatars.containsKey(user.getProfileId())) {
                 Emerald.getExecutorService().submit(() -> {
-                    InputStream is = Cache.getOrDefault(Cache.AVATARS, user.getProfileId() + ".png", "https://crafatar.com/avatars/" + user.getProfileId() + "?size=50&default=MHF_Steve");
+                    InputStream is = Cache.getOrDefault(Cache.AVATARS, user.getProfileId(), "https://crafatar.com/avatars/" + user.getProfileId() + "?size=50&default=MHF_Steve");
                     if (is != null) {
                         avatars.put(user.getProfileId(), new Image(is));
                     }
-                    Platform.runLater(() -> userImageView.setImage(avatars.getOrDefault(user.getProfileId(), null)));
+                    Platform.runLater(() -> userImageView.setImage(avatars.getOrDefault(user.getProfileId(), DEFAULT_AVATAR)));
                 });
             }
             usernameLabel.setText(user.getDisplayName());
@@ -147,11 +160,8 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
             userButton.getStyleClass().add("button-error");
             userButtonGlyph.setIcon(MaterialIcon.PERSON_OUTLINE);
         } else {
-            if (!avatars.containsKey(null)) {
-                avatars.put(null, new Image(this.getClass().getResourceAsStream("/view/img/steve.png")));
-            }
             userImageView.setImage(avatars.get(null));
-            usernameLabel.setText("Steve");
+            usernameLabel.setText("");
             userStatusLabel.setText("Not logged in");
             userStatusLabel.getGraphic().getStyleClass().add("fill-error");
             userButton.getStyleClass().add("button-success");
@@ -217,6 +227,30 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
         return this.showScreen(TASKS);
     }
 
+    public EmeraldTimeline showInstanceSettings(Instance model) {
+        if (instanceSettingsController == null) {
+            instanceSettingsController = AbstractController.loadFXML("screen/primary/InstanceSettings.fxml", model);
+        } else {
+            instanceSettingsController.setModel(model);
+        }
+        return this.showInstanceSettings();
+    }
+
+    @FXML
+    public EmeraldTimeline showInstanceSettings() {
+        instanceSettingsButton.setVisible(true);
+        return this.showScreen(INSTANCE_SETTINGS);
+    }
+
+    @FXML
+    public void closeInstanceSettings() {
+        instanceSettingsButton.setVisible(false);
+        EmeraldApp.getInstance().fixFocus();
+        if (currentScreen == INSTANCE_SETTINGS) {
+            this.showInstances();
+        }
+    }
+
     @FXML
     public EmeraldTimeline showSettings() {
         return this.showScreen(SETTINGS);
@@ -225,7 +259,7 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
     @FXML
     public void showAbout() {
         if (aboutDialogController == null) {
-            aboutDialogController = Controller.loadFXML("dialog/AboutDialog.fxml");
+            aboutDialogController = AbstractController.loadFXML("dialog/AboutDialog.fxml");
         }
         aboutDialogController.open();
     }
@@ -244,41 +278,47 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
 
     public void showLogin(Consumer<User> callback, String errorText) {
         if (loginDialogController == null) {
-            loginDialogController = Controller.loadFXML("dialog/LoginDialog.fxml");
+            loginDialogController = AbstractController.loadFXML("dialog/LoginDialog.fxml");
         }
         loginDialogController.setLoginAction(callback);
         loginDialogController.setErrorText(errorText);
         loginDialogController.open();
     }
 
-    public void showScreenInstant(Screen<?> screen) {
-        if (currentScreen != screen) {
-            if (currentScreen != null) {
-                currentScreen.getButton().getStyleClass().remove("selected");
-                content.getChildren().set(0, screen.getController().getRoot());
-            } else {
-                content.getChildren().add(screen.getController().getRoot());
-            }
-            currentScreen = screen;
-            header.setRight(screen.getController().getRightHeader());
-            title.setText(screen.getController().getTitle());
-            screen.getButton().getStyleClass().add("selected");
+    public void showDeleteInstanceDialog(Instance instance) {
+        if (deleteInstanceDialogController == null) {
+            deleteInstanceDialogController = AbstractController.loadFXML("dialog/DeleteInstanceDialog.fxml");
         }
+        deleteInstanceDialogController.setModel(instance);
+        deleteInstanceDialogController.open();
+    }
+
+    public void showScreenInstant(Screen<?> screen) {
+        showScreenImpl(screen, true);
     }
 
     public EmeraldTimeline showScreen(Screen<?> screen) {
+        return showScreenImpl(screen, false);
+    }
+
+    private EmeraldTimeline showScreenImpl(Screen<?> screen, boolean instant) {
         EmeraldTimeline timeline = new InstantTimeline();
         if (currentScreen != screen) {
             if (currentScreen != null) {
                 currentScreen.getButton().getStyleClass().remove("selected");
-                this.getRoot().close();
-                timeline = ScreenAnimation.changePrimaryScreen(content, currentScreen.getController(), screen.getController());
+                if (instant) {
+                    content.getChildren().set(0, screen.getController().getRoot());
+                } else {
+                    this.getRoot().close();
+                    timeline = ScreenAnimation.changePrimaryScreen(content, currentScreen.getController(), screen.getController());
+                }
             } else {
                 content.getChildren().add(screen.getController().getRoot());
             }
             currentScreen = screen;
+            icon.setIcon(screen.getController().getGlyphIcon());
+            title.textProperty().bind(screen.getController().getTitle());
             header.setRight(screen.getController().getRightHeader());
-            title.setText(screen.getController().getTitle());
             screen.getButton().getStyleClass().add("selected");
         }
         return timeline;
@@ -287,7 +327,7 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
     public void submitNewInstanceTask(InstanceCreatorTask task) {
         task.getOnLastTaskSucceededListeners().add(() -> {
             if (currentScreen == TASKS) {
-                EmeraldApp.getInstance().getMainController().getMenuController().showInstances();
+                showInstances();
             }
         });
         taskListController.submit(task);
@@ -317,48 +357,52 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
         return tasksButton;
     }
 
+    public HBox getInstanceSettingsButton() {
+        return instanceSettingsButton;
+    }
+
     public JFXButton getSettingsButton() {
         return settingsButton;
     }
 
     public InstanceListController getInstanceListController() {
         if (instanceListController == null) {
-            instanceListController = Controller.loadFXML("screen/primary/InstanceList.fxml", Emerald.getInstances());
+            instanceListController = AbstractController.loadFXML("screen/primary/InstanceList.fxml", Emerald.getInstances());
         }
         return instanceListController;
     }
 
     public ModpackListController getModpackListController() {
         if (modpackListController == null) {
-            modpackListController = Controller.loadFXML("screen/primary/ModpackList.fxml");
+            modpackListController = AbstractController.loadFXML("screen/primary/ModpackList.fxml");
         }
         return modpackListController;
     }
 
     public ModListController getModListController() {
         if (modListController == null) {
-            modListController = Controller.loadFXML("screen/primary/ModList.fxml");
+            modListController = AbstractController.loadFXML("screen/primary/ModList.fxml");
         }
         return modListController;
     }
 
     public ResourcePackListController getResourcePackListController() {
         if (resourcePackListController == null) {
-            resourcePackListController = Controller.loadFXML("screen/primary/ResourcePackList.fxml");
+            resourcePackListController = AbstractController.loadFXML("screen/primary/ResourcePackList.fxml");
         }
         return resourcePackListController;
     }
 
     public WorldListController getWorldListController() {
         if (worldListController == null) {
-            worldListController = Controller.loadFXML("screen/primary/WorldList.fxml");
+            worldListController = AbstractController.loadFXML("screen/primary/WorldList.fxml");
         }
         return worldListController;
     }
 
     public TaskListController getTaskListController() {
         if (taskListController == null) {
-            taskListController = Controller.loadFXML("screen/primary/TaskList.fxml", FXCollections.observableArrayList());
+            taskListController = AbstractController.loadFXML("screen/primary/TaskList.fxml", FXCollections.observableArrayList());
             taskListController.getModel().addListener((ListChangeListener<Task<?>>) change -> {
                 int size = change.getList().size();
                 badge.setEnabled(size > 0);
@@ -370,14 +414,18 @@ public class MenuController extends ScreenController<JFXDrawer, Void> {
         return taskListController;
     }
 
+    public InstanceSettingsController getInstanceSettingsController() {
+        return instanceSettingsController;
+    }
+
     public SettingsController getSettingsController() {
         if (settingsController == null) {
-            settingsController = Controller.loadFXML("screen/primary/Settings.fxml", Emerald.getConfiguration());
+            settingsController = AbstractController.loadFXML("screen/primary/Settings.fxml", Emerald.getConfiguration());
         }
         return settingsController;
     }
 
-    private static class Screen<C extends PrimaryScreenController<?, ?>> {
+    private static class Screen<C extends AbstractPrimaryScreenController<?, ?>> {
         private final Supplier<C> controller;
         private final Supplier<Node> button;
 

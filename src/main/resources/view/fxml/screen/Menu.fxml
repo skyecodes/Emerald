@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <MenuDrawer xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201-ea"
-            fx:controller="com.github.franckyi.emerald.controller.screen.MenuController" defaultDrawerSize="250">
+            fx:controller="com.github.franckyi.emerald.controller.screen.MenuController" defaultDrawerSize="280">
     <sidePane>
         <BorderPane fx:id="sidePane" styleClass="drawer-pane">
             <top>
@@ -74,19 +74,30 @@
             </top>
             <center>
                 <VBox spacing="5" styleClass="button-list" alignment="CENTER">
-                    <JFXButton text="Tasks" fx:id="tasksButton" onAction="#showTasks" visible="false"
-                               styleClass="important">
+                    <JFXButton text="Tasks" fx:id="tasksButton" onAction="#showTasks" visible="false">
                         <graphic>
                             <MaterialIconView glyphName="GET_APP"/>
                         </graphic>
                     </JFXButton>
+                    <HBox fx:id="instanceSettingsButton" visible="false">
+                        <JFXButton text="Instance settings" onAction="#showInstanceSettings">
+                            <graphic>
+                                <MaterialIconView glyphName="SETTINGS"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton onAction="#closeInstanceSettings" styleClass="small">
+                            <graphic>
+                                <MaterialIconView glyphName="CANCEL"/>
+                            </graphic>
+                        </JFXButton>
+                    </HBox>
                 </VBox>
             </center>
             <bottom>
                 <VBox spacing="5" styleClass="button-list" alignment="BOTTOM_LEFT">
                     <JFXButton text="Settings" fx:id="settingsButton" onAction="#showSettings">
                         <graphic>
-                            <MaterialIconView glyphName="SETTINGS"/>
+                            <MaterialIconView glyphName="TUNE"/>
                         </graphic>
                     </JFXButton>
                     <JFXButton text="About..." onAction="#showAbout">
@@ -111,7 +122,10 @@
                     </JFXBadge>
                 </left>
                 <center>
-                    <Label fx:id="title" BorderPane.alignment="CENTER_LEFT"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT" BorderPane.alignment="CENTER_LEFT">
+                        <MaterialIconView fx:id="icon"/>
+                        <Label fx:id="title"/>
+                    </HBox>
                 </center>
                 <right>
                     <Pane/>

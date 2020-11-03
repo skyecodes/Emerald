@@ -5,7 +5,7 @@
 
     -error: rgb(176, 0, 32);
     -error-background: rgba(176, 0, 32, 0.24);
-    -error-variant: rgba(176, 0, 32, 0.8);
+    -error-variant: rgba(176, 0, 32, 0.6);
     -error-text: -white;
 
     -text-color: -black;
@@ -15,7 +15,7 @@
     -surface-color: -white;
     -surface-color2: -white;
     -surface-color-overlay: rgba(255, 255, 255, 0.3);
-    -surface-color-variant: rgba(255, 255, 255, 0.8);
+    -surface-color-variant: rgba(255, 255, 255, 0.6);
     -rippler-fill: -grey-400;
     -navigation-rippler-fill: -white;
     -decorator-background-color: -primary-variant;

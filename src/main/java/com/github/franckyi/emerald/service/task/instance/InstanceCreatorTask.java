@@ -44,7 +44,7 @@ public abstract class InstanceCreatorTask extends EmeraldTask<Instance> {
 
     private boolean isInstanceNameAlreadyTaken(String name) {
         for (Instance instance : Emerald.getInstances()) {
-            if (instance.getName().equals(name)) {
+            if (instance.getId().equals(name)) {
                 return true;
             }
         }

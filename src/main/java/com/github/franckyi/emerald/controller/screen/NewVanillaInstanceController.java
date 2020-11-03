@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class NewVanillaInstanceController extends ScreenController<Region, VersionManifest> {
+public class NewVanillaInstanceController extends AbstractScreenController<Region, VersionManifest> {
     @FXML
     private JFXTextField instanceNameField;
     @FXML

@@ -39,7 +39,7 @@ public final class Minecraft {
             EmeraldApp.getInstance().getMainController().getMenuController().showLogin(user -> launch(instance));
         } else {
             Emerald.getExecutorService().submit(LauncherRunTask.create(instance));
-            Logger.info("Launching instance \"{}\"", instance.getDisplayName());
+            Logger.info("Launching instance \"{}\"", instance.getName());
         }
     }
 

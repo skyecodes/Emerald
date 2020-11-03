@@ -1,12 +1,12 @@
 package com.github.franckyi.emerald.controller.screen;
 
 import com.github.franckyi.emerald.EmeraldApp;
-import com.github.franckyi.emerald.controller.Controller;
+import com.github.franckyi.emerald.controller.AbstractController;
 import com.github.franckyi.emerald.controller.MainController;
 import javafx.scene.CacheHint;
 import javafx.scene.layout.Region;
 
-public abstract class ScreenController<V extends Region, M> extends Controller<V, M> {
+public abstract class AbstractScreenController<V extends Region, M> extends AbstractController<V, M> {
     private MainController mainController;
     private Runnable beforeShowing, afterShowing, beforeHiding, afterHiding;
 

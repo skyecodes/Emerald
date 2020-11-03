@@ -17,7 +17,7 @@ import org.tinylog.Logger;
 
 import java.util.function.Consumer;
 
-public class LoginDialogController extends DialogController<Void> {
+public class LoginDialogController extends AbstractDialogController<Void> {
     @FXML
     private Label errorLabel;
     @FXML

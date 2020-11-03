@@ -11,7 +11,7 @@ public class WindowsLauncherRunTask extends LauncherRunTask {
     @Override
     protected void runLauncher() throws Exception {
         Process process = new ProcessBuilder(PathUtils.getLauncherPath().resolve("Minecraft.exe").toAbsolutePath().toString(),
-                "--workDir", PathUtils.getInstanceMinecraftPath(instance.getName()).toString())
+                "--workDir", PathUtils.getInstanceMinecraftPath(instance.getId()).toString())
                 .inheritIO()
                 .start();
         process.waitFor();

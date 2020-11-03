@@ -1,13 +1,13 @@
 package com.github.franckyi.emerald.controller.partial;
 
-import com.github.franckyi.emerald.controller.Controller;
+import com.github.franckyi.emerald.controller.AbstractController;
 import com.github.franckyi.emerald.service.task.EmeraldTask;
 import com.jfoenix.controls.JFXProgressBar;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
-public class TaskController extends Controller<BorderPane, EmeraldTask<?>> {
+public class TaskController extends AbstractController<BorderPane, EmeraldTask<?>> {
     @FXML
     private Label titleLabel;
     @FXML

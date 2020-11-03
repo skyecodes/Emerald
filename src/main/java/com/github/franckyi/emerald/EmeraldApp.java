@@ -1,6 +1,6 @@
 package com.github.franckyi.emerald;
 
-import com.github.franckyi.emerald.controller.Controller;
+import com.github.franckyi.emerald.controller.AbstractController;
 import com.github.franckyi.emerald.controller.MainController;
 import com.github.franckyi.emerald.data.Configuration;
 import com.github.franckyi.emerald.service.storage.InstanceStorage;
@@ -105,7 +105,7 @@ public final class EmeraldApp extends Application {
     }
 
     private void loadView() {
-        mainController = Controller.loadFXML("Main.fxml");
+        mainController = AbstractController.loadFXML("Main.fxml");
         decorator = new JFXDecorator(stage, mainController.getRoot(), false, true, true);
         decorator.setCustomMaximize(true);
         scene = new Scene(decorator, 761, 656);
@@ -136,19 +136,23 @@ public final class EmeraldApp extends Application {
     public void updateTheme() {
         Configuration c = Emerald.getConfiguration();
         scene.getStylesheets().remove(currentThemeStylesheet);
-        if (c.getTheme() == Configuration.Theme.DARK) {
-            currentThemeStylesheet = darkThemeStylesheet;
-        } else if (c.getTheme() == Configuration.Theme.LIGHT) {
-            currentThemeStylesheet = lightThemeStylesheet;
-        } else {
-            Path path = Emerald.getApplicationPath().resolve(
-                    String.format("themes%s%s", File.pathSeparator, c.getCustomTheme()));
-            if (Files.isRegularFile(path)) {
-                currentThemeStylesheet = path.toString();
-            } else {
-                Logger.error("Custom style {} not found - defaulting to dark theme", c.getCustomTheme());
+        switch (c.getTheme()) {
+            case LIGHT:
+                currentThemeStylesheet = lightThemeStylesheet;
+                break;
+            case DARK:
                 currentThemeStylesheet = darkThemeStylesheet;
-            }
+                break;
+            case CUSTOM:
+                Path path = Emerald.getApplicationPath().resolve(
+                        String.format("themes%s%s", File.pathSeparator, c.getCustomTheme()));
+                if (Files.isRegularFile(path)) {
+                    currentThemeStylesheet = path.toString();
+                } else {
+                    Logger.error("Custom style {} not found - defaulting to dark theme", c.getCustomTheme());
+                    currentThemeStylesheet = darkThemeStylesheet;
+                }
+                break;
         }
         scene.getStylesheets().add(currentThemeStylesheet);
     }
